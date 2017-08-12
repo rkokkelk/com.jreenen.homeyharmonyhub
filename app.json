@@ -1,0 +1,40 @@
+{
+    "id": "com.jreenen.homeyharmonyhub",
+    "sdk": 2,
+    "name": {
+        "en": "Homey Harmony Hub"
+    },
+    "description": {
+        "en": "Adds support for logitech's Harmony Hub"
+    },
+    "category": "appliances",
+    "version": "0.0.1",
+    "compatibility": ">=1.5.0",
+     "drivers": [
+        {
+            "id": "harmonyhub_driver",
+            "name": {
+                "en": "Harmony hub driver"
+            },
+            "class": "other",
+            "capabilities": ["channel_down", "channel_up", "volume_mute", "volume_set", "volume_down", "volume_up", "onoff"],
+            "pair": [
+                {
+                    "id": "list_devices",
+                    "template": "list_devices",
+                    "navigation": {
+                        "next": "add_devices"
+                    }
+                },
+                {
+                    "id": "add_devices",
+                    "template": "add_devices"
+                }
+            ]
+        }
+    ],
+    "author": {
+        "name": "Jeroen van Reenen",
+        "email": "jreenen@hotmail.com"
+    }
+}
