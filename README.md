@@ -9,6 +9,7 @@ I am aware there is already a [great project](https://github.com/netactivenl/com
 # Used external library's
 
 [swissmanu's harmonyhubjs-client](https://github.com/swissmanu/harmonyhubjs-client)
+
 [swissmanu's harmonyhubjs-discover](https://github.com/swissmanu/harmonyhubjs-discover)
 
 
