@@ -10,6 +10,7 @@ class HarmonyHubDriver extends Homey.Driver {
     }
 
     onPairListDevices( data, callback ){
+        
         var hubs = DiscoverHubs.hubs;
         while(hubs == undefined)
         {

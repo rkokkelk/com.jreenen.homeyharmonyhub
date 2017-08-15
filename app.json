@@ -10,15 +10,23 @@
     "category": "appliances",
     "version": "0.0.1",
     "compatibility": ">=1.5.0",
-     "drivers": [
+    "drivers": [
         {
-            "id": "harmonyhub_driver",
+            "id": "harmony_device_driver",
             "name": {
-                "en": "Harmony hub driver"
+                "en": "Harmony device driver"
             },
             "class": "other",
-            "capabilities": ["channel_down", "channel_up", "volume_mute", "volume_set", "volume_down", "volume_up", "onoff"],
+            "capabilities": [
+                "onoff"
+            ],
             "pair": [
+                {
+                    "id": "select_hub",
+                    "navigation": {
+                        "next": "list_devices"
+                    }
+                },
                 {
                     "id": "list_devices",
                     "template": "list_devices",
@@ -30,7 +38,23 @@
                     "id": "add_devices",
                     "template": "add_devices"
                 }
-            ]
+            ],
+            "mobile": {
+                "components": [
+                    {
+                        "id": "icon",
+                        "capabilities": [
+                            "onoff"
+                        ]
+                    },
+                    {
+                        "id": "toggle",
+                        "capabilities": [
+                            "onoff"
+                        ]
+                    }
+                ]
+            }
         }
     ],
     "author": {

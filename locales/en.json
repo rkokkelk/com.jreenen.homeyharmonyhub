@@ -1,1 +1,8 @@
-{}
+{
+	"pair": {
+		"select_hub": {
+			"title": "Select your Logitech harmony hub",
+			"no_hubs": "No Logitech Harmony Hubs have been found."
+		}
+	}
+}
