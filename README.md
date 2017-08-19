@@ -5,6 +5,16 @@ This project is in very early stage of development. At the moment this project s
 - A mobile card supporting the power toggle functionality of the device
 - An action card for sending a specific command to the harmony device using homey flows.
 
+# Setup
+
+Once the app is installed you can pair a device that is connected to the harmony hub:
+
+![alt text](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/Device%20Pairing.gif "Device pairing")
+
+After you have paired your device it will be available in the homey flow editor allowing you to send IR commands to this device:
+
+![alt text](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/Device%20flow.gif "Using your device in homey flow manager")
+
 # Future releases
 
 At the moment there is no real roadmap but for the upcoming release you can expect the following:
