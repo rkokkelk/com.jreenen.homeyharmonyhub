@@ -16,11 +16,18 @@ const iconsMap = {
 }
 
 class App extends Homey.App {
-	
+
 	onInit() {
 		console.log(`${Homey.manifest.id} running...`);
 		process.env.APPINSIGHTS_INSTRUMENTATIONKEY = "4f45f195-c5f9-4b27-acb9-f30b04e399fe";
-		appInsights.setup().start();
+		appInsights.setup()
+			.setAutoDependencyCorrelation(true)
+			.setAutoCollectRequests(true)
+			.setAutoCollectPerformance(true)
+			.setAutoCollectExceptions(true)
+			.setAutoCollectDependencies(true)
+			.setAutoCollectConsole(true)
+			.start();
 		appInsightsClient = appInsights.getClient();
 
 		this._hubs = [];
@@ -105,10 +112,11 @@ class App extends Homey.App {
 		var encodedAction = command.action.replace(/\:/g, '::');
 
 		harmony(ip).then((harmonyClient) => {
-			return harmonyClient.send('holdAction', 'action=' + encodedAction + ':status=press');
-		}).finally(function () {
-			harmonyClient.end()
-			console.log('Client disconnected');
+			return harmonyClient.send('holdAction', 'action=' + encodedAction + ':status=press')
+			.finally(() => {
+				harmonyClient.end()
+				console.log('Client disconnected');
+			})
 		});
 	}
 
@@ -175,6 +183,12 @@ class App extends Homey.App {
 
 				return Promise.resolve(result);
 			})
+
+		process.on('uncaughtException', (err) => {
+			console.log('whoops! there was an error');
+			appInsightsClient.trackException(new Error(JSON.stringify(err)));
+			
+		});
 	}
 }
 
