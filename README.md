@@ -32,6 +32,12 @@ This app uses application insights to track the following topics:
 - Application errors, which help to solve issues
 - Unknown device types, so I can add more icons in future releases, making it easier to find the device you are looking for in the Homey flow editor.
 
+# Contributing to this project
+If you want to be a contributor for this project, you are very welcome! 
+
+# Contact information
+If you want to contact me the best way is joining the [athomcommunity](http://athomcommunity.slack.com) on slack and send a direct message to @jreenen.  
+
 # Donations
 If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation. The donations will be spent on buying a second Harmony Hub to support me testing a multi-hub situation.
 
