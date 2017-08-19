@@ -3,7 +3,7 @@
 This project is in very early stage of development. At the moment this project supports:
 - Pairing of devices connected to the harmony hub
 - A mobile card supporting the power toggle functionality of the device
-- An action card for sending a specific command to the harmony device using homey flows.
+- An action card for sending a specific command to the Harmony device using homey flows.
 
 # Setup
 

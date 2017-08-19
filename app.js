@@ -4,7 +4,6 @@ const Homey = require('homey');
 
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const harmony = require('harmonyhubjs-client');
-const findHubsInterval = 60000;
 let appInsights = require("applicationinsights");
 let appInsightsClient;
 

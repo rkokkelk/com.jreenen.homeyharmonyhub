@@ -10,7 +10,7 @@
         "nl": "Voegt functies toe van de logitech's Harmony Hub"
     },
     "category": "appliances",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "compatibility": ">=1.5.0",
     "drivers": [
         {
@@ -43,6 +43,9 @@
             ],
             "mobile": {
                 "components": [
+                    {
+                        "id": "icon"
+                    },
                     {
                         "id": "button",
                         "capabilities": [
