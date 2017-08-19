@@ -2,10 +2,12 @@
     "id": "com.jreenen.homeyharmonyhub",
     "sdk": 2,
     "name": {
-        "en": "Homey Harmony Hub"
+        "en": "Homey Harmony Hub",
+        "nl": "Homey Harmony Hub"
     },
     "description": {
-        "en": "Adds support for logitech's Harmony Hub"
+        "en": "Adds support for logitech's Harmony Hub",
+        "nl": "Voegt functies toe van de logitech's Harmony Hub"
     },
     "category": "appliances",
     "version": "0.0.1",
@@ -42,21 +44,52 @@
             "mobile": {
                 "components": [
                     {
-                        "id": "icon",
+                        "id": "button",
                         "capabilities": [
                             "onoff"
-                        ]
-                    },
-                    {
-                        "id": "toggle",
-                        "capabilities": [
-                            "onoff"
-                        ]
+                        ],
+                        "options": {
+                            "showTitle": []
+                        }
                     }
                 ]
             }
         }
     ],
+    "flow": {
+        "actions": [
+            {
+                "id": "send_command",
+                "title": {
+                    "en": "Send command",
+                    "nl": "Stuur een opdracht"
+                },
+                "args": [
+                    {
+                        "name": "hub_device",
+                        "type": "device",
+                        "filter": "driver_id=harmony_device_driver"
+                    },
+                    {
+                        "name": "control_group",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Control group",
+                            "nl": "Control group"
+                        }
+                    },
+                    {
+                        "name": "control_command",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Command",
+                            "nl": "Opdracht"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
     "author": {
         "name": "Jeroen van Reenen",
         "email": "jreenen@hotmail.com"
