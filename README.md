@@ -28,9 +28,11 @@ I am aware there is already a [great project](https://github.com/netactivenl/com
 
 # What does this app track?
 
-This app uses application insights to track the following topics:
+This app uses Application Insights to track the following topics:
 - Application errors, which help to solve issues
 - Unknown device types, so I can add more icons in future releases, making it easier to find the device you are looking for in the Homey flow editor.
+
+The information gathered is for debugging purposes only at no time will it be used for tracking personal information. 
 
 # Contributing to this project
 If you want to be a contributor for this project, you are very welcome! 
