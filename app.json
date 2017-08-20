@@ -52,7 +52,10 @@
             "mobile": {
                 "components": [
                     {
-                        "id": "icon"
+                        "id": "icon",
+                        "capabilities": [
+                            "onoff"
+                        ]
                     },
                     {
                         "id": "button",
