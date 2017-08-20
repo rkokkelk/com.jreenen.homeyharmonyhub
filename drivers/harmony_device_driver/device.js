@@ -19,11 +19,14 @@ class HarmonyDevice extends Homey.Device {
 
     onCapabilityOnoff(value, opts, callback) {
         var powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
-        var powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
+        if (powerGroup !== undefined) {
+            var powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
 
-        Homey.app.sendCommand(this._deviceData.hubId, powerToggleFunction);
-        let currenOnOffState = this.getCapabilityValue('onoff');
-        this.setCapabilityValue('onoff', !currenOnOffState);
+
+            Homey.app.sendCommand(this._deviceData.hubId, powerToggleFunction);
+            let currenOnOffState = this.getCapabilityValue('onoff');
+            this.setCapabilityValue('onoff', !currenOnOffState);
+        }
     }
 }
 
