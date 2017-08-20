@@ -266,19 +266,21 @@ class App extends Homey.App {
 			.registerAutocompleteListener((query, args) => {
 				let result = [];
 				let hubArgValue = args.hub;
-				let hubActivities = this._activities
-					.filter(a => a.hubId == hubArgValue.hubId)[0]
-					.activities
 
-				hubActivities.forEach((activity) => {
-					let autocompleteItem =
-						{
-							name: activity.label,
-							activity: activity,
-						};
-					result.push(autocompleteItem);
-				});
+				if (hubArgValue !== '') {
+					let hubActivities = this._activities
+						.filter(a => a.hubId == hubArgValue.hubId)[0]
+						.activities
 
+					hubActivities.forEach((activity) => {
+						let autocompleteItem =
+							{
+								name: activity.label,
+								activity: activity,
+							};
+						result.push(autocompleteItem);
+					});
+				}
 				return Promise.resolve(result);
 			});
 	}
