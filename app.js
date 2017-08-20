@@ -65,6 +65,11 @@ class App extends Homey.App {
 				this.setOnOffStateOnDevices(hub);
 			}
 		})
+
+		process.on('uncaughtException', (err) => {
+			console.log('whoops! there was an error');
+			appInsightsClient.trackException(new Error(JSON.stringify(err)));
+		});
 	}
 
 	setOnOffStateOnDevices(hub) {
@@ -196,7 +201,19 @@ class App extends Homey.App {
 		});
 	}
 
-	startActivity(hubId, activityId) {
+	startActivity(hubId, activity) {
+		console.log(`Start activity: ${activity.id} for hubId: ${hubId}`);
+		var hub = this.getHub(hubId);
+		var ip = hub.ip;
+
+		harmony(ip).then((harmonyClient) => {
+			return harmonyClient.startActivity(activity.id)
+				.finally(() => {
+					harmonyClient.end();
+					this.getHubCurrentActivity(hub);
+					console.log('Client disconnected');
+				})
+		});
 	}
 
 	registerActions() {
@@ -205,12 +222,68 @@ class App extends Homey.App {
 
 		this.controlGroupAutoComplete(sendCommandAction);
 		this.commandAutocomplete(sendCommandAction);
-		this.registerCommandRunListener(sendCommandAction);
+		this.registerSendCommandRunListener(sendCommandAction);
 
-
+		let startActivityAction = new Homey.FlowCardAction('start_activity')
+			.register();
+		this.hubAutoComplete(startActivityAction);
+		this.activityAutoComplete(startActivityAction);
+		this.registerStartActivityCommandRunListener(startActivityAction);
 	}
 
-	registerCommandRunListener(sendCommandAction) {
+	registerStartActivityCommandRunListener(startActivityAction) {
+		startActivityAction
+			.registerRunListener((args, state) => {
+				console.log('Start activity!!');
+				let hubArgValue = args.hub;
+				let hubId = hubArgValue.hubId;
+				let startActivityArgValue = args.activity;
+				this.startActivity(hubId, startActivityArgValue.activity);
+			})
+	}
+
+	hubAutoComplete(startActivityAction) {
+		startActivityAction
+			.getArgument('hub')
+			.registerAutocompleteListener((query, args) => {
+				let result = [];
+				this._hubs.forEach((hub) => {
+					let autocompleteItem =
+						{
+							name: hub.friendlyName,
+							hubId: hub.uuid
+						};
+					result.push(autocompleteItem);
+				});
+
+				return Promise.resolve(result);
+			})
+	}
+
+	activityAutoComplete(startActivityAction) {
+		startActivityAction
+			.getArgument('activity')
+			.registerAutocompleteListener((query, args) => {
+				let result = [];
+				let hubArgValue = args.hub;
+				let hubActivities = this._activities
+					.filter(a => a.hubId == hubArgValue.hubId)[0]
+					.activities
+
+				hubActivities.forEach((activity) => {
+					let autocompleteItem =
+						{
+							name: activity.label,
+							activity: activity,
+						};
+					result.push(autocompleteItem);
+				});
+
+				return Promise.resolve(result);
+			});
+	}
+
+	registerSendCommandRunListener(sendCommandAction) {
 		sendCommandAction
 			.registerRunListener((args, state) => {
 				console.log('Send Command!!');
@@ -265,12 +338,6 @@ class App extends Homey.App {
 
 				return Promise.resolve(result);
 			})
-
-		process.on('uncaughtException', (err) => {
-			console.log('whoops! there was an error');
-			appInsightsClient.trackException(new Error(JSON.stringify(err)));
-
-		});
 	}
 }
 

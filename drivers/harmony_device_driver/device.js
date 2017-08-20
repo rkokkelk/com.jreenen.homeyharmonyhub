@@ -6,7 +6,7 @@ class HarmonyDevice extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
         this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
-        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.device.label} initializing..`)
+        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.device.label} initializing..`);
     }
 
     onAdded() {
