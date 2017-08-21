@@ -17,15 +17,32 @@ class HarmonyDevice extends Homey.Device {
         this.log('device deleted');
     }
 
+    triggerOnOffAction(){
+        let currenOnOffState = this.getCapabilityValue('onoff');
+        let turnedOnDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_on').register();
+        let turnedOffDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_off').register();
+        let device = this;
+        let tokens = {};
+        let state = {};
+
+        if(currenOnOffState === false){
+            turnedOnDeviceTrigger.trigger(device, tokens, state);
+        }
+        else{
+            turnedOffDeviceTrigger.trigger(device, tokens, state);
+        }
+
+    }
+
     onCapabilityOnoff(value, opts, callback) {
         var powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
         if (powerGroup !== undefined) {
             var powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
 
-
             Homey.app.sendCommand(this._deviceData.hubId, powerToggleFunction);
             let currenOnOffState = this.getCapabilityValue('onoff');
             this.setCapabilityValue('onoff', !currenOnOffState);
+            this.triggerOnOffAction();
         }
     }
 }

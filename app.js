@@ -84,7 +84,9 @@ class App extends Homey.App {
 		console.log(`Current activity: ${currentActivity.label}`);
 		devices.forEach((device) => {
 			var activityState = currentActivity.fixit[device._deviceData.id];
+
 			device.setCapabilityValue('onoff', activityState.Power === 'On');
+			device.triggerOnOffAction();
 		})
 	}
 
@@ -211,15 +213,39 @@ class App extends Homey.App {
 			'hub': hub.friendlyName,
 			'activity': activity.label
 		}
+
 		let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
-		.register();
+			.register();
 
 		activityStartedTrigger.trigger(tokens)
-		//.catch(this.error)
-		//.then(this.log);
 
 		harmony(ip).then((harmonyClient) => {
 			return harmonyClient.startActivity(activity.id)
+				.finally(() => {
+					harmonyClient.end();
+					this.getHubCurrentActivity(hub);
+
+					console.log('Client disconnected');
+				})
+		});
+	}
+
+	stopActivity(hubId, activity) {
+		console.log(`Stop activity: ${activity.id} for hubId: ${hubId}`);
+		var hub = this.getHub(hubId);
+		var ip = hub.ip;
+
+		let tokens = {
+			'hub': hub.friendlyName,
+			'activity': activity.label
+		}
+		let activityStoppedTrigger = new Homey.FlowCardTrigger('activity_stopped')
+			.register();
+
+		activityStoppedTrigger.trigger(tokens)
+
+		harmony(ip).then((harmonyClient) => {
+			return harmonyClient.turnOff()
 				.finally(() => {
 					harmonyClient.end();
 					this.getHubCurrentActivity(hub);
@@ -242,6 +268,23 @@ class App extends Homey.App {
 		this.hubAutoComplete(startActivityAction);
 		this.activityAutoComplete(startActivityAction);
 		this.registerStartActivityCommandRunListener(startActivityAction);
+
+		let stopActivityAction = new Homey.FlowCardAction('stop_activity')
+			.register();
+		this.hubAutoComplete(stopActivityAction);
+		this.activityAutoComplete(stopActivityAction);
+		this.registerStopActivityCommandRunListener(stopActivityAction);
+	}
+
+	registerStopActivityCommandRunListener(stopActivityAction) {
+		stopActivityAction
+			.registerRunListener((args, state) => {
+				console.log('Stop activity!!');
+				let hubArgValue = args.hub;
+				let hubId = hubArgValue.hubId;
+				let stopActivityArgValue = args.activity;
+				this.stopActivity(hubId, stopActivityArgValue.activity);
+			})
 	}
 
 	registerStartActivityCommandRunListener(startActivityAction) {
@@ -279,7 +322,6 @@ class App extends Homey.App {
 			.registerAutocompleteListener((query, args) => {
 				let result = [];
 				let hubArgValue = args.hub;
-
 				if (hubArgValue !== '') {
 					let hubActivities = this._activities
 						.filter(a => a.hubId == hubArgValue.hubId)[0]

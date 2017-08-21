@@ -102,6 +102,65 @@
                         }
                     }
                 ]
+            },
+            {
+                "id": "activity_stopped",
+                "title": {
+                    "en": "Activity stopped",
+                    "nl": "Activiteit gestopt"
+                },
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
+                    },
+                    {
+                        "name": "activity",
+                        "title": {
+                            "en": "activity",
+                            "nl": "activiteit"
+                        },
+                        "example": {
+                            "en": "Watch television",
+                            "nl": "TV kijken"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "turned_on",
+                "title": {
+                    "en": "Device turned on",
+                    "nl": "Apparaat is aangezet"
+                },
+                "args": [
+                    {
+                        "name": "hub_device",
+                        "type": "device",
+                        "filter": "driver_id=harmony_device_driver"
+                    }
+                ]
+            },
+            {
+                "id": "turned_off",
+                "title": {
+                    "en": "Device turned off",
+                    "nl": "Apparaat is uitgezet"
+                },
+                "args": [
+                    {
+                        "name": "hub_device",
+                        "type": "device",
+                        "filter": "driver_id=harmony_device_driver"
+                    }
+                ]
             }
         ],
         "actions": [
@@ -110,6 +169,31 @@
                 "title": {
                     "en": "Start activity",
                     "nl": "Start een activiteit"
+                },
+                "args": [
+                    {
+                        "name": "hub",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Select your harmony hub",
+                            "nl": "Selecteer je harmony hub"
+                        }
+                    },
+                    {
+                        "name": "activity",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Activity",
+                            "nl": "Activiteit"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "stop_activity",
+                "title": {
+                    "en": "Stop activity",
+                    "nl": "Stop een activiteit"
                 },
                 "args": [
                     {
