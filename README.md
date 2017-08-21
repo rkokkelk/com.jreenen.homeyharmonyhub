@@ -20,7 +20,7 @@ Once the app is installed you can pair a device that is connected to the harmony
 
 ### -1- Click on the plus on the homey Zones & Devices screen to add devices
 
-![Adding a device](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Add_device.png)
+![](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Add_device.png)
 
 ### -2- Select homey harmony hub
 
