@@ -9,6 +9,7 @@ let eventEmitter = new events.EventEmitter();
 let appInsights = require("applicationinsights");
 let appInsightsClient;
 
+
 const iconsMap = {
 	'PVR': 'pvr_noun_893953_FFFFFF',
 	'StereoReceiver': 'stereo_receiver_noun_586620_FFFFFF',
@@ -206,11 +207,23 @@ class App extends Homey.App {
 		var hub = this.getHub(hubId);
 		var ip = hub.ip;
 
+		let tokens = {
+			'hub': hub.friendlyName,
+			'activity': activity.label
+		}
+		let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
+		.register();
+
+		activityStartedTrigger.trigger(tokens)
+		//.catch(this.error)
+		//.then(this.log);
+
 		harmony(ip).then((harmonyClient) => {
 			return harmonyClient.startActivity(activity.id)
 				.finally(() => {
 					harmonyClient.end();
 					this.getHubCurrentActivity(hub);
+
 					console.log('Client disconnected');
 				})
 		});

@@ -71,6 +71,39 @@
         }
     ],
     "flow": {
+        "triggers": [
+            {
+                "id": "activity_started",
+                "title": {
+                    "en": "Activity started",
+                    "nl": "Activiteit gestart"
+                },
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
+                    },
+                    {
+                        "name": "activity",
+                        "title": {
+                            "en": "activity",
+                            "nl": "activiteit"
+                        },
+                        "example": {
+                            "en": "Watch television",
+                            "nl": "TV kijken"
+                        }
+                    }
+                ]
+            }
+        ],
         "actions": [
             {
                 "id": "start_activity",
