@@ -147,6 +147,14 @@ If you want to be a contributor for this project, you are very welcome!
 # Contact information
 If you want to contact me the best way is joining the [athomcommunity](http://athomcommunity.slack.com) on slack and send a direct message to @jreenen.  
 
+# Versioning
+This app uses semantic versioning
+- MAJOR version when you make incompatible API changes,
+- MINOR version when you add functionality in a backwards-compatible manner, and
+- PATCH version when you make backwards-compatible bug fixes.
+
+For a detailed desceiption you can find the [documentation for semantic versioning here](http://semver.org/)
+
 
 # Used external library's
 
