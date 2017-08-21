@@ -1,21 +1,38 @@
-# Homey Harmony Hub Support
+# Homey Harmony Hub App
 
-This project is in very early stage of development. At the moment this project supports:
+This project is in early stage of development. At the moment this project supports:
 - Pairing of devices connected to the harmony hub
 - A mobile card supporting the power toggle functionality of the device
 - An action card for sending a specific command to the Harmony device using homey flows.
+- Action cards for starting/stopping a hub activity
+- Trigger cards for device is turned on/off
+- Trigger cards for activity is started/stopped
+- Syncing the device onoff state based on the current hub activity
 
 # Setup
 
 Once the app is installed you can pair a device that is connected to the harmony hub:
 
-### 1. Click on the plus to add devices
+### -1- Click on the plus on the homey devices screen to add devices
 
-![Device pairing](assets/images/Add_device.png)
+![Adding a device](assets/images/documentation/Add_device.png)
 
-After you have paired your device it will be available in the homey flow editor allowing you to send IR commands to this device:
+### -2- Select homey harmony hub
 
-![Using your device in homey flow manager](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/Device%20flow.gif)
+![Select homey harmony hub](assets/images/documentation/Select_homey_harmony_hub.png)
+
+### -3- Select the hub you want to start pairing on
+
+![Select harmony hub for pairing](assets/images/documentation/Select_hub.png)
+
+### -4- Select all devices you want to pair
+
+![Select devices for pairing](assets/images/documentation/Select_devices.png)
+
+### -5- Your devices are now paired
+
+![Devices paired](assets/images/documentation/Devices_paired.png)
+
 
 # Future releases
 
