@@ -146,6 +146,19 @@
                         "type": "device",
                         "filter": "driver_id=harmony_device_driver"
                     }
+                ],
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
+                    }
                 ]
             },
             {
@@ -159,6 +172,19 @@
                         "name": "hub_device",
                         "type": "device",
                         "filter": "driver_id=harmony_device_driver"
+                    }
+                ],
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
                     }
                 ]
             }
