@@ -9,7 +9,9 @@ This project is in very early stage of development. At the moment this project s
 
 Once the app is installed you can pair a device that is connected to the harmony hub:
 
-![Device pairing](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/Device%20Pairing.gif)
+### 1. Click on the plus to add devices
+
+![Device pairing](assets/images/Add_device.png)
 
 After you have paired your device it will be available in the homey flow editor allowing you to send IR commands to this device:
 
