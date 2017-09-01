@@ -51,6 +51,10 @@ class App extends Homey.App {
 			this.addHub(hub);
 		});
 
+		this._discover.on('error', (err) => {
+			console.log(err);
+		})
+
 		eventEmitter.on('hubAdded', (hub) => {
 			console.log('Hub added...');
 			this.getHubActivities(hub);
