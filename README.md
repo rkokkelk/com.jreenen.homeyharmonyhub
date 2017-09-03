@@ -20,23 +20,23 @@ Once the app is installed you can pair a device that is connected to the harmony
 
 ### -1- Click on the plus on the homey Zones & Devices screen to add devices
 
-![Adding a device](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Add_device.png)
+![Adding a device](assets/images/documentation/Add_device.png?raw=true)
 
 ### -2- Select homey harmony hub
 
-![Select homey harmony hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Select_homey_harmony_hub.png)
+![Select homey harmony hub](assets/images/documentation/Select_homey_harmony_hub.png?raw=true)
 
 ### -3- Select the hub you want to start pairing on
 
-![Select harmony hub for pairing](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Select_hub.png)
+![Select harmony hub for pairing](assets/images/documentation/Select_hub.png?raw=true)
 
 ### -4- Select all devices you want to pair
 
-![Select devices for pairing](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Select_devices.png)
+![Select devices for pairing](assets/images/documentation/Select_devices.png?raw=true)
 
 ### -5- Your devices are now paired
 
-![Devices paired](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Devices_paired.png)
+![Devices paired](assets/images/documentation/Devices_paired.png?raw=true)
 
 # Setting up triggers
 
@@ -50,7 +50,7 @@ The following triggers are supported by this app:
 ## Activity started
 
 To use this trigger drag the Homey Harmony Hub from the apps section to the when column
-![Activity started setup](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Activity_started_trigger.png)
+![Activity started setup](assets/images/documentation/Activity_started_trigger.png?raw=true)
 
 This trigger exposes 2 tokens hub and activity. The hub token reports the hub name an activity was triggered on. The activity token reports the activity name an activity was triggered on.
 
@@ -58,7 +58,7 @@ This trigger exposes 2 tokens hub and activity. The hub token reports the hub na
 ## Activity stopped
 
 To use this trigger drag the Homey Harmony Hub from the apps section to the when column
-![Activity stopped setup](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Activity_stopped_trigger.png)
+![Activity stopped setup](assets/images/documentation/Activity_stopped_trigger.png?raw=true)
 
 This trigger exposes 2 tokens hub and activity. The hub token reports the hub name an activity was triggered on. The activity token reports the activity name an activity was triggered on.
 
@@ -66,7 +66,7 @@ This trigger exposes 2 tokens hub and activity. The hub token reports the hub na
 ## Device turned on
 
 To use this triggegr drag the paired device from the devices section to the when column.
-![Device turned on](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Device_turned_on_trigger.png)
+![Device turned on](assets/images/documentation/Device_turned_on_trigger.png?raw=true)
 
 This trigger exposes 1 token hub. The hub token reports the hub name an activity was triggered on. 
 
@@ -74,7 +74,7 @@ This trigger exposes 1 token hub. The hub token reports the hub name an activity
 ## Device turned off
 
 To use this triggegr drag the paired device from the devices section to the when column.
-![Device turned off](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Device_turned_off_trigger.png)
+![Device turned off](assets/images/documentation/Device_turned_off_trigger.png?raw=true)
 
 This trigger exposes 1 token hub. The hub token reports the hub name an activity was triggered on. 
 
@@ -88,37 +88,37 @@ The following actions are supported by this app:
 ## Start activity
 
 To use this action drag the Homey Harmony Hub from the apps section to the then column
-![Start activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Start_activity_action.png)
+![Start activity](assets/images/documentation/Start_activity_action.png?raw=true)
 
 Now specify the Harmony Hub on which you want to start your activity 
-![Start activity specify hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Start_activity_action_select_hub.png)
+![Start activity specify hub](assets/images/documentation/Start_activity_action_select_hub.png?raw=true)
 
 After you specified the hub you can select the activity you want to start
-![Start activity specify activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Start_activity_action_select_activity.png)
+![Start activity specify activity](assets/images/documentation/Start_activity_action_select_activity.png?raw=true)
 
 
 ## Stop activity
 
 To use this action drag the Homey Harmony Hub from the apps section to the then column
-![Stop activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action.png)
+![Stop activity](assets/images/documentation/Stop_activity_action.png?raw=true)
 
 Now specify the Harmony Hub on which you want to start your activity 
-![Stop activity specify hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action_select_hub.png)
+![Stop activity specify hub](assets/images/documentation/Stop_activity_action_select_hub.png?raw=true)
 
 After you specified the hub you can select the activity you want to start
-![Stop activity specify activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action_select_activity.png)
+![Stop activity specify activity](assets/images/documentation/Stop_activity_action_select_activity.png?raw=true)
 
 
 ## Send command to device
 
 To use this triggegr drag the paired device from the devices section to the then column.
-![Send command to device](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Send_command_action.png)
+![Send command to device](assets/images/documentation/Send_command_action.png?raw=true)
 
 Now specify the control group your command is in
-![Send command to device specify control group](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Send_command_action_select_control_group.png)
+![Send command to device specify control group](assets/images/documentation/Send_command_action_select_control_group.png?raw=true)
 
 After you specified the control group you can select the command you want to send to the selected device
-![Send command to device specify command](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Send_command_action_select_command_option.png)
+![Send command to device specify command](assets/images/documentation/Send_command_action_select_command_option.png?raw=true)
 
 
 # Future releases

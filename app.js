@@ -3,11 +3,13 @@
 const Homey = require('homey');
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const harmony = require('harmonyhubjs-client');
+const RateLimiter = require('limiter').RateLimiter;
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
 let appInsights = require("applicationinsights");
 let appInsightsClient;
+let limiter = new RateLimiter(1, 1000);
 
 
 const iconsMap = {
@@ -69,7 +71,16 @@ class App extends Homey.App {
 			if (hub.currentActivity !== -1) {
 				this.setOnOffStateOnDevices(hub);
 			}
-		})
+		});
+
+		eventEmitter.on('sendCommandAction', (hubId, command) => {
+			console.log('Send command action triggerd');
+			
+
+			limiter.removeTokens(1, () => {
+				this.sendCommand(hubId, command);
+			});
+		});
 
 		process.on('uncaughtException', (err) => {
 			console.log('whoops! there was an error');
@@ -352,7 +363,8 @@ class App extends Homey.App {
 				let hub_device_data = hub_device.getData();
 				let hubId = hub_device_data.hubId;
 				let controlCommandArgValue = args.control_command;
-				this.sendCommand(hubId, controlCommandArgValue.command);
+				eventEmitter.emit('sendCommandAction', hubId, controlCommandArgValue.command);
+				//this.sendCommand(hubId, controlCommandArgValue.command);
 			})
 	}
 
