@@ -9,7 +9,7 @@
         "en": "Adds support for logitech's Harmony Hub",
         "nl": "Voegt functies toe van de logitech's Harmony Hub"
     },
-    "category": "appliances",
+    "category": "appliances, video",
     "version": "1.1.1",
     "compatibility": ">=1.5.0",
     "images": {
