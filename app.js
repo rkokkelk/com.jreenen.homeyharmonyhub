@@ -2,15 +2,13 @@
 
 const Homey = require('homey');
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
-const harmony = require('harmonyhubjs-client');
-const RateLimiter = require('limiter').RateLimiter;
+const HubManager = require('./lib/hubmanager.js');
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
 let appInsights = require("applicationinsights");
 let appInsightsClient;
-let limiter = new RateLimiter(1, 1000);
-
+let hubManager = new HubManager();
 
 const iconsMap = {
 	'PVR': 'pvr_noun_893953_FFFFFF',
@@ -50,59 +48,56 @@ class App extends Homey.App {
 
 	wireEvents() {
 		this._discover.on('online', (hub) => {
-			this.addHub(hub);
+			var found = this._hubs.some((existingHub) => {
+				return existingHub.uuid === hub.uuid;
+			});
+
+			if (found === false && hub.ip !== undefined) {
+				hub.Hub = hubManager.connectToHub(hub.ip, '5222');
+				this.addHub(hub);
+			}
 		});
 
 		this._discover.on('error', (err) => {
 			console.log(err);
 		})
 
-		eventEmitter.on('hubAdded', (hub) => {
-			console.log('Hub added...');
-			this.getHubActivities(hub);
-		});
-
-		eventEmitter.on('activitiesAdded', (hub) => {
-			console.log('Hub activities added');
-			this.getHubCurrentActivity(hub);
-		});
-
-		eventEmitter.on('currentActivityAdded', (hub) => {
-			if (hub.currentActivity !== -1) {
-				this.setOnOffStateOnDevices(hub);
+		hubManager.on('activityChanged', (activityName, hubId) => {
+			console.log(activityName);
+			console.log(hubId);
+			let foundHub = this.getHub(hubId)
+			let tokens = {
+				'hub': foundHub.friendlyName,
+				'activity': activityName
 			}
+
+			let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
+				.register();
+
+			activityStartedTrigger.trigger(tokens)
 		});
 
-		eventEmitter.on('sendCommandAction', (hubId, command) => {
-			console.log('Send command action triggerd');
-			
+		hubManager.on('activityStopped', (activityName, hubId) => {
+			console.log(activityName);
+			console.log(hubId);
+			let foundHub = this.getHub(hubId)
+			let tokens = {
+				'hub': foundHub.friendlyName,
+				'activity': activityName
+			}
 
-			limiter.removeTokens(1, () => {
-				this.sendCommand(hubId, command);
-			});
+			let activityStoppedTrigger = new Homey.FlowCardTrigger('activity_stopped')
+				.register();
+
+			activityStoppedTrigger.trigger(tokens)
 		});
+
+
 
 		process.on('uncaughtException', (err) => {
 			console.log('whoops! there was an error');
 			appInsightsClient.trackException(new Error(JSON.stringify(err)));
 		});
-	}
-
-	setOnOffStateOnDevices(hub) {
-		let driver = Homey.ManagerDrivers.getDriver('harmony_device_driver');
-		let devices = driver.getDevices();
-		let currentActivity = this._activities
-			.filter(a => a.hubId == hub.uuid)[0]
-			.activities
-			.filter(a => a.id == hub.currentActivity)[0];
-
-		console.log(`Current activity: ${currentActivity.label}`);
-		devices.forEach((device) => {
-			var activityState = currentActivity.fixit[device._deviceData.id];
-
-			device.setCapabilityValue('onoff', activityState.Power === 'On');
-			device.triggerOnOffAction();
-		})
 	}
 
 	findHubs() {
@@ -112,11 +107,8 @@ class App extends Homey.App {
 
 	addHub(hub) {
 		var hasFriendlyName = hub.friendlyName != undefined;
-		var found = this._hubs.some(function (existingHub) {
-			return existingHub.uuid === hub.uuid;
-		});
 
-		if (hasFriendlyName && !found) {
+		if (hasFriendlyName) {
 			hub.icon = `/app/${Homey.manifest.id}/assets/icon.svg`;
 			this._hubs.push(hub);
 			console.log(`discovered ${hub.ip} ${hub.friendlyName}`);
@@ -138,135 +130,32 @@ class App extends Homey.App {
 	getHubDevices(ip, hubId) {
 		var devices = [];
 
-		var result = harmony(ip).then(function (harmonyClient) {
-			return harmonyClient.getAvailableCommands()
-				.then(function (commands) {
-					commands.device.forEach(function (device) {
-						let iconName = iconsMap[device.type];
-						let iconPath = '';
-						if (iconName !== undefined) {
-							iconPath = `/images/${iconName}.svg`;
+		return new Promise((resolve, reject) => {
+			hubManager.connectToHub(ip, '5222').then((hub) => {
+				hub.devices.forEach((device) => {
+					console.log(device.type);
+					let iconName = iconsMap[device.type];
+					let iconPath = '';
+					if (iconName !== undefined) {
+						iconPath = `/images/${iconName}.svg`;
+					}
+					else {
+						iconPath = `/icon.svg`;
+						appInsightsClient.trackEvent('unknown device type', { deviceType: device.type })
+					}
+					var foundDevice = {
+						name: device.label,
+						icon: iconPath,
+						data: {
+							id: device.id,
+							hubId: hubId,
+							controlGroup: device.controlGroup
 						}
-						else {
-							iconPath = `/icon.svg`;
-							appInsightsClient.trackEvent('unknown device type', { deviceType: device.type })
-						}
-						var foundDevice = {
-							name: device.label,
-							icon: iconPath,
-							data: {
-								id: device.id,
-								hubId: hubId,
-								controlGroup: device.controlGroup,
-								device: device,
-							}
-						};
-						devices.push(foundDevice);
-
-					}, this)
-					return devices;
-				})
-				.finally(function () {
-					harmonyClient.end()
-				})
-		}).catch(function (e) {
-			console.log(e)
-		})
-		return result;
-	}
-
-	sendCommand(hubId, command) {
-		var hub = this.getHub(hubId);
-		var ip = hub.ip;
-		var encodedAction = command.action.replace(/\:/g, '::');
-
-		harmony(ip).then((harmonyClient) => {
-			return harmonyClient.send('holdAction', 'action=' + encodedAction + ':status=press')
-				.finally(() => {
-					harmonyClient.end()
-					console.log('Client disconnected');
-				})
-		});
-	}
-
-	getHubActivities(hub) {
-		harmony(hub.ip).then((harmonyClient) => {
-			harmonyClient.getActivities().then((activities) => {
-				let hubActivities = {
-					hubId: hub.uuid,
-					activities: activities
-				};
-				this._activities.push(hubActivities);
-				eventEmitter.emit('activitiesAdded', hub);
-
-			}).finally(() => {
-				harmonyClient.end()
-				console.log('Client disconnected');
+					};
+					devices.push(foundDevice);
+				});
+				resolve(devices);
 			});
-		});
-	}
-
-	getHubCurrentActivity(hub) {
-		harmony(hub.ip).then((harmonyClient) => {
-			harmonyClient.getCurrentActivity().then((activity) => {
-				hub.currentActivity = activity;
-				console.log('Added current activity to hub');
-				eventEmitter.emit('currentActivityAdded', hub);
-			})
-		}).finally(() => {
-			harmonyClient.end()
-			console.log('Client disconnected');
-		});
-	}
-
-	startActivity(hubId, activity) {
-		console.log(`Start activity: ${activity.id} for hubId: ${hubId}`);
-		var hub = this.getHub(hubId);
-		var ip = hub.ip;
-
-		let tokens = {
-			'hub': hub.friendlyName,
-			'activity': activity.label
-		}
-
-		let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
-			.register();
-
-		activityStartedTrigger.trigger(tokens)
-
-		harmony(ip).then((harmonyClient) => {
-			return harmonyClient.startActivity(activity.id)
-				.finally(() => {
-					harmonyClient.end();
-					this.getHubCurrentActivity(hub);
-
-					console.log('Client disconnected');
-				})
-		});
-	}
-
-	stopActivity(hubId, activity) {
-		console.log(`Stop activity: ${activity.id} for hubId: ${hubId}`);
-		var hub = this.getHub(hubId);
-		var ip = hub.ip;
-
-		let tokens = {
-			'hub': hub.friendlyName,
-			'activity': activity.label
-		}
-		let activityStoppedTrigger = new Homey.FlowCardTrigger('activity_stopped')
-			.register();
-
-		activityStoppedTrigger.trigger(tokens)
-
-		harmony(ip).then((harmonyClient) => {
-			return harmonyClient.turnOff()
-				.finally(() => {
-					harmonyClient.end();
-					this.getHubCurrentActivity(hub);
-
-					console.log('Client disconnected');
-				})
 		});
 	}
 
@@ -287,7 +176,6 @@ class App extends Homey.App {
 		let stopActivityAction = new Homey.FlowCardAction('stop_activity')
 			.register();
 		this.hubAutoComplete(stopActivityAction);
-		this.activityAutoComplete(stopActivityAction);
 		this.registerStopActivityCommandRunListener(stopActivityAction);
 	}
 
@@ -297,8 +185,11 @@ class App extends Homey.App {
 				console.log('Stop activity!!');
 				let hubArgValue = args.hub;
 				let hubId = hubArgValue.hubId;
-				let stopActivityArgValue = args.activity;
-				this.stopActivity(hubId, stopActivityArgValue.activity);
+				let foundHub = this.getHub(hubId);
+
+				hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+					hub.stopActivity();
+				});
 			})
 	}
 
@@ -308,8 +199,12 @@ class App extends Homey.App {
 				console.log('Start activity!!');
 				let hubArgValue = args.hub;
 				let hubId = hubArgValue.hubId;
-				let startActivityArgValue = args.activity;
-				this.startActivity(hubId, startActivityArgValue.activity);
+				let activityId = args.activity.activityId;
+				let foundHub = this.getHub(hubId);
+
+				hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+					hub.startActivity(activityId);
+				});
 			})
 	}
 
@@ -335,25 +230,28 @@ class App extends Homey.App {
 		startActivityAction
 			.getArgument('activity')
 			.registerAutocompleteListener((query, args) => {
-				let result = [];
-				let hubArgValue = args.hub;
-				if (hubArgValue !== '') {
-					let hubActivities = this._activities
-						.filter(a => a.hubId == hubArgValue.hubId)[0]
-						.activities
+				return new Promise((resolve, reject) => {
+					let result = [];
+					let hubArgValue = args.hub;
+					let foundHub = this.getHub(hubArgValue.hubId);
 
-					hubActivities.forEach((activity) => {
-						let autocompleteItem =
-							{
-								name: activity.label,
-								activity: activity,
-							};
-						result.push(autocompleteItem);
-					});
-				}
-				return Promise.resolve(result);
+					if (hubArgValue !== '') {
+						hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+							hub.activities.forEach((activity) => {
+								let autocompleteItem =
+									{
+										name: activity.label,
+										activityId: activity.id
+									};
+								result.push(autocompleteItem);
+							});
+							resolve(result);
+						});
+					}
+				});
 			});
 	}
+
 
 	registerSendCommandRunListener(sendCommandAction) {
 		sendCommandAction
@@ -362,9 +260,14 @@ class App extends Homey.App {
 				let hub_device = args.hub_device;
 				let hub_device_data = hub_device.getData();
 				let hubId = hub_device_data.hubId;
+				let foundHub = this.getHub(hubId);
 				let controlCommandArgValue = args.control_command;
-				eventEmitter.emit('sendCommandAction', hubId, controlCommandArgValue.command);
-				//this.sendCommand(hubId, controlCommandArgValue.command);
+
+				hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+					hub.commandAction(controlCommandArgValue.command).catch((err) => {
+						console.log(err);
+					});
+				});
 			})
 	}
 

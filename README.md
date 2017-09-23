@@ -158,8 +158,6 @@ For a detailed desceiption you can find the [documentation for semantic versioni
 
 # Used external library's
 
-[swissmanu's harmonyhubjs-client](https://github.com/swissmanu/harmonyhubjs-client)
-
 [swissmanu's harmonyhubjs-discover](https://github.com/swissmanu/harmonyhubjs-discover)
 
 
