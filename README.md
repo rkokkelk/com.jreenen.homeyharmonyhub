@@ -155,6 +155,30 @@ This app uses semantic versioning
 
 For a detailed desceiption you can find the [documentation for semantic versioning here](http://semver.org/)
 
+# Version history
+
+### v1.2.0
+
+For improved stability and future features, a new connection library has been written for the Homey Harmony App. 
+
+If an activity has been started/stopped by an external source (e.g. the Logitech Harmony Remote), the app picks up on this event and updates the device states accordingly and triggers the applicable flow cards.
+
+### v1.1.1
+
+Hotfix release, some users experiencing an error "Error: MAX_CLIENTS=6"
+
+### v1.1.0 
+Pairing of devices connected to the harmony hub
+A mobile card supporting the power toggle functionality of the device
+An action card for sending a specific command to the Harmony device using homey flows.
+Action cards for starting/stopping a hub activity
+Trigger cards for device is turned on/off
+Trigger cards for activity is started/stopped
+Syncing the device on-off state based on the current hub activity
+
+### v1.0.0 
+
+Initial release (never hit the Athom store)
 
 # Used external library's
 
