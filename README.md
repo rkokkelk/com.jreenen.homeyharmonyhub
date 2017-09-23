@@ -163,6 +163,8 @@ For improved stability and future features, a new connection library has been wr
 
 If an activity has been started/stopped by an external source (e.g. the Logitech Harmony Remote), the app picks up on this event and updates the device states accordingly and triggers the applicable flow cards.
 
+You can now use a flow condition card for your device to check if it is/isn't turned on.
+
 ### v1.1.1
 
 Hotfix release, some users experiencing an error "Error: MAX_CLIENTS=6"
