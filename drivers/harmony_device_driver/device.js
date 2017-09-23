@@ -21,6 +21,15 @@ class HarmonyDevice extends Homey.Device {
             });
         });
 
+        let isOnCondition = new Homey.FlowCardCondition('is_on');
+        isOnCondition
+            .register()
+            .registerRunListener((args, state) => {
+                let isPowerdOn = args.hub_device.device.power === 'On';
+                console.log(`Condition ${isPowerdOn}`);
+                return Promise.resolve(isPowerdOn);
+            });
+
         console.log(`Device (${this._deviceData.id}) - ${this._deviceData.name} initializing..`);
     }
 

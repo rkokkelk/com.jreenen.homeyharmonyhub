@@ -9,7 +9,10 @@
         "en": "Adds support for logitech's Harmony Hub",
         "nl": "Voegt functies toe van de logitech's Harmony Hub"
     },
-    "category": ["appliances", "video"],
+    "category": [
+        "appliances",
+        "video"
+    ],
     "version": "1.2.0",
     "compatibility": ">=1.5.0",
     "images": {
@@ -185,6 +188,22 @@
                             "en": "Hub living room",
                             "nl": "Hub woonkamer"
                         }
+                    }
+                ]
+            }
+        ],
+        "conditions": [
+            {
+                "id": "is_on",
+                "title": {
+                    "en": "Device !{{is|isn't}} on",
+                    "nl": "Appraat !{{is|is niet}} aan"
+                },
+                "args": [
+                    {
+                        "name": "hub_device",
+                        "type": "device",
+                        "filter": "driver_id=harmony_device_driver"
                     }
                 ]
             }
