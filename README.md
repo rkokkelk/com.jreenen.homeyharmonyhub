@@ -1,13 +1,16 @@
 # Homey Harmony Hub App
 
-This project is in early stage of development. At the moment this project supports:
+At the moment this project supports:
 - Pairing of devices connected to the harmony hub
 - A mobile card supporting the power toggle functionality of the device
 - An action card for sending a specific command to the Harmony device using homey flows.
 - Action cards for starting/stopping a hub activity
+- Condition card to check if device is/isn't turned on
 - Trigger cards for device is turned on/off
 - Trigger cards for activity is started/stopped
 - Syncing the device onoff state based on the current hub activity
+- Picking up activity changes from external sources (e.g. the Logitech Harmony Remote)
+
 
 # Donations
 If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation. The donations will be spent on buying a second Harmony Hub to support me testing a multi-hub situation.
@@ -102,12 +105,8 @@ After you specified the hub you can select the activity you want to start
 To use this action drag the Homey Harmony Hub from the apps section to the then column
 ![Stop activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action.png?raw=true)
 
-Now specify the Harmony Hub on which you want to start your activity 
+Now specify the Harmony Hub on which you want to stop your activity 
 ![Stop activity specify hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action_select_hub.png?raw=true)
-
-After you specified the hub you can select the activity you want to start
-![Stop activity specify activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub/blob/master/assets/images/documentation/Stop_activity_action_select_activity.png?raw=true)
-
 
 ## Send command to device
 
