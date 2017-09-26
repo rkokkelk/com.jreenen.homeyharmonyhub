@@ -158,6 +158,12 @@ For a detailed desceiption you can find the [documentation for semantic versioni
 
 ### v1.2.0
 
+Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that doesn't support the power toggle command
+
+Fixed an issue where on powering off an activity, a activity started trigger got raised on the previous activity instead of an activity stopped trigger.
+
+### v1.2.0
+
 For improved stability and future features, a new connection library has been written for the Homey Harmony App. 
 
 If an activity has been started/stopped by an external source (e.g. the Logitech Harmony Remote), the app picks up on this event and updates the device states accordingly and triggers the applicable flow cards.

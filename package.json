@@ -1,6 +1,6 @@
 {
   "name": "com.jreenen.homeyharmonyhub",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "com.jreenen.homeyharmonyhub dependencies",
   "main": "com.jreenen.homeyharmonyhub",
   "devDependencies": {
