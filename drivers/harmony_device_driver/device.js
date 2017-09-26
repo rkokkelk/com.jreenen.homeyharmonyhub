@@ -72,21 +72,31 @@ class HarmonyDevice extends Homey.Device {
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
 
         if (powerGroup !== undefined) {
-            var powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
+            let currenOnOffState = this.getCapabilityValue('onoff');
+            let powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
+            let powerOnFunction = powerGroup.function.find(x => x.name === 'PowerOn');
+            let powerOffFunction = powerGroup.function.find(x => x.name === 'PowerOff');
+            let powerCommand = '';
 
+            if (currenOnOffState) {
+                powerCommand = powerOffFunction !== undefined ? powerOffFunction : powerToggleFunction;
+            }
+            else {
+                powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
+            }
+            
             hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-                hub.commandAction(powerToggleFunction).catch((err) => {
+                hub.commandAction(powerCommand).catch((err) => {
                     console.log(err);
                 });
-            })
+            });
 
-            let currenOnOffState = this.getCapabilityValue('onoff');
             let deviceState = {};
             deviceState.Power = 'Off'
             if (!currenOnOffState) {
                 deviceState.Power = 'On';
             }
-           
+
             this.triggerOnOffAction(deviceState);
         }
     }
