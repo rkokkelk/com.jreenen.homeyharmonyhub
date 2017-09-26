@@ -156,7 +156,7 @@ For a detailed desceiption you can find the [documentation for semantic versioni
 
 # Version history
 
-### v1.2.0
+### v1.2.1
 
 Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that doesn't support the power toggle command
 
