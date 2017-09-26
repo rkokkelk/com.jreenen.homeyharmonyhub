@@ -158,9 +158,9 @@ For a detailed desceiption you can find the [documentation for semantic versioni
 
 ### v1.2.1
 
-Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that doesn't support the power toggle command
+Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that don't support the power toggle command
 
-Fixed an issue where on powering off an activity, a activity started trigger got raised on the previous activity instead of an activity stopped trigger.
+Fixed an issue where on powering off an activity, an activity started trigger got raised on the previous activity instead of an activity stopped trigger.
 
 ### v1.2.0
 
