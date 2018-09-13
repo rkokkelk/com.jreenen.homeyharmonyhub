@@ -71,6 +71,11 @@ class HarmonyDevice extends Homey.Device {
         let powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
 
+        /* Could be a smart home device */
+        if (powerGroup === undefined) {
+            powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Home');
+        }
+
         if (powerGroup !== undefined) {
             let currenOnOffState = this.getCapabilityValue('onoff');
             let powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
