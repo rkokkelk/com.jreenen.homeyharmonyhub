@@ -3,14 +3,32 @@
   "version": "1.2.1",
   "description": "com.jreenen.homeyharmonyhub dependencies",
   "main": "com.jreenen.homeyharmonyhub",
-  "devDependencies": {
-    "harmonyhubjs-discover": "^1.0.2"
-  },
   "author": "Jeroen van Reenen",
   "dependencies": {
+    "@xmpp/jid": "^0.3.0",
+    "@xmpp/streamparser": "0.0.6",
+    "@xmpp/xml": "^0.3.0",
     "applicationinsights": "^0.19.0",
+    "harmonyhubjs-discover": "^1.1.1",
+    "ltx": "^2.7.1",
     "node-xmpp-client": "^3.2.0",
     "node-xmpp-stanza": "^1.1.1",
     "xml2js": "^0.4.19"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jreenen/com.jreenen.homeyharmonyhub.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+  },
+  "homepage": "https://github.com/jreenen/com.jreenen.homeyharmonyhub#readme"
 }

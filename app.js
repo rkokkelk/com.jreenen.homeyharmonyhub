@@ -26,7 +26,7 @@ class App extends Homey.App {
 		this._hubs = [];
 		this._activities = [];
 		this._discover = new HarmonyHubDiscover(61991);
-
+	
 		this.setupApplicationInsights();
 		this.wireEvents();
 		this.findHubs();
@@ -63,6 +63,41 @@ class App extends Homey.App {
 		})
 
 		hubManager.on('activityChanged', (activityName, hubId) => {
+			if(activityName !== 'PowerOff')
+			{
+				console.log(activityName);
+				console.log(hubId);
+				let foundHub = this.getHub(hubId)
+				let tokens = {
+					'hub': foundHub.friendlyName,
+					'activity': activityName
+				}
+
+				let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
+					.register();
+
+				activityStartedTrigger.trigger(tokens)
+			}
+
+
+		});
+
+		hubManager.on('inactivitytime', (seconds, hubId) => {
+			let state = { 'inactivefor': seconds }
+			let foundHub = this.getHub(hubId);
+			let tokens = {
+				'hub': foundHub.friendlyName
+			}
+
+			let inactiveTrigger = new Homey.FlowCardTrigger('hub_inactive')
+				.registerRunListener(( args, state ) => {
+					return Promise.resolve(state.inactivefor >= args.inactivefor);
+				})
+				.register();
+			inactiveTrigger.trigger(tokens, state);
+		})
+
+		hubManager.on('activityChanging', (activityName, hubId) => {
 			console.log(activityName);
 			console.log(hubId);
 			let foundHub = this.getHub(hubId)
@@ -71,10 +106,9 @@ class App extends Homey.App {
 				'activity': activityName
 			}
 
-			let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
+			let activityStartingTrigger = new Homey.FlowCardTrigger('activity_starting')
 				.register();
-
-			activityStartedTrigger.trigger(tokens)
+				activityStartingTrigger.trigger(tokens)
 		});
 
 		hubManager.on('activityStopped', (activityName, hubId) => {
@@ -91,8 +125,6 @@ class App extends Homey.App {
 
 			activityStoppedTrigger.trigger(tokens)
 		});
-
-
 
 		process.on('uncaughtException', (err) => {
 			console.log('whoops! there was an error');

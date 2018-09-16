@@ -76,6 +76,37 @@
     "flow": {
         "triggers": [
             {
+                "id": "activity_starting",
+                "title": {
+                    "en": "Activity starting",
+                    "nl": "Activiteit wordt gestart"
+                },
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
+                    },
+                    {
+                        "name": "activity",
+                        "title": {
+                            "en": "activity",
+                            "nl": "activiteit"
+                        },
+                        "example": {
+                            "en": "Watch television",
+                            "nl": "TV kijken"
+                        }
+                    }
+                ]
+            },
+            {
                 "id": "activity_started",
                 "title": {
                     "en": "Activity started",
@@ -175,6 +206,37 @@
                         "name": "hub_device",
                         "type": "device",
                         "filter": "driver_id=harmony_device_driver"
+                    }
+                ],
+                "tokens": [
+                    {
+                        "name": "hub",
+                        "title": {
+                            "en": "hub",
+                            "nl": "hub"
+                        },
+                        "example": {
+                            "en": "Hub living room",
+                            "nl": "Hub woonkamer"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "hub_inactive",
+                "title": {
+                    "en": "Hub is inactive",
+                    "nl": "Hub is inactief"
+                },
+                "args": [
+                    {
+                        "name": "inactivefor",
+                        "type": "number",
+                        "min": 0,
+                        "placeholder": {
+                            "en": "Minutes of inactivity",
+                            "nl": "Minuten inactief"
+                        }
                     }
                 ],
                 "tokens": [
@@ -292,6 +354,9 @@
             {
                 "name": "Raymond Brink",
                 "email": "homey@rbrink.nl"
+            },
+            {
+                "name": "Dennie de Groot"
             }
         ]
     }
