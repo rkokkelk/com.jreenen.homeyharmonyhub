@@ -206,6 +206,39 @@
                         "filter": "driver_id=harmony_device_driver"
                     }
                 ]
+            },
+            {
+                "id": "is_activity",
+                "title": {
+                    "en": "Activity !{{is|isn't}} matched",
+                    "nl": "Activiteit !{{is|is niet}} gelijk aan"
+                },
+                "args": [
+                    {
+                        "name": "activity_input",
+                        "type": "text",
+                        "placeholder": {
+                            "en": "Activity to compare",
+                            "nl": "Activiteit voor vergelijking"
+                        }
+                    },
+                    {
+                        "name": "hub",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Select your harmony hub",
+                            "nl": "Selecteer je harmony hub"
+                        }
+                    },
+                    {
+                        "name": "activity",
+                        "type": "autocomplete",
+                        "placeholder": {
+                            "en": "Activity",
+                            "nl": "Activiteit"
+                        }
+                    }
+                ]
             }
         ],
         "actions": [

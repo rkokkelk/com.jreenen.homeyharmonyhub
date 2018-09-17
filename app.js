@@ -177,6 +177,19 @@ class App extends Homey.App {
 			.register();
 		this.hubAutoComplete(stopActivityAction);
 		this.registerStopActivityCommandRunListener(stopActivityAction);
+
+		let isActivityCondition = new Homey.FlowCardCondition('is_activity')
+            .register()
+            .registerRunListener((args, state) => {
+				console.log(args.activity_input);
+				console.log(args.activity.name)
+				let isActivity = args.activity_input.trim() === args.activity.name.trim();
+				console.log(isActivity);
+                return Promise.resolve(isActivity);
+			});
+		this.hubAutoComplete(isActivityCondition);
+		this.activityAutoComplete(isActivityCondition);
+
 	}
 
 	registerStopActivityCommandRunListener(stopActivityAction) {
