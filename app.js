@@ -82,7 +82,7 @@ class App extends Homey.App {
 
 		});
 
-		hubManager.on('inactivitytime', (seconds, hubId) => {
+		hubManager.on('inactivitytime', (seconds, hubId, hubInstance) => {
 			let state = { 'inactivefor': seconds }
 			let foundHub = this.getHub(hubId);
 			let tokens = {
@@ -91,6 +91,11 @@ class App extends Homey.App {
 
 			let inactiveTrigger = new Homey.FlowCardTrigger('hub_inactive')
 				.registerRunListener(( args, state ) => {
+					console.log(args);
+					console.log(args.inactivefor);
+					if(state.inactivefor >= args.inactivefor){
+						hubInstance.lastActivity = Date.now();
+					}
 					return Promise.resolve(state.inactivefor >= args.inactivefor);
 				})
 				.register();
