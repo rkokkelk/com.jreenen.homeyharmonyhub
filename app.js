@@ -63,23 +63,18 @@ class App extends Homey.App {
 		})
 
 		hubManager.on('activityChanged', (activityName, hubId) => {
-			if(activityName !== 'PowerOff')
-			{
-				console.log(activityName);
-				console.log(hubId);
-				let foundHub = this.getHub(hubId)
-				let tokens = {
-					'hub': foundHub.friendlyName,
-					'activity': activityName
-				}
-
-				let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
-					.register();
-
-				activityStartedTrigger.trigger(tokens)
+			console.log(activityName);
+			console.log(hubId);
+			let foundHub = this.getHub(hubId)
+			let tokens = {
+				'hub': foundHub.friendlyName,
+				'activity': activityName
 			}
 
+			let activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
+				.register();
 
+			activityStartedTrigger.trigger(tokens)
 		});
 
 		hubManager.on('inactivitytime', (seconds, hubId, hubInstance) => {

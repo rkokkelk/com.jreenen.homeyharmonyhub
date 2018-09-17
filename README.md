@@ -3,11 +3,13 @@
 At the moment this project supports:
 - Pairing of devices connected to the harmony hub
 - A mobile card supporting the power toggle functionality of the device
-- An action card for sending a specific command to the Harmony device using homey flows.
+- An action card for sending a specific command to the Harmony device using homey flows and how many times this command needs to be repeated.
 - Action cards for starting/stopping a hub activity
 - Condition card to check if device is/isn't turned on
+- Condition card to compare if a specific activity has been started.
 - Trigger cards for device is turned on/off
-- Trigger cards for activity is started/stopped
+- Trigger cards for activity is starting/started/stopped
+- Trigger card for inactivity
 - Syncing the device onoff state based on the current hub activity
 - Picking up activity changes from external sources (e.g. the Logitech Harmony Remote)
 
@@ -123,14 +125,7 @@ After you specified the control group you can select the command you want to sen
 # Future releases
 
 At the moment there is no real roadmap but for the upcoming release you can expect the following:
-- Pick an icon you want to use for your device during pairing.
-- Command send trigger card.
 - ...... create an issue on Github with a Feature request label an who knows your feature will be in the next release!
-
-
-# Why developing another homey harmony hub driver when there already is one available?
-
-I am aware there is already a [great project](https://github.com/netactivenl/com.logitech.harmony.hub) with a working harmony hub driver. Because I would like to have a different pairing strategy which would be a fundamental difference I decided to start a project of my own.
 
 # What does this app track?
 
@@ -155,6 +150,15 @@ This app uses semantic versioning
 For a detailed desceiption you can find the [documentation for semantic versioning here](http://semver.org/)
 
 # Version history
+
+### v1.3.0
+
+Added starting activity trigger to be informed an activity is about to start.
+Added a repeat argument to the send command action (e.g. for adjusting the volume by more than just one step).
+Added an inactivity trigger to be informed when the hub is being inactive for a specified period.
+Added a activity comparing condition
+
+A special thanks to @denniedegroot who added on/off functionality for smart home devices and will help me on this project whenever time allows him to.
 
 ### v1.2.1
 
