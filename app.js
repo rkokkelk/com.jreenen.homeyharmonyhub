@@ -264,8 +264,6 @@ class App extends Homey.App {
 				let controlCommandArgValue = args.control_command;
 				let repeat = args.control_command_repeat;
 
-				console.log(repeat);
-
 				for (var index = 0; index -1 < repeat; index++) {
 					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
 						hub.commandAction(controlCommandArgValue.command).catch((err) => {
