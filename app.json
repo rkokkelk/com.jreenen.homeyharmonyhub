@@ -426,6 +426,15 @@
                             "en": "Command",
                             "nl": "Opdracht"
                         }
+                    },
+                    {
+                        "name": "control_command_repeat",
+                        "type": "number",
+                        "min": 1,
+                        "placeholder": {
+                            "en": "Repeat",
+                            "nl": "Herhalen"
+                        }
                     }
                 ]
             }
