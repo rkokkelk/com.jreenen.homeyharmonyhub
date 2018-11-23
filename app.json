@@ -460,7 +460,9 @@
                 "email": "homey@rbrink.nl"
             },
             {
-                "name": "Dennie de Groot"
+                "name": "Dennie de Groot",
+                "email": "mail@denniedegroot.nl",
+                "website": "https://denniedegroot.nl"
             }
         ]
     }
