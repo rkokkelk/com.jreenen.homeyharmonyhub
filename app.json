@@ -84,6 +84,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
@@ -95,6 +96,7 @@
                     },
                     {
                         "name": "activity",
+                        "type": "string",
                         "title": {
                             "en": "activity",
                             "nl": "activiteit"
@@ -115,6 +117,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
@@ -126,6 +129,7 @@
                     },
                     {
                         "name": "activity",
+                        "type": "string",
                         "title": {
                             "en": "activity",
                             "nl": "activiteit"
@@ -146,6 +150,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
@@ -157,6 +162,7 @@
                     },
                     {
                         "name": "activity",
+                        "type": "string",
                         "title": {
                             "en": "activity",
                             "nl": "activiteit"
@@ -184,6 +190,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
@@ -211,6 +218,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
@@ -295,6 +303,7 @@
                 "tokens": [
                     {
                         "name": "hub",
+                        "type": "string",
                         "title": {
                             "en": "hub",
                             "nl": "hub"
