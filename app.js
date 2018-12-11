@@ -109,6 +109,7 @@ class App extends Homey.App {
 			let activityStartingTrigger = new Homey.FlowCardTrigger('activity_starting')
 				.register();
 				activityStartingTrigger.trigger(tokens)
+
 		});
 
 		hubManager.on('activityStopped', (activityName, hubId) => {
@@ -232,8 +233,13 @@ class App extends Homey.App {
 				let hubId = hubArgValue.hubId;
 				let foundHub = this.getHub(hubId);
 
-				hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-					hub.stopActivity();
+				return new Promise((resolve, reject) => {
+					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+						hub.stopActivity();
+						resolve(true);
+					}).catch((err) => {
+						reject(err);
+					});
 				});
 			})
 	}
@@ -247,8 +253,13 @@ class App extends Homey.App {
 				let activityId = args.activity.activityId;
 				let foundHub = this.getHub(hubId);
 
-				hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-					hub.startActivity(activityId);
+				return new Promise((resolve, reject) => {
+					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+						hub.startActivity(activityId);
+						resolve(true);
+					}).catch((err) => {
+						reject(err);
+					});
 				});
 			})
 	}
@@ -309,13 +320,19 @@ class App extends Homey.App {
 				let controlCommandArgValue = args.control_command;
 				let repeat = args.control_command_repeat;
 
-				for (var index = 0; index -1 < repeat; index++) {
-					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-						hub.commandAction(controlCommandArgValue.command).catch((err) => {
-							console.log(err);
+				return new Promise((resolve, reject) => {
+					for (var index = 0; index -1 < repeat; index++) {
+						hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+							hub.commandAction(controlCommandArgValue.command).catch((err) => {
+								console.log(err);
+								reject(err);
+							});
 						});
-					});
-				}
+
+						if (index == repeat)
+							resolve(true);
+					}
+				});
 			})
 	}
 
