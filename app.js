@@ -6,8 +6,6 @@ const HubManager = require('./lib/hubmanager.js');
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
-let appInsights = require("applicationinsights");
-let appInsightsClient;
 let hubManager = new HubManager();
 
 const iconsMap = {
@@ -27,23 +25,9 @@ class App extends Homey.App {
 		this._activities = [];
 		this._discover = new HarmonyHubDiscover(61991);
 	
-		this.setupApplicationInsights();
 		this.wireEvents();
 		this.findHubs();
 		this.registerActions();
-	}
-
-	setupApplicationInsights() {
-		process.env.APPINSIGHTS_INSTRUMENTATIONKEY = "4f45f195-c5f9-4b27-acb9-f30b04e399fe";
-		appInsights.setup()
-			.setAutoDependencyCorrelation(true)
-			.setAutoCollectRequests(true)
-			.setAutoCollectPerformance(false)
-			.setAutoCollectExceptions(true)
-			.setAutoCollectDependencies(true)
-			.setAutoCollectConsole(true)
-			.start();
-		appInsightsClient = appInsights.getClient();
 	}
 
 	wireEvents() {
@@ -53,7 +37,7 @@ class App extends Homey.App {
 			});
 
 			if (found === false && hub.ip !== undefined) {
-				hub.Hub = hubManager.connectToHub(hub.ip, '5222');
+				hub.Hub = hubManager.connectToHub(hub.ip, '8088');
 				this.addHub(hub);
 			}
 		});
@@ -126,11 +110,6 @@ class App extends Homey.App {
 
 			activityStoppedTrigger.trigger(tokens)
 		});
-
-		process.on('uncaughtException', (err) => {
-			console.log('whoops! there was an error');
-			appInsightsClient.trackException(new Error(JSON.stringify(err)));
-		});
 	}
 
 	findHubs() {
@@ -164,7 +143,7 @@ class App extends Homey.App {
 		var devices = [];
 
 		return new Promise((resolve, reject) => {
-			hubManager.connectToHub(ip, '5222').then((hub) => {
+			hubManager.connectToHub(ip, '8088').then((hub) => {
 				hub.devices.forEach((device) => {
 					console.log(device.type);
 					let iconName = iconsMap[device.type];
@@ -174,7 +153,7 @@ class App extends Homey.App {
 					}
 					else {
 						iconPath = `/icon.svg`;
-						appInsightsClient.trackEvent('unknown device type', { deviceType: device.type })
+						reject('unknown device type', { deviceType: device.type });
 					}
 					var foundDevice = {
 						name: device.label,

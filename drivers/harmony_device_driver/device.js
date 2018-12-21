@@ -90,7 +90,7 @@ class HarmonyDevice extends Homey.Device {
                 powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
             }
             
-            hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+            hubManager.connectToHub(foundHub.ip, '8088').then((hub) => {
                 hub.commandAction(powerCommand).catch((err) => {
                     console.log(err);
                 });
