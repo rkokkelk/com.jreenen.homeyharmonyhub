@@ -37,7 +37,7 @@ class App extends Homey.App {
 			});
 
 			if (found === false && hub.ip !== undefined) {
-				hub.Hub = hubManager.connectToHub(hub.ip, '8088');
+				hub.Hub = hubManager.connectToHub(hub.ip);
 				this.addHub(hub);
 			}
 		});
@@ -49,7 +49,11 @@ class App extends Homey.App {
 		hubManager.on('activityChanged', (activityName, hubId) => {
 			console.log(activityName);
 			console.log(hubId);
-			let foundHub = this.getHub(hubId)
+			let foundHub = this.getHub(hubId);
+
+			if (foundHub == undefined)
+				return;
+
 			let tokens = {
 				'hub': foundHub.friendlyName,
 				'activity': activityName
@@ -64,6 +68,10 @@ class App extends Homey.App {
 		hubManager.on('inactivitytime', (seconds, hubId, hubInstance) => {
 			let state = { 'inactivefor': seconds }
 			let foundHub = this.getHub(hubId);
+
+			if (foundHub == undefined)
+				return;
+
 			let tokens = {
 				'hub': foundHub.friendlyName
 			}
@@ -84,7 +92,11 @@ class App extends Homey.App {
 		hubManager.on('activityChanging', (activityName, hubId) => {
 			console.log(activityName);
 			console.log(hubId);
-			let foundHub = this.getHub(hubId)
+			let foundHub = this.getHub(hubId);
+
+			if (foundHub == undefined)
+				return;
+
 			let tokens = {
 				'hub': foundHub.friendlyName,
 				'activity': activityName
@@ -99,7 +111,11 @@ class App extends Homey.App {
 		hubManager.on('activityStopped', (activityName, hubId) => {
 			console.log(activityName);
 			console.log(hubId);
-			let foundHub = this.getHub(hubId)
+			let foundHub = this.getHub(hubId);
+
+			if (foundHub == undefined)
+				return;
+
 			let tokens = {
 				'hub': foundHub.friendlyName,
 				'activity': activityName
@@ -131,7 +147,12 @@ class App extends Homey.App {
 
 	getHub(hubId) {
 		var foundHub = this._hubs.find(x => x.uuid === hubId);
-		console.log(`Found hub with id ${foundHub.uuid} and name ${foundHub.friendlyName}`)
+
+		if (foundHub != undefined)
+			console.log(`Found hub with id ${foundHub.uuid} and name ${foundHub.friendlyName}`)
+		else
+			console.log(`No hub found with id ${hubId}`)
+
 		return foundHub;
 	}
 
@@ -143,7 +164,7 @@ class App extends Homey.App {
 		var devices = [];
 
 		return new Promise((resolve, reject) => {
-			hubManager.connectToHub(ip, '8088').then((hub) => {
+			hubManager.connectToHub(ip).then((hub) => {
 				hub.devices.forEach((device) => {
 					console.log(device.type);
 					let iconName = iconsMap[device.type];
@@ -213,9 +234,15 @@ class App extends Homey.App {
 				let foundHub = this.getHub(hubId);
 
 				return new Promise((resolve, reject) => {
-					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-						hub.stopActivity();
-						resolve(true);
+					if (foundHub == undefined)
+						return reject();
+
+					hubManager.connectToHub(foundHub.ip).then((hub) => {
+						hub.stopActivity().then(() => {
+							resolve();
+						}).catch(() => {
+							reject();
+						});
 					}).catch((err) => {
 						reject(err);
 					});
@@ -233,9 +260,15 @@ class App extends Homey.App {
 				let foundHub = this.getHub(hubId);
 
 				return new Promise((resolve, reject) => {
-					hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
-						hub.startActivity(activityId);
-						resolve(true);
+					if (foundHub == undefined)
+						return reject();
+
+					hubManager.connectToHub(foundHub.ip).then((hub) => {
+						hub.startActivity(activityId).then(() => {
+							resolve();
+						}).catch(() => {
+							reject();
+						});
 					}).catch((err) => {
 						reject(err);
 					});
@@ -270,8 +303,11 @@ class App extends Homey.App {
 					let hubArgValue = args.hub;
 					let foundHub = this.getHub(hubArgValue.hubId);
 
+					if (foundHub == undefined)
+						return reject();
+
 					if (hubArgValue !== '') {
-						hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+						hubManager.connectToHub(foundHub.ip).then((hub) => {
 							hub.activities.forEach((activity) => {
 								let autocompleteItem =
 									{
@@ -300,8 +336,11 @@ class App extends Homey.App {
 				let repeat = args.control_command_repeat;
 
 				return new Promise((resolve, reject) => {
+					if (foundHub == undefined)
+						return reject();
+
 					for (var index = 0; index -1 < repeat; index++) {
-						hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+						hubManager.connectToHub(foundHub.ip).then((hub) => {
 							hub.commandAction(controlCommandArgValue.command).catch((err) => {
 								console.log(err);
 								reject(err);
@@ -337,7 +376,6 @@ class App extends Homey.App {
 				}
 				return Promise.resolve(result);
 			})
-
 	}
 
 	controlGroupAutoComplete(sendCommandAction) {
