@@ -78,8 +78,6 @@ class App extends Homey.App {
 
 			let inactiveTrigger = new Homey.FlowCardTrigger('hub_inactive')
 				.registerRunListener(( args, state ) => {
-					console.log(args);
-					console.log(args.inactivefor);
 					if(state.inactivefor >= args.inactivefor){
 						hubInstance.lastActivity = Date.now();
 					}
@@ -109,8 +107,6 @@ class App extends Homey.App {
 		});
 
 		hubManager.on('activityStopped', (activityName, hubId) => {
-			console.log(activityName);
-			console.log(hubId);
 			let foundHub = this.getHub(hubId);
 
 			if (foundHub == undefined)
@@ -174,7 +170,6 @@ class App extends Homey.App {
 					}
 					else {
 						iconPath = `/icon.svg`;
-						reject('unknown device type', { deviceType: device.type });
 					}
 					var foundDevice = {
 						name: device.label,

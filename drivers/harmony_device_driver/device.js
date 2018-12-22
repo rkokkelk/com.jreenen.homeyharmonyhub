@@ -36,7 +36,7 @@ class HarmonyDevice extends Homey.Device {
                 return Promise.resolve(isPowerdOn);
             });
 
-        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.name} initializing..`);
+        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
     }
 
     onAdded() {
@@ -95,7 +95,7 @@ class HarmonyDevice extends Homey.Device {
             else {
                 powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
             }
-            
+
             hubManager.connectToHub(foundHub.ip).then((hub) => {
                 hub.commandAction(powerCommand).catch((err) => {
                     console.log(err);
