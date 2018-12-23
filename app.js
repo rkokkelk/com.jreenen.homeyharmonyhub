@@ -395,7 +395,6 @@ class App extends Homey.App {
 	}
 
 	getPairedDevices() {
-		console.log('CALL TO PAIRED DEVICES!');
 		let deviceDriver = Homey.ManagerDrivers.getDriver('harmony_device_driver');
 		let devices = deviceDriver.getDevices();
 

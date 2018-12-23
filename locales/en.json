@@ -4,6 +4,8 @@
         "title": "Homey Harmony Hub settings",
 		"debugsection": "Debug",
 		"debuginfo": "Debug info",
+		"debugintro": "If you are experiencing a bug using this app please provide us with the debug file you can generate here.",
+		"usewebsite": "Please use <a href='https://my.athom.com/'>https://my.athom.com/</a> to generate a debug file. This functionality isn't working on the mobile app.",
 		"downloaddebugfile": "Download debug file"	
     },
 	"pair": {
