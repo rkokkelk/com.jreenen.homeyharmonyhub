@@ -1,5 +1,5 @@
 .vscode/
-package-lock.json
 env.json
 jsconfig.json
 examplejson/
+.DS_Store

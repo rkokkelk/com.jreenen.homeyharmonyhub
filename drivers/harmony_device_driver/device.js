@@ -9,7 +9,13 @@ class HarmonyDevice extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
         this.registerCapabilityListener('onoff', () => {
-            this.onCapabilityOnoff(this);
+            return new Promise((resolve, reject) => {
+                this.onCapabilityOnoff().then(() => {
+                    resolve();
+                }).catch(() => {
+                    reject();
+                });
+            });
         });
 
         hubManager.on(`deviceInitialized_${this._deviceData.id}`, (device) => {
@@ -30,7 +36,7 @@ class HarmonyDevice extends Homey.Device {
                 return Promise.resolve(isPowerdOn);
             });
 
-        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.name} initializing..`);
+        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
     }
 
     onAdded() {
@@ -67,7 +73,7 @@ class HarmonyDevice extends Homey.Device {
 
     }
 
-    onCapabilityOnoff(value, opts, callback) {
+    onCapabilityOnoff() {
         let powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
 
@@ -89,10 +95,11 @@ class HarmonyDevice extends Homey.Device {
             else {
                 powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
             }
-            
-            hubManager.connectToHub(foundHub.ip, '5222').then((hub) => {
+
+            hubManager.connectToHub(foundHub.ip).then((hub) => {
                 hub.commandAction(powerCommand).catch((err) => {
                     console.log(err);
+                    return Promise.reject();
                 });
             });
 
@@ -103,7 +110,11 @@ class HarmonyDevice extends Homey.Device {
             }
 
             this.triggerOnOffAction(deviceState);
+
+            return Promise.resolve();
         }
+
+        return Promise.reject();
     }
 }
 

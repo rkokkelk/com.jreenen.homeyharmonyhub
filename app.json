@@ -13,7 +13,7 @@
         "appliances",
         "video"
     ],
-    "version": "1.3.1",
+    "version": "1.4.1",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",
@@ -449,6 +449,10 @@
             }
         ]
     },
+    "bugs": {
+        "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+    },
+    "homeyCommunityTopicId": 1747,
     "author": {
         "name": "Jeroen van Reenen",
         "email": "jreenen@hotmail.com"
@@ -465,5 +469,12 @@
                 "website": "https://denniedegroot.nl"
             }
         ]
+    },
+    "contributing": {
+        "donate": {
+            "paypal": {
+                "username": "jreenen"
+            }
+        }
     }
 }
