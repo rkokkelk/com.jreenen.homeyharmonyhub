@@ -401,7 +401,7 @@ class App extends Homey.App {
 
 		let cache = new Set();
 
-		let devicesJson = JSON.stringify(devices, function (key, value) {
+		let devicesJson = JSON.stringify(devices[0].device.parent, function (key, value) {
 			if (typeof value === 'object' && value !== null) {
 				if (cache.has(value)) {
 					// Circular reference found
