@@ -1,5 +1,11 @@
 {
 	"save": "Sla veranderingen op",
+	"settings": {
+        "title": "Homey Harmony Hub instellingen",
+		"debugsection": "Debug",
+		"debuginfo": "Debug informatie",
+		"downloaddebugfile": "Download debug bestand"	
+    },
 	"pair": {
 		"select_hub": {
 			"title": "Selecteer je Logitech Harmony Hub",

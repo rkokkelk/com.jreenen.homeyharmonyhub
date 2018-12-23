@@ -1,5 +1,11 @@
 {
 	"save": "Save changes",
+	"settings": {
+        "title": "Homey Harmony Hub settings",
+		"debugsection": "Debug",
+		"debuginfo": "Debug info",
+		"downloaddebugfile": "Download debug file"	
+    },
 	"pair": {
 		"select_hub": {
 			"title": "Select your Logitech harmony hub",

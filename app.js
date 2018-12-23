@@ -3,6 +3,7 @@
 const Homey = require('homey');
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const HubManager = require('./lib/hubmanager.js');
+const util = require('util')
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
@@ -24,7 +25,7 @@ class App extends Homey.App {
 		this._hubs = [];
 		this._activities = [];
 		this._discover = new HarmonyHubDiscover(61991);
-	
+
 		this.wireEvents();
 		this.findHubs();
 		this.registerActions();
@@ -77,8 +78,8 @@ class App extends Homey.App {
 			}
 
 			let inactiveTrigger = new Homey.FlowCardTrigger('hub_inactive')
-				.registerRunListener(( args, state ) => {
-					if(state.inactivefor >= args.inactivefor){
+				.registerRunListener((args, state) => {
+					if (state.inactivefor >= args.inactivefor) {
 						hubInstance.lastActivity = Date.now();
 					}
 					return Promise.resolve(state.inactivefor >= args.inactivefor);
@@ -102,7 +103,7 @@ class App extends Homey.App {
 
 			let activityStartingTrigger = new Homey.FlowCardTrigger('activity_starting')
 				.register();
-				activityStartingTrigger.trigger(tokens)
+			activityStartingTrigger.trigger(tokens)
 
 		});
 
@@ -207,13 +208,13 @@ class App extends Homey.App {
 		this.registerStopActivityCommandRunListener(stopActivityAction);
 
 		let isActivityCondition = new Homey.FlowCardCondition('is_activity')
-            .register()
-            .registerRunListener((args, state) => {
+			.register()
+			.registerRunListener((args, state) => {
 				console.log(args.activity_input);
 				console.log(args.activity.name)
 				let isActivity = args.activity_input.trim() === args.activity.name.trim();
 				console.log(isActivity);
-                return Promise.resolve(isActivity);
+				return Promise.resolve(isActivity);
 			});
 		this.hubAutoComplete(isActivityCondition);
 		this.activityAutoComplete(isActivityCondition);
@@ -278,10 +279,10 @@ class App extends Homey.App {
 				let result = [];
 				this._hubs.forEach((hub) => {
 					let autocompleteItem =
-						{
-							name: hub.friendlyName,
-							hubId: hub.uuid
-						};
+					{
+						name: hub.friendlyName,
+						hubId: hub.uuid
+					};
 					result.push(autocompleteItem);
 				});
 
@@ -305,10 +306,10 @@ class App extends Homey.App {
 						hubManager.connectToHub(foundHub.ip).then((hub) => {
 							hub.activities.forEach((activity) => {
 								let autocompleteItem =
-									{
-										name: activity.label,
-										activityId: activity.id
-									};
+								{
+									name: activity.label,
+									activityId: activity.id
+								};
 								result.push(autocompleteItem);
 							});
 							resolve(result);
@@ -334,7 +335,7 @@ class App extends Homey.App {
 					if (foundHub == undefined)
 						return reject();
 
-					for (var index = 0; index -1 < repeat; index++) {
+					for (var index = 0; index - 1 < repeat; index++) {
 						hubManager.connectToHub(foundHub.ip).then((hub) => {
 							hub.commandAction(controlCommandArgValue.command).catch((err) => {
 								console.log(err);
@@ -362,10 +363,10 @@ class App extends Homey.App {
 					let controlGroup = hub_device_data.controlGroup.find(x => x.name == controlGroupArgValue.name);
 					controlGroup.function.forEach((command) => {
 						let autocompleteItem =
-							{
-								name: command.label,
-								command: command,
-							};
+						{
+							name: command.label,
+							command: command,
+						};
 						result.push(autocompleteItem);
 					});
 				}
@@ -383,14 +384,43 @@ class App extends Homey.App {
 
 				hub_device_data.controlGroup.forEach((group) => {
 					let autocompleteItem =
-						{
-							name: group.name,
-						};
+					{
+						name: group.name,
+					};
 					result.push(autocompleteItem);
 				});
 
 				return Promise.resolve(result);
 			})
+	}
+
+	getPairedDevices() {
+		console.log('CALL TO PAIRED DEVICES!');
+		let deviceDriver = Homey.ManagerDrivers.getDriver('harmony_device_driver');
+		let devices = deviceDriver.getDevices();
+
+		let cache = new Set();
+
+		let devicesJson = JSON.stringify(devices, function (key, value) {
+			if (typeof value === 'object' && value !== null) {
+				if (cache.has(value)) {
+					// Circular reference found
+					try {
+						// If this value does not reference a parent it can be deduped
+						return JSON.parse(JSON.stringify(value));
+					}
+					catch (err) {
+						// discard key if value cannot be deduped
+						return;
+					}
+				}
+				// Store value in our set
+				cache.add(value);
+			}
+			return value;
+		});
+
+		return Promise.resolve(devicesJson);
 	}
 }
 
