@@ -13,7 +13,7 @@
         "appliances",
         "video"
     ],
-    "version": "1.4.1",
+    "version": "1.4.2",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",
@@ -460,13 +460,17 @@
     "contributors": {
         "developers": [
             {
-                "name": "Raymond Brink",
-                "email": "homey@rbrink.nl"
+                "name": "Jeroen van Reenen",
+                "email": "jreenen@hotmail.com"
             },
             {
                 "name": "Dennie de Groot",
                 "email": "mail@denniedegroot.nl",
                 "website": "https://denniedegroot.nl"
+            },
+            {
+                "name": "Raymond Brink",
+                "email": "homey@rbrink.nl"
             }
         ]
     },
