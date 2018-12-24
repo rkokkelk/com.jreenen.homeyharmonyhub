@@ -71,6 +71,63 @@
                     }
                 ]
             }
+        },
+        {
+            "id": "harmony_virtual_tv",
+            "name": {
+                "en": "Harmony virtual tv driver"
+            },
+            "class": "tv",
+            "capabilities": [
+                "onoff",
+                "volume_up",
+                "volume_down",
+                "volume_mute",
+                "channel_up",
+                "channel_down"
+            ],
+            "images": {
+                "large": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_large.jpg",
+                "small": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_small.jpg"
+            },
+            "pair": [
+                {
+                    "id": "select_hub",
+                    "navigation": {
+                        "next": "list_devices"
+                    }
+                },
+                {
+                    "id": "list_devices",
+                    "template": "list_devices",
+                    "navigation": {
+                        "next": "add_devices"
+                    }
+                },
+                {
+                    "id": "add_devices",
+                    "template": "add_devices"
+                }
+            ],
+            "mobile": {
+                "components": [
+                    {
+                        "id": "icon",
+                        "capabilities": [
+                            "onoff"
+                        ]
+                    },
+                    {
+                        "id": "button",
+                        "capabilities": [
+                            "onoff"
+                        ],
+                        "options": {
+                            "showTitle": []
+                        }
+                    }
+                ]
+            }
         }
     ],
     "flow": {
