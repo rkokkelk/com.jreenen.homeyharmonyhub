@@ -87,8 +87,6 @@
                 "channel_down"
             ],
             "images": {
-                "large": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_large.jpg",
-                "small": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_small.jpg"
             },
             "pair": [
                 {
