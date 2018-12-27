@@ -157,8 +157,8 @@ class App extends Homey.App {
 		return this._hubs;
 	}
 
-	getHubVirtualTVActivities(ip, hubId) {
-		var virtualTVActivities = [];
+	getHubActivities(ip, hubId) {
+		var activities = [];
 
 		return new Promise((resolve, reject) => {
 			hubManager.connectToHub(ip).then((hub) => {
@@ -166,17 +166,32 @@ class App extends Homey.App {
 					if (activity.type === 'VirtualTelevisionN') {
 						var foundDevice = {
 							name: activity.label,
+							class: 'tv',
 							data: {
 								id: activity.id,
 								hubId: hubId,
-								controlGroup: activity.controlGroup
+								controlGroup: activity.controlGroup,
+								label: activity.label
 							}
 						};
 
-						virtualTVActivities.push(foundDevice);
+						activities.push(foundDevice);
+					}
+					else{
+						var foundDevice = {
+							name: activity.label,
+							data: {
+								id: activity.id,
+								hubId: hubId,
+								controlGroup: activity.controlGroup,
+								label: activity.label
+							}
+						};
+
+						activities.push(foundDevice);
 					}
 				});
-				resolve(virtualTVActivities);
+				resolve(activities);
 			});
 		});
 	}

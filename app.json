@@ -73,11 +73,11 @@
             }
         },
         {
-            "id": "harmony_virtual_tv",
+            "id": "harmony_activity_driver",
             "name": {
-                "en": "Harmony virtual tv driver"
+                "en": "Harmony activity driver"
             },
-            "class": "tv",
+            "class": "other",
             "capabilities": [
                 "onoff",
                 "volume_up",
@@ -87,8 +87,8 @@
                 "channel_down"
             ],
             "images": {
-                "large": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_large.jpg",
-                "small": "/drivers/harmony_virtual_tv/assets/images/homey_harmony_hub_small.jpg"
+                "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
+                "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
             },
             "pair": [
                 {
@@ -108,26 +108,7 @@
                     "id": "add_devices",
                     "template": "add_devices"
                 }
-            ],
-            "mobile": {
-                "components": [
-                    {
-                        "id": "icon",
-                        "capabilities": [
-                            "onoff"
-                        ]
-                    },
-                    {
-                        "id": "button",
-                        "capabilities": [
-                            "onoff"
-                        ],
-                        "options": {
-                            "showTitle": []
-                        }
-                    }
-                ]
-            }
+            ]
         }
     ],
     "flow": {
