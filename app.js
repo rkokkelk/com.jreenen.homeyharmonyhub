@@ -209,25 +209,29 @@ class App extends Homey.App {
 		return new Promise((resolve, reject) => {
 			hubManager.connectToHub(ip).then((hub) => {
 				hub.devices.forEach((device) => {
-					console.log(device.type);
-					let iconName = iconsMap[device.type];
-					let iconPath = '';
-					if (iconName !== undefined) {
-						iconPath = `/images/${iconName}.svg`;
-					}
-					else {
-						iconPath = `/icon.svg`;
-					}
-					var foundDevice = {
-						name: device.label,
-						icon: iconPath,
-						data: {
-							id: device.id,
-							hubId: hubId,
-							controlGroup: device.controlGroup
+					capabilityhelper.getCapabilities(device.controlGroup).then((capabilities) => {
+						console.log(device.type);
+						let iconName = iconsMap[device.type];
+						let iconPath = '';
+						if (iconName !== undefined) {
+							iconPath = `/images/${iconName}.svg`;
 						}
-					};
-					devices.push(foundDevice);
+						else {
+							iconPath = `/icon.svg`;
+						}
+						var foundDevice = {
+							name: device.label,
+							icon: iconPath,
+							capabilities: capabilities,
+							data: {
+								id: device.id,
+								hubId: hubId,
+								controlGroup: device.controlGroup,
+								label: device.label
+							}
+						};
+						devices.push(foundDevice);
+					})
 				});
 				resolve(devices);
 			});

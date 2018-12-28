@@ -8,22 +8,130 @@ const hubManager = new HubManager();
 class HarmonyDevice extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
-        this.registerCapabilityListener('onoff', () => {
-            return new Promise((resolve, reject) => {
-                this.onCapabilityOnoff().then(() => {
-                    resolve();
-                }).catch(() => {
-                    reject();
+
+        this.getCapabilities().forEach(capability => {
+            if (capability === "onoff") {
+                this.registerCapabilityListener('onoff', () => {
+                    return new Promise((resolve, reject) => {
+                        this.onCapabilityOnoff().then(() => {
+                            resolve();
+                        }).catch(() => {
+                            reject();
+                        });
+                    });
                 });
-            });
+            }
+
+            if (capability === "volume_up") {
+                this.registerCapabilityListener('volume_up', (value, opts, callback) => {
+                    return new Promise((resolve, reject) => {
+                        console.log(`Volume up triggered on ${this._deviceData.label}`)
+
+                        let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
+                        let volumeUpFunction = volumeGroup.function.find(x => x.name === 'VolumeUp');
+                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+                        hubManager.connectToHub(foundHub.ip).then((hub) => {
+                            hub.commandAction(volumeUpFunction).catch((err) => {
+                                console.log(err);
+                                return Promise.reject();
+                            });
+                        });
+
+                        callback(null);
+                    });
+                });
+            }
+
+            if (capability === "volume_down") {
+                this.registerCapabilityListener('volume_down', (value, opts, callback) => {
+                    return new Promise((resolve, reject) => {
+                        console.log(`Volume down triggered on ${this._deviceData.label}`)
+                        let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
+                        let volumeDownFunction = volumeGroup.function.find(x => x.name === 'VolumeDown');
+                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+                        hubManager.connectToHub(foundHub.ip).then((hub) => {
+                            hub.commandAction(volumeDownFunction).catch((err) => {
+                                console.log(err);
+                                return Promise.reject();
+                            });
+                        });
+
+                        callback(null);
+                    });
+                });
+            }
+
+            if (capability === "volume_mute") {
+                this.registerCapabilityListener('volume_mute', (value, opts, callback) => {
+                    return new Promise((resolve, reject) => {
+                        console.log(`Volume mute triggered on ${this._deviceData.label}`)
+                        let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
+                        let volumeMuteFunction = volumeGroup.function.find(x => x.name === 'Mute');
+                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+                        hubManager.connectToHub(foundHub.ip).then((hub) => {
+                            hub.commandAction(volumeMuteFunction).catch((err) => {
+                                console.log(err);
+                                return Promise.reject();
+                            });
+                        });
+
+                        callback(null);
+                    });
+                });
+            }
+
+            if (capability === "channel_up") {
+                this.registerCapabilityListener('channel_up', (value, opts, callback) => {
+                    return new Promise((resolve, reject) => {
+                        console.log(`Channel up triggered on ${this._deviceData.label}`)
+                        let channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
+                        let channelUpFunction = channelGroup.function.find(x => x.name === 'ChannelUp');
+                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+                        hubManager.connectToHub(foundHub.ip).then((hub) => {
+                            hub.commandAction(channelUpFunction).catch((err) => {
+                                console.log(err);
+                                return Promise.reject();
+                            });
+                        });
+
+                        callback(null);
+                    });
+                });
+            }
+
+            if (capability === "channel_down") {
+                this.registerCapabilityListener('channel_down', (value, opts, callback) => {
+                    return new Promise((resolve, reject) => {
+                        console.log(`Channel down triggered on ${this._deviceData.label}`)
+                        let channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
+                        let channelDownFunction = channelGroup.function.find(x => x.name === 'ChannelDown');
+                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+                        hubManager.connectToHub(foundHub.ip).then((hub) => {
+                            hub.commandAction(channelDownFunction).catch((err) => {
+                                console.log(err);
+                                return Promise.reject();
+                            });
+                        });
+
+                        callback(null);
+                    });
+                });
+            }
         });
 
         hubManager.on(`deviceInitialized_${this._deviceData.id}`, (device) => {
             this.device = device;
 
             device.on('stateChanged', (state) => {
-                this.setCapabilityValue('onoff', state.Power === 'On');
-                this.triggerOnOffAction(state);
+                if (this.getCapabilities().find(c => c === "onoff")) {
+                    this.setCapabilityValue('onoff', state.Power === 'On');
+                    this.triggerOnOffAction(state);
+                }
             });
         });
 
@@ -41,6 +149,19 @@ class HarmonyDevice extends Homey.Device {
 
     onAdded() {
         this.log('device added');
+        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+        if (this.getCapabilities().find(c => c === "onoff")) {
+            hubManager.connectToHub(foundHub.ip).then((hub) => {
+                let deviceInCurrentActivity = hub.currentActivity.fixit[this._deviceData.id];
+
+                if (deviceInCurrentActivity.Power === "On") {
+                    this.setCapabilityValue('onoff', true);
+                }
+                else {
+                    this.setCapabilityValue('onoff', false);
+                }
+            });
+        }
     }
 
     onDeleted() {
@@ -70,7 +191,6 @@ class HarmonyDevice extends Homey.Device {
 
             this.setCapabilityValue('onoff', deviceTurnedOn);
         }
-
     }
 
     onCapabilityOnoff() {

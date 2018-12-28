@@ -33,9 +33,7 @@ class HarmonyDeviceDriver extends Homey.Driver {
 
         socket.on('list_devices', function (data, callback) {
             console.log('List devices started...')
-            Homey.app.getHubDevices(state.hub.ip, state.hub.uuid).then((devices) => {
-                console.log(devices);
-       
+            Homey.app.getHubDevices(state.hub.ip, state.hub.uuid).then((devices) => {       
                 callback(null, devices);
             });
 
