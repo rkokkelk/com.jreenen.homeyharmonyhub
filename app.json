@@ -13,7 +13,7 @@
         "appliances",
         "video"
     ],
-    "version": "1.5.0",
+    "version": "1.5.1",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",
