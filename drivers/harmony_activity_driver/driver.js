@@ -2,9 +2,9 @@
 
 const Homey = require('homey');
 
-class HarmonyVirtualTVDriver extends Homey.Driver {
+class HarmonyActivityDriver extends Homey.Driver {
     onInit() {
-        console.log("Harmony virtual tv driver initializing...");
+        console.log("Harmony activity driver initializing...");
     }
 
     onPair(socket) {
@@ -33,9 +33,7 @@ class HarmonyVirtualTVDriver extends Homey.Driver {
 
         socket.on('list_devices', function (data, callback) {
             console.log('List devices started...')
-            Homey.app.getHubVirtualTVActivities(state.hub.ip, state.hub.uuid).then((devices) => {
-                console.log(devices);
-       
+            Homey.app.getHubActivities(state.hub.ip, state.hub.uuid).then((devices) => {       
                 callback(null, devices);
             });
 
@@ -43,4 +41,4 @@ class HarmonyVirtualTVDriver extends Homey.Driver {
     }
 }
 
-module.exports = HarmonyVirtualTVDriver;
+module.exports = HarmonyActivityDriver;

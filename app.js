@@ -3,11 +3,13 @@
 const Homey = require('homey');
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const HubManager = require('./lib/hubmanager.js');
+const CapabilityHelper = require('./lib/capabilityhelper.js');
 const util = require('util')
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
 let hubManager = new HubManager();
+let capabilityhelper = new CapabilityHelper();
 
 const iconsMap = {
 	'PVR': 'pvr_noun_893953_FFFFFF',
@@ -157,26 +159,46 @@ class App extends Homey.App {
 		return this._hubs;
 	}
 
-	getHubVirtualTVActivities(ip, hubId) {
-		var virtualTVActivities = [];
+	getHubActivities(ip, hubId) {
+		var activities = [];
 
 		return new Promise((resolve, reject) => {
 			hubManager.connectToHub(ip).then((hub) => {
 				hub.activities.forEach((activity) => {
-					if (activity.type === 'VirtualTelevisionN') {
-						var foundDevice = {
-							name: activity.label,
-							data: {
-								id: activity.id,
-								hubId: hubId,
-								controlGroup: activity.controlGroup
-							}
-						};
+					capabilityhelper.getCapabilities(activity.controlGroup).then((capabilities) => {
+						capabilities.push('onoff');
+						if (activity.type === 'VirtualTelevisionN') {
+							var foundDevice = {
+								name: activity.label,
+								class: 'tv',
+								capabilities: capabilities,
+								data: {
+									id: activity.id,
+									hubId: hubId,
+									controlGroup: activity.controlGroup,
+									label: activity.label
+								}
+							};
 
-						virtualTVActivities.push(foundDevice);
-					}
+							activities.push(foundDevice);
+						}
+						else {
+							var foundDevice = {
+								name: activity.label,
+								capabilities: capabilities,
+								data: {
+									id: activity.id,
+									hubId: hubId,
+									controlGroup: activity.controlGroup,
+									label: activity.label
+								}
+							};
+
+							activities.push(foundDevice);
+						}
+					});
 				});
-				resolve(virtualTVActivities);
+				resolve(activities);
 			});
 		});
 	}
@@ -187,25 +209,29 @@ class App extends Homey.App {
 		return new Promise((resolve, reject) => {
 			hubManager.connectToHub(ip).then((hub) => {
 				hub.devices.forEach((device) => {
-					console.log(device.type);
-					let iconName = iconsMap[device.type];
-					let iconPath = '';
-					if (iconName !== undefined) {
-						iconPath = `/images/${iconName}.svg`;
-					}
-					else {
-						iconPath = `/icon.svg`;
-					}
-					var foundDevice = {
-						name: device.label,
-						icon: iconPath,
-						data: {
-							id: device.id,
-							hubId: hubId,
-							controlGroup: device.controlGroup
+					capabilityhelper.getCapabilities(device.controlGroup).then((capabilities) => {
+						console.log(device.type);
+						let iconName = iconsMap[device.type];
+						let iconPath = '';
+						if (iconName !== undefined) {
+							iconPath = `/images/${iconName}.svg`;
 						}
-					};
-					devices.push(foundDevice);
+						else {
+							iconPath = `/icon.svg`;
+						}
+						var foundDevice = {
+							name: device.label,
+							icon: iconPath,
+							capabilities: capabilities,
+							data: {
+								id: device.id,
+								hubId: hubId,
+								controlGroup: device.controlGroup,
+								label: device.label
+							}
+						};
+						devices.push(foundDevice);
+					})
 				});
 				resolve(devices);
 			});
