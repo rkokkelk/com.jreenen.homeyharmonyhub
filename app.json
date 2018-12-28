@@ -79,12 +79,6 @@
             },
             "class": "other",
             "capabilities": [
-                "onoff",
-                "volume_up",
-                "volume_down",
-                "volume_mute",
-                "channel_up",
-                "channel_down"
             ],
             "images": {
                 "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",

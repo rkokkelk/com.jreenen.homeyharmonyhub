@@ -20,7 +20,6 @@ class HarmonyActivity extends Homey.Device {
 
         this.registerCapabilityListener('onoff', (turnon, opts, callback) => {
             console.log(`ON/OFF triggered on ${this._deviceData.label}`);
-            console.log(turnon);
             let foundHub = Homey.app.getHub(this._deviceData.hubId);
 
             hubManager.connectToHub(foundHub.ip).then((hub) => {
@@ -137,6 +136,15 @@ class HarmonyActivity extends Homey.Device {
 
     onAdded() {
         this.log('activity added');
+        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+        hubManager.connectToHub(foundHub.ip).then((hub) => {
+            if(hub.currentActivity.label === this._deviceData.label){
+                this.setCapabilityValue('onoff', true);
+            }
+            else{
+                this.setCapabilityValue('onoff', false);
+            }
+        });
     }
 
     onDeleted() {
