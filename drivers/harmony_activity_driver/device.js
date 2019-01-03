@@ -10,7 +10,10 @@ class HarmonyActivity extends Homey.Device {
         this._deviceData = this.getData();
 
         hubManager.on('activityChanged', (activityName, hubId) => {
-            console.log(activityName);
+            if(hubId !== this._deviceData.hubId){
+                return;
+            }
+            
             if (activityName === this._deviceData.label) {
                 this.setCapabilityValue('onoff', true);
             }
