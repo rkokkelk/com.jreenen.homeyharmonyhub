@@ -1,6 +1,7 @@
 {
     "id": "com.jreenen.homeyharmonyhub",
     "sdk": 2,
+    "brandColor": "#00B8FC",
     "name": {
         "en": "Homey Harmony Hub",
         "nl": "Homey Harmony Hub"
