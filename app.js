@@ -4,7 +4,8 @@ const Homey = require('homey');
 const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const HubManager = require('./lib/hubmanager.js');
 const CapabilityHelper = require('./lib/capabilityhelper.js');
-const util = require('util')
+const https = require('https');
+const parse = require('url').parse;
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
@@ -12,11 +13,60 @@ let hubManager = new HubManager();
 let capabilityhelper = new CapabilityHelper();
 
 const iconsMap = {
-	'PVR': 'pvr_noun_893953_FFFFFF',
-	'StereoReceiver': 'stereo_receiver_noun_586620_FFFFFF',
-	'Television': 'television_noun_541411_FFFFFF',
-	'GameConsoleWithDvd': 'gameconsole_noun_444_FFFFFF',
-	//'Default': ''
+	'AirConditioner': 'Air Conditioner.svg',
+	'Amplifier': 'Amplifier.svg',
+	'AppleTV': 'Apple TV.svg',
+	'AudioVideoSwitch': 'Audio Video Switch.svg',
+	'AutomationGateway': 'Automation gateway.svg',
+	'Blinds': 'Blinds.svg',
+	'MiniSystemCDRadioCassette': 'Boombox.svg',
+	'MiniSystemDvdCDRadio': 'Boombox.svg',
+	'MiniSystemDvdVcrRadio': 'Boombox.svg',
+	'Camera': 'Camera.svg',
+	'CDPlayer': 'CD Player.svg',
+	'TVDVD': 'Clasic Television.svg',
+	'TVDVDVCR': 'Clasic Television.svg',
+	'TVHDD': 'Clasic Television.svg',
+	'TVVCR': 'Clasic Television.svg',
+	'ClimateControl': 'Climate Control.svg',
+	'Computer': 'Computer.svg',
+	'DAT': 'Digital Audio Cassette.svg',
+	'Dimmer': 'Dimmer.svg',
+	'DoorLock': 'Doorlock.svg',
+	'DVDRVCR': 'DVD Player.svg',
+	'DVDRecorder': 'DVD Player.svg',
+	'DVDVCR': 'DVD Player.svg',
+	'DVD': 'DVD.svg',
+	'Fan': 'Fan.svg',
+	'GameConsole': 'Game Console.svg',
+	'GameConsoleWithDvd': 'Game Console.svg',
+	'StereoReceiver': 'Hi-Fi Stereo.svg',
+	'HomeAppliance': 'Home Appliances.svg',
+	'Controller': 'Home Automation.svg',
+	'CDJukebox': 'Jukebox.svg',
+	'Laptop': 'Laptop.svg',
+	'LaserdiscPlayer': 'Laser Disc.svg',
+	'LightController': 'Light controller.svg',
+	'MediaPlayer': 'Media Player.svg',
+	'MinidiscPlayer': 'Mini disk.svg',
+	'Monitor': 'Monitor.svg',
+	'DigitalMusicServer': 'Music server.svg',
+	'Plug': 'Plug.svg',
+	'ProjectorScreen': 'Projector Screen.svg',
+	'Projector': 'Projector.svg',
+	'RadioTuner': 'Radio.svg',
+	'PVR': 'PVR.svg',
+	'Satellite': 'Satelite Dish.svg',
+	'Sensor': 'Sensor.svg',
+	'CableBox': 'Set-top box.svg',
+	'DigitalSetTopBox': 'Set-top box.svg',
+	'SmokeDetector': 'Smoke Detector.svg',
+	'Television': 'Television.svg',
+	'Thermostat': 'Thermostat.svg',
+	'Nest': 'Thermostat.svg',
+	'VCR': 'VCR.svg',
+	'TVCamera': 'Video Camera.svg',
+
 }
 
 class App extends Homey.App {
@@ -43,6 +93,14 @@ class App extends Homey.App {
 				hub.Hub = hubManager.connectToHub(hub.ip);
 				this.addHub(hub);
 			}
+
+			this.emit('hubonline', hub, true);
+			console.log(`Hub ${hub.friendlyName} is online`);
+		});
+
+		this._discover.on('offline', (hub) => {
+			this.emit('hubonline', hub, false);
+			console.log(`Hub ${hub.friendlyName} went offline`);
 		});
 
 		this._discover.on('error', (err) => {
@@ -147,10 +205,9 @@ class App extends Homey.App {
 	getHub(hubId) {
 		var foundHub = this._hubs.find(x => x.uuid === hubId);
 
-		if (foundHub != undefined)
-			console.log(`Found hub with id ${foundHub.uuid} and name ${foundHub.friendlyName}`)
-		else
+		if (foundHub === undefined) {
 			console.log(`No hub found with id ${hubId}`)
+		}
 
 		return foundHub;
 	}
@@ -214,11 +271,12 @@ class App extends Homey.App {
 						let iconName = iconsMap[device.type];
 						let iconPath = '';
 						if (iconName !== undefined) {
-							iconPath = `/images/${iconName}.svg`;
+							iconPath = `/device_icons/${iconName}`;
 						}
 						else {
 							iconPath = `/icon.svg`;
 						}
+
 						var foundDevice = {
 							name: device.label,
 							icon: iconPath,
@@ -280,16 +338,19 @@ class App extends Homey.App {
 				let foundHub = this.getHub(hubId);
 
 				return new Promise((resolve, reject) => {
-					if (foundHub == undefined)
+					if (foundHub == undefined) {
 						return reject();
+					}
 
 					hubManager.connectToHub(foundHub.ip).then((hub) => {
 						hub.stopActivity().then(() => {
 							resolve();
-						}).catch(() => {
-							reject();
+						}).catch((err) => {
+							console.log(err);
+							reject(err);
 						});
 					}).catch((err) => {
+						console.log(err);
 						reject(err);
 					});
 				});
@@ -306,14 +367,16 @@ class App extends Homey.App {
 				let foundHub = this.getHub(hubId);
 
 				return new Promise((resolve, reject) => {
-					if (foundHub == undefined)
+					if (foundHub == undefined) {
 						return reject();
+					}
 
 					hubManager.connectToHub(foundHub.ip).then((hub) => {
 						hub.startActivity(activityId).then(() => {
 							resolve();
-						}).catch(() => {
-							reject();
+						}).catch((err) => {
+							console.log(err);
+							reject(err);
 						});
 					}).catch((err) => {
 						reject(err);
@@ -349,8 +412,9 @@ class App extends Homey.App {
 					let hubArgValue = args.hub;
 					let foundHub = this.getHub(hubArgValue.hubId);
 
-					if (foundHub == undefined)
+					if (foundHub == undefined) {
 						return reject();
+					}
 
 					if (hubArgValue !== '') {
 						hubManager.connectToHub(foundHub.ip).then((hub) => {
@@ -382,8 +446,9 @@ class App extends Homey.App {
 				let repeat = args.control_command_repeat;
 
 				return new Promise((resolve, reject) => {
-					if (foundHub == undefined)
+					if (foundHub == undefined) {
 						return reject();
+					}
 
 					for (var index = 0; index - 1 < repeat; index++) {
 						hubManager.connectToHub(foundHub.ip).then((hub) => {
@@ -470,6 +535,29 @@ class App extends Homey.App {
 		});
 
 		return Promise.resolve(devicesJson);
+	}
+
+	sendDebugReport(){
+		this.getPairedDevices().then((body) => {
+			let url = parse(Homey.env.DEBUG_REPORT_URL);
+			url.method = 'POST';
+			url.headers = {
+				'Content-Type': 'application/json',
+				'Content-Length': body.length
+			};
+
+			let request = https.request(url, (response) => {
+			});
+	
+			request.on('error', (err) => {
+				console.log(err);
+			});
+
+			request.write(body);
+			request.end;
+	
+			return Promise.resolve();
+		});
 	}
 }
 

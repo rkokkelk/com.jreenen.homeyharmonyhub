@@ -13,6 +13,10 @@
         "appliances",
         "video"
     ],
+    "tags": {
+        "en": [ "logitech", "remote", "harmony", "hub" ],
+        "nl": [ "logitech", "remote", "harmony", "hub", "afstandsbediening"  ]
+    },
     "version": "1.4.2",
     "compatibility": ">=1.5.0",
     "images": {
