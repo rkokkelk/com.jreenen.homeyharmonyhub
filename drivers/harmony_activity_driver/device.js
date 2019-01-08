@@ -9,11 +9,27 @@ class HarmonyActivity extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
 
+        Homey.app.on('hubonline', (hub, value) => {
+            let currentAvailability = this.getAvailable();
+            if (hub.uuid === this._deviceData.hubId) {
+                if (currentAvailability !== value) {
+                    if (value) {
+                        this.setAvailable();
+                    }
+                    else {
+                        this.setUnavailable(`Hub ${hub.friendlyName} ${Homey.__("offline")}`);
+                    }
+                    return;
+                }
+            }
+        });
+
+
         hubManager.on('activityChanged', (activityName, hubId) => {
-            if(hubId !== this._deviceData.hubId){
+            if (hubId !== this._deviceData.hubId) {
                 return;
             }
-            
+
             if (activityName === this._deviceData.label) {
                 this.setCapabilityValue('onoff', true);
             }
@@ -30,13 +46,13 @@ class HarmonyActivity extends Homey.Device {
                 if (turnon) {
                     hub.startActivity(this._deviceData.id).catch((err) => {
                         console.log(err);
-                        return Promise.reject();
+                        return Promise.reject(err);
                     });
                 }
                 else {
                     hub.stopActivity().catch((err) => {
                         console.log(err);
-                        return Promise.reject();
+                        return Promise.reject(err);
                     });
                 }
 
@@ -57,7 +73,7 @@ class HarmonyActivity extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeUpFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -77,7 +93,7 @@ class HarmonyActivity extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeDownFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -97,7 +113,7 @@ class HarmonyActivity extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeMuteFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -117,7 +133,7 @@ class HarmonyActivity extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelUpFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -137,7 +153,7 @@ class HarmonyActivity extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelDownFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 

@@ -13,7 +13,11 @@
         "appliances",
         "video"
     ],
-    "version": "1.5.2",
+    "tags": {
+        "en": [ "logitech", "remote", "harmony", "hub" ],
+        "nl": [ "logitech", "remote", "harmony", "hub", "afstandsbediening"  ]
+    },
+    "version": "1.5.3",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",

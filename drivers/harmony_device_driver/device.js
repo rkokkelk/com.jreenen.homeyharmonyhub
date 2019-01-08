@@ -9,14 +9,30 @@ class HarmonyDevice extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
 
+        Homey.app.on('hubonline', (hub, value) => {
+            let currentAvailability = this.getAvailable();
+            if (hub.uuid === this._deviceData.hubId) {
+                if (currentAvailability !== value) {
+                    if (value) {
+                        this.setAvailable();
+                    }
+                    else {
+                        this.setUnavailable(`Hub ${hub.friendlyName} ${Homey.__("offline")}`);
+                    }
+                    return;
+                }
+            }
+        });
+
         this.getCapabilities().forEach(capability => {
             if (capability === "onoff") {
                 this.registerCapabilityListener('onoff', () => {
                     return new Promise((resolve, reject) => {
                         this.onCapabilityOnoff().then(() => {
                             resolve();
-                        }).catch(() => {
-                            reject();
+                        }).catch((err) => {
+                            console.log(err);
+                            reject(err);
                         });
                     });
                 });
@@ -34,7 +50,7 @@ class HarmonyDevice extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeUpFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -54,7 +70,7 @@ class HarmonyDevice extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeDownFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -74,7 +90,7 @@ class HarmonyDevice extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeMuteFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -94,7 +110,7 @@ class HarmonyDevice extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelUpFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -114,7 +130,7 @@ class HarmonyDevice extends Homey.Device {
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelDownFunction).catch((err) => {
                                 console.log(err);
-                                return Promise.reject();
+                                return Promise.reject(err);
                             });
                         });
 
@@ -143,7 +159,7 @@ class HarmonyDevice extends Homey.Device {
                 console.log(`Condition ${isPowerdOn}`);
                 return Promise.resolve(isPowerdOn);
             });
-
+            
         console.log(`Device (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
     }
 
@@ -219,7 +235,7 @@ class HarmonyDevice extends Homey.Device {
             hubManager.connectToHub(foundHub.ip).then((hub) => {
                 hub.commandAction(powerCommand).catch((err) => {
                     console.log(err);
-                    return Promise.reject();
+                    return Promise.reject(err);
                 });
             });
 
