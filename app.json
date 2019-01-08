@@ -85,8 +85,8 @@
             "capabilities": [
             ],
             "images": {
-                "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
-                "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
+                "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
+                "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
             },
             "pair": [
                 {
