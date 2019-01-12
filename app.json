@@ -18,7 +18,7 @@
         "en": [ "logitech", "remote", "harmony", "hub" ],
         "nl": [ "logitech", "remote", "harmony", "hub", "afstandsbediening"  ]
     },
-    "version": "1.5.4",
+    "version": "2.0.0",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",
@@ -28,9 +28,9 @@
         {
             "id": "harmony_device_driver",
             "name": {
-                "en": "Harmony device driver"
+                "en": "Harmony device"
             },
-            "class": "other",
+            "class": "remote",
             "capabilities": [
                 "onoff"
             ],
@@ -80,9 +80,9 @@
         {
             "id": "harmony_activity_driver",
             "name": {
-                "en": "Harmony activity driver"
+                "en": "Harmony activity"
             },
-            "class": "other",
+            "class": "remote",
             "capabilities": [
             ],
             "images": {
@@ -213,6 +213,7 @@
             },
             {
                 "id": "turned_on",
+                "deprecated": true,
                 "title": {
                     "en": "Device turned on",
                     "nl": "Apparaat is aangezet"
@@ -241,6 +242,7 @@
             },
             {
                 "id": "turned_off",
+                "deprecated": true,
                 "title": {
                     "en": "Device turned off",
                     "nl": "Apparaat is uitgezet"
@@ -270,8 +272,8 @@
             {
                 "id": "hub_inactive",
                 "title": {
-                    "en": "Hub is inactive",
-                    "nl": "Hub is inactief"
+                    "en": "Hub inactive",
+                    "nl": "Hub inactief"
                 },
                 "args": [
                     {
@@ -356,6 +358,7 @@
         "conditions": [
             {
                 "id": "is_on",
+                "deprecated": true,
                 "title": {
                     "en": "Device !{{is|isn't}} on",
                     "nl": "Appraat !{{is|is niet}} aan"
