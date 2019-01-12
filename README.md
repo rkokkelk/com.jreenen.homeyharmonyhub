@@ -7,66 +7,10 @@ Make sure that Homey is connected to the same network as your Logitech Harmony H
 > Important: This app uses a local api available on your Logitech Harmony Hub that is undocumented and unsupported by Logitech. If Logitech decides to remove this api in a firmware upgrade this app will stop working.
 
 ## Donations
-If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation. ~~The donations will be spent on buying a second Harmony Hub to support me testing a multi-hub situation.~~ The donations will be spent on buying a second Homey to use as a development Homey which supports me to keep this app running on future firmware versions of Homey.
+If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation.  The donations will be spent on buying a second Homey to use as a development Homey which supports me to keep this app running on future firmware versions of Homey.
 
 [<img src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8LWS6UKUCHJNC)
 
-# Index
-  * [Supported devices](#supported-devices)
-  * [Supported languages](#supported-languages)
-- [Drivers](#drivers)
-  * [Harmony Device driver](#harmony-device-driver)
-  * [Harmony Activity driver](#harmony-activity-driver)
-- [Capabilities](#capabilities)
-  * [OnOff](#onoff)
-  * [VolumeUp/VolumeDown/VolumeMute](#volumeup-volumedown-volumemute)
-  * [ChannelUp/ChannelDown](#channelup-channeldown)
-- [Flow cards](#flow-cards)
-  * [Triggers (when)](#triggers--when-)
-  * [*Application*](#-application-)
-      - [Activity starting](#activity-starting)
-      - [Activity started](#activity-started)
-      - [Activity stopped](#activity-stopped)
-      - [Hub inactive](#hub-inactive)
-  * [*Device and activity*](#-device-and-activity-)
-      - [Turned on](#turned-on)
-      - [Turned off](#turned-off)
-  * [Conditions (and)](#conditions--and-)
-  * [*Application*](#-application--1)
-      - [Activity is/is't matched](#activity-is-is-t-matched)
-  * [*Device and activity*](#-device-and-activity--1)
-      - [Is on / Is off](#is-on---is-off)
-  * [Actions (then)](#actions--then-)
-  * [*Application*](#-application--2)
-      - [Start activity](#start-activity)
-      - [Stop activity](#stop-activity)
-  * [*Device and activity*](#-device-and-activity--2)
-      - [Turn on](#turn-on)
-      - [Turn off](#turn-off)
-      - [Toggle on or off](#toggle-on-or-off)
-      - [Mute the volume](#mute-the-volume)
-      - [Unmute the volume](#unmute-the-volume)
-      - [Turn the volume up](#turn-the-volume-up)
-      - [Turn the volume down](#turn-the-volume-down)
-      - [One channel up](#one-channel-up)
-      - [One channel down](#one-channel-down)
-      - [Send command (device exlusive)](#send-command--device-exlusive-)
-- [(Voice) commands](#-voice--commands)
-- [Version History](#version-history)
-    + [v1.5.x](#v15x)
-    + [v1.4.x](#v14x)
-    + [v1.3.x](#v13x)
-    + [v1.2.x](#v12x)
-    + [v1.1.x](#v11x)
-    + [v1.0.0](#v100)
-
-## Supported devices
-- Any **device** available on your Logitech Harmony Hub.
-- Any **activity** available on your Logitech Harmony Hub.
-
-## Supported languages
-- Dutch
-- English
 
 # Drivers
 
@@ -120,6 +64,7 @@ Every time an activity is about to start on your Logitech Harmony Hub this card 
 Every time an activity is started on your Logitech Harmony Hub this card will trigger. It provides 2 tags:
 - hub, this tag contains the hub name on which the activity is started.
 - activity, this tag contains the activity name of the activity that is started.
+
 
 #### Activity stopped
 Every time an activity is stopped on your Logitech Harmony Hub this card will trigger. It provides 2 tags:
@@ -215,7 +160,7 @@ With this card you can send a command registered in your Logitech Harmony Hub to
 
 # Version History
 
-### v1.5.x
+### v2.0.x
 - New option to add activities as a device.
 - If an activity is recognized as a television activity it will use the Homey built-in TV class and e.g. let Homey respond to: Ok Homey, turn on tv
 - Capabilities for on/off, channel up/down, volume up/down/mute are now mapped on devices and activities that has support for them.
