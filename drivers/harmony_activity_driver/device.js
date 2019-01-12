@@ -5,7 +5,7 @@ const HubManager = require('../../lib/hubmanager.js');
 const Hub = require('../../lib/hub.js')
 const hubManager = new HubManager();
 
-class HarmonyDevice extends Homey.Device {
+class HarmonyActivity extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
 
@@ -24,20 +24,43 @@ class HarmonyDevice extends Homey.Device {
             }
         });
 
-        this.getCapabilities().forEach(capability => {
-            if (capability === "onoff") {
-                this.registerCapabilityListener('onoff', () => {
-                    return new Promise((resolve, reject) => {
-                        this.onCapabilityOnoff().then(() => {
-                            resolve();
-                        }).catch((err) => {
-                            console.log(err);
-                            reject(err);
-                        });
-                    });
-                });
+
+        hubManager.on('activityChanged', (activityName, hubId) => {
+            if (hubId !== this._deviceData.hubId) {
+                return;
             }
 
+            if (activityName === this._deviceData.label) {
+                this.setCapabilityValue('onoff', true);
+            }
+            else {
+                this.setCapabilityValue('onoff', false);
+            }
+        });
+
+        this.registerCapabilityListener('onoff', (turnon, opts, callback) => {
+            console.log(`ON/OFF triggered on ${this._deviceData.label}`);
+            let foundHub = Homey.app.getHub(this._deviceData.hubId);
+
+            hubManager.connectToHub(foundHub.ip).then((hub) => {
+                if (turnon) {
+                    hub.startActivity(this._deviceData.id).catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                }
+                else {
+                    hub.stopActivity().catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                }
+
+                callback(null);
+            });
+        });
+
+        this.getCapabilities().forEach(capability => {
             if (capability === "volume_up") {
                 this.registerCapabilityListener('volume_up', (value, opts, callback) => {
                     return new Promise((resolve, reject) => {
@@ -140,118 +163,26 @@ class HarmonyDevice extends Homey.Device {
             }
         });
 
-        hubManager.on(`deviceInitialized_${this._deviceData.id}`, (device) => {
-            this.device = device;
-
-            device.on('stateChanged', (state) => {
-                if (this.getCapabilities().find(c => c === "onoff")) {
-                    this.setCapabilityValue('onoff', state.Power === 'On');
-                    this.triggerOnOffAction(state);
-                }
-            });
-        });
-
-        let isOnCondition = new Homey.FlowCardCondition('is_on');
-        isOnCondition
-            .register()
-            .registerRunListener((args, state) => {
-                let isPowerdOn = args.hub_device.device.power === 'On';
-                console.log(`Condition ${isPowerdOn}`);
-                return Promise.resolve(isPowerdOn);
-            });
-            
-        console.log(`Device (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
+        console.log(`Activity (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
     }
 
     onAdded() {
-        this.log('device added');
+        this.log('activity added');
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
-        if (this.getCapabilities().find(c => c === "onoff")) {
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
-                let deviceInCurrentActivity = hub.currentActivity.fixit[this._deviceData.id];
-
-                if (deviceInCurrentActivity.Power === "On") {
-                    this.setCapabilityValue('onoff', true);
-                }
-                else {
-                    this.setCapabilityValue('onoff', false);
-                }
-            });
-        }
+        hubManager.connectToHub(foundHub.ip).then((hub) => {
+            if (hub.currentActivity.label === this._deviceData.label) {
+                this.setCapabilityValue('onoff', true);
+            }
+            else {
+                this.setCapabilityValue('onoff', false);
+            }
+        });
     }
 
     onDeleted() {
-        this.log('device deleted');
+        this.log('activity deleted');
     }
 
-    triggerOnOffAction(deviceState) {
-        let currenOnOffState = this.getCapabilityValue('onoff');
-        let turnedOnDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_on').register();
-        let turnedOffDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_off').register();
-        let device = this;
-        let hub = Homey.app.getHub(this._deviceData.hubId);
-        let tokens = {
-            'hub': hub.friendlyName
-        };
-        let state = {};
-        let deviceTurnedOn = deviceState.Power === 'On';
-
-        if (currenOnOffState !== deviceTurnedOn) {
-
-            if (currenOnOffState === false) {
-                turnedOnDeviceTrigger.trigger(device, tokens, state);
-            }
-            else {
-                turnedOffDeviceTrigger.trigger(device, tokens, state);
-            }
-
-            this.setCapabilityValue('onoff', deviceTurnedOn);
-        }
-    }
-
-    onCapabilityOnoff() {
-        let powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
-        let foundHub = Homey.app.getHub(this._deviceData.hubId);
-
-        /* Could be a smart home device */
-        if (powerGroup === undefined) {
-            powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Home');
-        }
-
-        if (powerGroup !== undefined) {
-            let currenOnOffState = this.getCapabilityValue('onoff');
-            let powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
-            let powerOnFunction = powerGroup.function.find(x => x.name === 'PowerOn');
-            let powerOffFunction = powerGroup.function.find(x => x.name === 'PowerOff');
-            let powerCommand = '';
-
-            if (currenOnOffState) {
-                powerCommand = powerOffFunction !== undefined ? powerOffFunction : powerToggleFunction;
-            }
-            else {
-                powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
-            }
-
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
-                hub.commandAction(powerCommand).catch((err) => {
-                    console.log(err);
-                    return Promise.reject(err);
-                });
-            });
-
-            let deviceState = {};
-            deviceState.Power = 'Off'
-            if (!currenOnOffState) {
-                deviceState.Power = 'On';
-            }
-
-            this.triggerOnOffAction(deviceState);
-
-            return Promise.resolve();
-        }
-
-        return Promise.reject();
-    }
 }
 
-module.exports = HarmonyDevice;
+module.exports = HarmonyActivity;

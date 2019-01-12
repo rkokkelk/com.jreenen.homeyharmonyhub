@@ -1,0 +1,57 @@
+<style type="text/css">
+    .device span.name {
+        padding-left: 10px;
+    }
+</style>
+
+<script type="text/javascript">
+    Homey.setTitle(__('pair.select_hub.title'));
+
+    Homey.emit('select_hub', null, function (err, hubs) {
+        $('#hubs-list-loading').fadeOut(200);
+
+        if (err) return error(err);
+
+
+        if (hubs.length === 0)
+            return error('pair.select_hub.no_hubs');
+
+        // render list
+        var hubsRender = $('#hubs-list-template').render(hubs);
+        $('#hubs-list').html(hubsRender);
+
+        // auto-select first item
+        if ($('#hubs-list .radio input').length > 0 && $('#hubs-list .radio input:checked').length < 1) {
+            $('#hubs-list .radio input').first().prop('checked', true).trigger('change');
+        }
+    })
+
+    function error(str) {
+        $('#error').html(__(str));
+        Homey.setNavigationClose();
+    }
+
+    $(document).on('change', '#hubs-list input:radio', function () {
+        Homey.emit('hub_changed', {
+            logitech_hubId: this.value
+        });
+
+    });
+
+</script>
+
+<script type="text/html" id="hubs-list-template">
+    <li class="device">
+        <label for='device-{{:id}}' class="name">
+			<span class="icon" style="-webkit-mask-image: url({{:icon}})"></span>
+            <span class="name">{{:name}}</span>
+		</label>
+        <label for='device-{{:id}}' class="radio">
+			<input id='device-{{:id}}' type="radio" name="device" value="{{:id}}" tabindex="{{:#index+1}}" />
+		</label>
+    </li>
+</script>
+
+<i id="hubs-list-loading" class="loading fa fa-cog fa-spin"></i>
+<ul id="hubs-list" class="deviceclasses-list"></ul>
+<p id="error"></p>

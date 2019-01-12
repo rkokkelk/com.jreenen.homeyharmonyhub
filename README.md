@@ -1,199 +1,203 @@
-# Homey Harmony Hub App
+# Homey harmony hub
 
-At the moment this project supports:
-- Pairing of devices connected to the harmony hub
-- A mobile card supporting the power toggle functionality of the device
-- An action card for sending a specific command to the Harmony device using homey flows and how many times this command needs to be repeated.
-- Action cards for starting/stopping a hub activity
-- Condition card to check if device is/isn't turned on
-- Condition card to compare if a specific activity has been started.
-- Trigger cards for device is turned on/off
-- Trigger cards for activity is starting/started/stopped
-- Trigger card for inactivity
-- Syncing the device onoff state based on the current hub activity
-- Picking up activity changes from external sources (e.g. the Logitech Harmony Remote)
+This application adds support for the Logitech Harmony Hub to Homey. Control the available devices and/or activities inside a Homey flow, voice commands or the homey app.
 
+Make sure that Homey is connected to the same network as your Logitech Harmony Hub(s) and the app will autodiscover your hub(s). 
 
-# Donations
-If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation. The donations will be spent on buying a second Harmony Hub to support me testing a multi-hub situation.
+> Important: This app uses a local api available on your Logitech Harmony Hub that is undocumented and unsupported by Logitech. If Logitech decides to remove this api in a firmware upgrade this app will stop working.
+
+## Donations
+If you like the work on this project please consider a donation. Of course, this is optional and you should in no way feel obligated to send a donation.  The donations will be spent on buying a second Homey to use as a development Homey which supports me to keep this app running on future firmware versions of Homey.
 
 [<img src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8LWS6UKUCHJNC)
 
-# Setup
 
-Once the app is installed you can pair a device that is connected to the harmony hub:
+# Drivers
 
-### -1- Click on the plus on the homey Zones & Devices screen to add devices
+To communicate with your Logitech Harmony Hub this app uses drivers. When adding a device you can choose between 2 drivers.
 
-![Adding a device](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Add_device.png?raw=true)
+## Harmony Device driver
 
-### -2- Select homey harmony hub
+This driver allows you to pair devices that are synchronised to your Logitech Harmony Hub e.g.:
 
-![Select homey harmony hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Select_homey_harmony_hub.png?raw=true)
+![Logitech Harmony devices](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Harmony-devices.JPG?raw=true)
 
-### -3- Select the hub you want to start pairing on
+Once paired you can use this device in flows or control it from the Homey app.
 
-![Select harmony hub for pairing](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Select_hub.png?raw=true)
+## Harmony Activity driver
 
-### -4- Select all devices you want to pair
+This driver allows you to pair activities that are synchronised to your Logitech Harmony Hub e.g.:
 
-![Select devices for pairing](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Select_devices.png?raw=true)
+![Logitech Harmony activities](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Harmony-activities.JPG?raw=true)
 
-### -5- Your devices are now paired
+Once paired you can use this activity in flows or control it from your Homey app.
 
-![Devices paired](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Devices_paired.png?raw=true)
+# Capabilities
 
-# Setting up triggers
+During the pairing process the capibilities of devices and activities will get mapped to Homey capabilities. 
 
-The following triggers are supported by this app:
+## OnOff
+Capability for turning a device or activity on or off.
 
-- Activity started
-- Activity stopped
-- Device turned on
-- Device turned off
+## VolumeUp/VolumeDown/VolumeMute
+Capability for controlling the volume level of a device or activity.
 
-## Activity started
+## ChannelUp/ChannelDown
+Capability for controlling the current channel of a device or activity.
 
-To use this trigger drag the Homey Harmony Hub from the apps section to the when column
-![Activity started setup](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Activity_started_trigger.png?raw=true)
+# Flow cards
+Flowcards can be used to build flows in Homey's flow editor.
 
-This trigger exposes 2 tokens hub and activity. The hub token reports the hub name an activity was triggered on. The activity token reports the activity name an activity was triggered on.
+## Triggers (when)
 
+*Application*
+-------------
 
-## Activity stopped
+To use the application cards select 'Homey Harmony Hub' in the 'When' column.
 
-To use this trigger drag the Homey Harmony Hub from the apps section to the when column
-![Activity stopped setup](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Activity_stopped_trigger.png?raw=true)
+#### Activity starting
+Every time an activity is about to start on your Logitech Harmony Hub this card will trigger. It provides 2 tags:
+- hub, this tag contains the hub name on which the activity is about to start.
+- activity, this tag contains the activity name of the activity that is about to start.
 
-This trigger exposes 2 tokens hub and activity. The hub token reports the hub name an activity was triggered on. The activity token reports the activity name an activity was triggered on.
-
-
-## Device turned on
-
-To use this triggegr drag the paired device from the devices section to the when column.
-![Device turned on](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Device_turned_on_trigger.png?raw=true)
-
-This trigger exposes 1 token hub. The hub token reports the hub name an activity was triggered on. 
+#### Activity started
+Every time an activity is started on your Logitech Harmony Hub this card will trigger. It provides 2 tags:
+- hub, this tag contains the hub name on which the activity is started.
+- activity, this tag contains the activity name of the activity that is started.
 
 
-## Device turned off
+#### Activity stopped
+Every time an activity is stopped on your Logitech Harmony Hub this card will trigger. It provides 2 tags:
+- hub, this tag contains the hub name on which the activity is started.
+- activity, this tag contains the activity name of the activity that is started.
 
-To use this triggegr drag the paired device from the devices section to the when column.
-![Device turned off](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Device_turned_off_trigger.png?raw=true)
+#### Hub inactive
+This card can trigger if the hub is not active for an interval you choose:
+-  5 minutes
+- 10 minutes
+- 15 minutes
+- 30 minutes
+-  1 hour
+-  2 hours
+-  4 hours
+-  8 hours
 
-This trigger exposes 1 token hub. The hub token reports the hub name an activity was triggered on. 
-
-# Setting up actions
-
-The following actions are supported by this app:
-- Start activity
-- Stop activity
-- Send command to device
-
-## Start activity
-
-To use this action drag the Homey Harmony Hub from the apps section to the then column
-![Start activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Start_activity_action.png?raw=true)
-
-Now specify the Harmony Hub on which you want to start your activity 
-![Start activity specify hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Start_activity_action_select_hub.png?raw=true)
-
-After you specified the hub you can select the activity you want to start
-![Start activity specify activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Start_activity_action_select_activity.png?raw=true)
+It provides the name of the hub that is inactive as a tag.
 
 
-## Stop activity
+*Device and activity*
+-------------------
+#### Turned on
+Every time the selected device or activity is turned on this card will trigger.
 
-To use this action drag the Homey Harmony Hub from the apps section to the then column
-![Stop activity](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Stop_activity_action.png?raw=true)
+#### Turned off
+Every time the selected device or activity is turned off this card will trigger.
 
-Now specify the Harmony Hub on which you want to stop your activity 
-![Stop activity specify hub](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Stop_activity_action_select_hub.png?raw=true)
+## Conditions (and)
 
-## Send command to device
+*Application*
+-------------
+#### Activity is/is't matched
+This card can be used to check if an activity is equal or not equal to a specified activity. Although you can type in the activity name by hand I would suggest using a predefined activity tag (e.g. generated by the Activity started application trigger card).
 
-To use this triggegr drag the paired device from the devices section to the then column.
-![Send command to device](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Send_command_action.png?raw=true)
+*Device and activity*
+---------------------
+#### Is on / Is off
+This card can be used to check if a specific device or activity is turned on or off.
 
-Now specify the control group your command is in
-![Send command to device specify control group](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Send_command_action_select_control_group.png?raw=true)
+## Actions (then)
 
-After you specified the control group you can select the command you want to send to the selected device
-![Send command to device specify command](https://github.com/jreenen/com.jreenen.homeyharmonyhub.documentation/blob/master/assets/images/documentation/Send_command_action_select_command_option.png?raw=true)
+*Application*
+-------------
+#### Start activity
+This card will start a selected activity on a selected hub.
 
+#### Stop activity
+This card will stop the current activity on a selected hub.
 
-# Future releases
+*Device and activity*
+--------
+#### Turn on
+This card will turn on a specific device or activity.
 
-At the moment there is no real roadmap but for the upcoming release you can expect the following:
-- ...... create an issue on Github with a Feature request label an who knows your feature will be in the next release!
+#### Turn off
+This card will turn off a specific device or activity.
 
-# What does this app track?
+#### Toggle on or off
+This card will toggle the onoff state for a specific device or activity.
 
-This app uses Application Insights to track the following topics:
-- Application errors, which help to solve issues
-- Unknown device types, so I can add more icons in future releases, making it easier to find the device you are looking for in the Homey flow editor.
+#### Mute the volume
+This card will mute the volume for a specific device or activity.
 
-The information gathered is for debugging purposes only at no time will it be used for tracking personal information. 
+#### Unmute the volume
+This card will unmute the volume for a specific device or activity.
 
-# Contributing to this project
-If you want to be a contributor for this project, you are very welcome! 
+#### Turn the volume up
+This card will turn the volume up for a specific device or activity.
 
-# Contact information
-If you want to contact me the best way is joining the [athomcommunity](http://athomcommunity.slack.com) on slack and send a direct message to @jreenen.  
+#### Turn the volume down
+This card will turn the volume down for a specific device or activity.
 
-# Versioning
-This app uses semantic versioning
-- MAJOR version when you make incompatible API changes,
-- MINOR version when you add functionality in a backwards-compatible manner, and
-- PATCH version when you make backwards-compatible bug fixes.
+#### One channel up
+This card will switch one channel up for a specific device or activity.
 
-For a detailed desceiption you can find the [documentation for semantic versioning here](http://semver.org/)
+#### One channel down
+This card will switch one channel down for a specific device or activity.
 
-# Version history
+#### Send command (device exlusive)
+With this card you can send a command registered in your Logitech Harmony Hub to your device (e.g. input hdmi 1, record program...). The logitech harmony hub is grouping this kind of command so first specify the group and then the command you want to have executed. You can also specify the ammount of times this command should be repeated where 0 is only one time 1 is executing the same command twice etc..
 
-### v1.3.0
+# (Voice) commands
 
-Added starting activity trigger to be informed an activity is about to start.
-Added a repeat argument to the send command action (e.g. for adjusting the volume by more than just one step).
-Added an inactivity trigger to be informed when the hub is being inactive for a specified period.
-Added a activity comparing condition
+- (Ok Homey,) Turn on [device or activity name]
+- (Ok Homey,) Turn off [device or activity name]
+- (Ok Homey,) Mute [device or activity name]
+- (Ok Homey,) Unmute [device or activity name]
+- (Ok Homey,) Volume up [device or activity name]
+- (Ok Homey,) Volume down [device or activity name]
+- (Ok Homey,) Channel up [device or activity name]
+- (Ok Homey,) Channel down [device or activity name]
+
+# Version History
+
+### v2.0.x
+- New option to add activities as a device.
+- If an activity is recognized as a television activity it will use the Homey built-in TV class and e.g. let Homey respond to: Ok Homey, turn on tv
+- Capabilities for on/off, channel up/down, volume up/down/mute are now mapped on devices and activities that has support for them.
+- If your hub for some reason goes offline all attached devices and activities will be set to unavailable until it is back online.
+- When you add a device or activity on the Logitech harmony app those changes will get synced, so an app restart is no longer needed when changes occur on the hub.
+- Added allot of new icons to use on devices, almost every device type has its own icon now. If you already have a device paired and want to use the new icon you unfortunately have to delete and re-add it.
+- An app settings options that makes it possible to send me a diagnostic report if you are experiencing a hard to trace bug in this app (only use this when i ask for it)
+
+### v1.4.x
+- App is rewritten to utilize the websockets API instead of XMPP (which got disabled by logitech). Again a big thank you to @denniedegroot for your big help in this.
+
+### v1.3.x
+
+- Added starting activity trigger to be informed an activity is about to start.
+- Added a repeat argument to the send command action (e.g. for adjusting the volume by more than just one step).
+- Added an inactivity trigger to be informed when the hub is being inactive for a specified period.
+- Added a activity comparing condition
 
 A special thanks to @denniedegroot who added on/off functionality for smart home devices and will help me on this project whenever time allows him to.
 
-### v1.2.1
+### v1.2.x
 
-Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that don't support the power toggle command
+- Instead of always using the power toggle command use the power on and power off when they are available and fallback to the power toggle command when they are not available. This solves an issue with devices that don't support the power toggle command
+- Fixed an issue where on powering off an activity, an activity started trigger got raised on the previous activity instead of an activity stopped trigger.
+- For improved stability and future features, a new connection library has been written for the Homey Harmony App. 
+- If an activity has been started/stopped by an external source (e.g. the Logitech Harmony Remote), the app picks up on this event and updates the device states accordingly and triggers the applicable flow cards.
+- You can now use a flow condition card for your device to check if it is/isn't turned on.
 
-Fixed an issue where on powering off an activity, an activity started trigger got raised on the previous activity instead of an activity stopped trigger.
-
-### v1.2.0
-
-For improved stability and future features, a new connection library has been written for the Homey Harmony App. 
-
-If an activity has been started/stopped by an external source (e.g. the Logitech Harmony Remote), the app picks up on this event and updates the device states accordingly and triggers the applicable flow cards.
-
-You can now use a flow condition card for your device to check if it is/isn't turned on.
-
-### v1.1.1
-
-Hotfix release, some users experiencing an error "Error: MAX_CLIENTS=6"
-
-### v1.1.0 
-Pairing of devices connected to the harmony hub
-A mobile card supporting the power toggle functionality of the device
-An action card for sending a specific command to the Harmony device using homey flows.
-Action cards for starting/stopping a hub activity
-Trigger cards for device is turned on/off
-Trigger cards for activity is started/stopped
-Syncing the device on-off state based on the current hub activity
+### v1.1.x
+- Pairing of devices connected to the harmony hub
+- A mobile card supporting the power toggle functionality of the device
+- An action card for sending a specific command to the Harmony device using homey flows.
+- Action cards for starting/stopping a hub activity
+- Trigger cards for device is turned on/off
+- Trigger cards for activity is started/stopped
+- Syncing the device on-off state based on the current hub activity
 
 ### v1.0.0 
 
-Initial release (never hit the Athom store)
-
-# Used external library's
-
-[swissmanu's harmonyhubjs-discover](https://github.com/swissmanu/harmonyhubjs-discover)
-
-
-
+- Initial release (never hit the Athom store)

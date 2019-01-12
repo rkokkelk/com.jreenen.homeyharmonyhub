@@ -1,12 +1,11 @@
 {
 	"save": "Sla veranderingen op",
+	"offline" : "is offline",
 	"settings": {
         "title": "Homey Harmony Hub instellingen",
 		"debugsection": "Debug",
-		"debuginfo": "Debug informatie",
-		"debugintro": "Als je een bug wil rapporteren voeg dan de debug file toe aan het bug rapport.",
-		"usewebsite": "Gebruik <a href='https://my.athom.com/'>https://my.athom.com/</a> om een debug file te genereren, deze functionaliteit werkt niet op een mobiele app.",
-		"downloaddebugfile": "Download debug bestand"	
+		"debugintro": "Gebruik dit als de applicatie ontwikkelaar je vraagt om een diagnostisch rapport op te sturen.",
+		"senddebugreport": "Verstuur diagnostisch rapport"
     },
 	"pair": {
 		"select_hub": {
