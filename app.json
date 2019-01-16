@@ -18,7 +18,7 @@
         "en": [ "logitech", "remote", "harmony", "hub" ],
         "nl": [ "logitech", "remote", "harmony", "hub", "afstandsbediening"  ]
     },
-    "version": "2.0.0",
+    "version": "2.0.1",
     "compatibility": ">=1.5.0",
     "images": {
         "large": "/assets/images/homey_harmony_hub_large.jpg",
