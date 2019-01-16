@@ -30,7 +30,7 @@
             "name": {
                 "en": "Harmony device"
             },
-            "class": "remote",
+            "class": "other",
             "capabilities": [
                 "onoff"
             ],
@@ -82,7 +82,7 @@
             "name": {
                 "en": "Harmony activity"
             },
-            "class": "remote",
+            "class": "other",
             "capabilities": [
             ],
             "images": {
