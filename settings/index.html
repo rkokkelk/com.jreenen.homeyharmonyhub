@@ -2,75 +2,39 @@
 <html>
 
 <head>
-
-    <!-- The '/homey.js' script must be included in your settings view to work -->
     <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
-
 </head>
 
 <body>
 
     <h1 data-i18n="settings.title">
-        <!--
-            This field will automatically be filled by a translated string with key 'settings.title'.
-            Read more about translations at Internationalization.
-            -->
     </h1>
 
     <fieldset>
         <legend data-i18n="settings.debugsection"></legend>
         <p data-i18n="settings.debugintro"></p>
-        <p data-i18n="settings.usewebsite"></p>
         <div class="field row">
             <div class="col-xs-12 col-md-8">
-                <label for="downloaddebugfile" data-i18n="settings.debuginfo"></label>
-                <button id="downloaddebugfile" data-i18n="settings.downloaddebugfile"></button>
+                <button id="senddebugfile" data-i18n="settings.senddebugreport"></button>
             </div>
-
         </div>
-
-
     </fieldset>
 
 
     <script type="text/javascript">
 
-        // a method named 'onHomeyReady' must be present in your code
         function onHomeyReady(Homey) {
+            var downloadDebugFileElement = document.getElementById('senddebugfile');
 
-            // Tell Homey we're ready to be displayed
+            downloadDebugFileElement.addEventListener('click', () => {
+                downloadDebugFileElement.parentNode.removeChild(downloadDebugFileElement);
+                Homey.api('POST', '/sendDebugReport/', {}, function (err) { });
+            });
+
             Homey.ready();
-
-            var downloadDebugFileElement = document.getElementById('downloaddebugfile');
-            downloadDebugFileElement.addEventListener('click', function (e) {
-                Homey.api('GET', '/getPairedDevices/', {}, function (err, devices) {
-                    var element = document.createElement('a');
-                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(devices));
-                    element.setAttribute('download', 'debug.json');
-
-                    element.style.display = 'none';
-                    document.body.appendChild(element);
-
-                    element.click();
-                    document.body.removeChild(element);
-                });
-            });
-
-
-
-
-
-            saveElement.addEventListener('click', function (e) {
-
-                Homey.set('username', usernameElement.value, function (err) {
-                    if (err) return Homey.alert(err);
-                });
-                Homey.set('password', passwordElement.value, function (err) {
-                    if (err) return Homey.alert(err);
-                });
-
-            });
         }
+
+
     </script>
 
 </body>

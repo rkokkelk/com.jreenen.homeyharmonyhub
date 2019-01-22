@@ -2,9 +2,9 @@
 
 const Homey = require('homey');
 
-class HarmonyDeviceDriver extends Homey.Driver {
+class HarmonyActivityDriver extends Homey.Driver {
     onInit() {
-        console.log("Harmony device driver initializing...");
+        console.log("Harmony activity driver initializing...");
     }
 
     onPair(socket) {
@@ -33,7 +33,7 @@ class HarmonyDeviceDriver extends Homey.Driver {
 
         socket.on('list_devices', function (data, callback) {
             console.log('List devices started...')
-            Homey.app.getHubDevices(state.hub.ip, state.hub.uuid).then((devices) => {       
+            Homey.app.getHubActivities(state.hub.ip, state.hub.uuid).then((devices) => {       
                 callback(null, devices);
             });
 
@@ -41,4 +41,4 @@ class HarmonyDeviceDriver extends Homey.Driver {
     }
 }
 
-module.exports = HarmonyDeviceDriver;
+module.exports = HarmonyActivityDriver;
