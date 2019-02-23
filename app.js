@@ -6,6 +6,7 @@ const Discovery = require('./lib/discovery.js');
 const CapabilityHelper = require('./lib/capabilityhelper.js');
 const https = require('https');
 const parse = require('url').parse;
+const Sentry = require('@sentry/node');
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
@@ -73,7 +74,12 @@ class App extends Homey.App {
 
 	onInit() {
 		console.log(`${Homey.manifest.id} running...`);
-
+		Sentry.init({
+			dsn: Homey.env.SENTRY_DSN,
+			release: Homey.manifest.version,
+			environment: Homey.env.ENVIRONMENT_NAME
+		});
+		
 		this._hubs = [];
 		this._activities = [];
 		this._discover = new Discovery();
