@@ -2,31 +2,25 @@
 
 const Homey = require('homey');
 const HubManager = require('../../lib/hubmanager.js');
-const Hub = require('../../lib/hub.js')
 const hubManager = new HubManager();
 
 class HarmonyActivity extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
 
-        Homey.app.on('hubonline', (hub, value) => {
-            let currentAvailability = this.getAvailable();
-            if (hub.uuid === this._deviceData.hubId) {
-                if (currentAvailability !== value) {
-                    if (value) {
-                        this.setAvailable();
-                    }
-                    else {
-                        this.setUnavailable(`Hub ${hub.friendlyName} ${Homey.__("offline")}`);
-                    }
-                    return;
-                }
-            }
+        this.setUnavailable(`Hub ${Homey.__("offline")}`);
+
+        Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
+            this.hub = hub;
+            this.setAvailable();
         });
 
+        Homey.app.on(`${this._deviceData.id}_offline`, () => {
+            this.setUnavailable(`Hub ${Homey.__("offline")}`);
+        });
 
         hubManager.on('activityChanged', (activityName, hubId) => {
-            if (hubId !== this._deviceData.hubId) {
+            if (hubId !== this.hub.uuid) {
                 return;
             }
 
@@ -40,7 +34,7 @@ class HarmonyActivity extends Homey.Device {
 
         this.registerCapabilityListener('onoff', (turnon, opts, callback) => {
             console.log(`ON/OFF triggered on ${this._deviceData.label}`);
-            let foundHub = Homey.app.getHub(this._deviceData.hubId);
+            let foundHub = this.hub;
 
             hubManager.connectToHub(foundHub.ip).then((hub) => {
                 if (turnon) {
@@ -68,7 +62,7 @@ class HarmonyActivity extends Homey.Device {
 
                         let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
                         let volumeUpFunction = volumeGroup.function.find(x => x.name === 'VolumeUp');
-                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+                        let foundHub = this.hub;
 
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeUpFunction).catch((err) => {
@@ -88,7 +82,7 @@ class HarmonyActivity extends Homey.Device {
                         console.log(`Volume down triggered on ${this._deviceData.label}`)
                         let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
                         let volumeDownFunction = volumeGroup.function.find(x => x.name === 'VolumeDown');
-                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+                        let foundHub = this.hub;
 
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeDownFunction).catch((err) => {
@@ -108,7 +102,7 @@ class HarmonyActivity extends Homey.Device {
                         console.log(`Volume mute triggered on ${this._deviceData.label}`)
                         let volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
                         let volumeMuteFunction = volumeGroup.function.find(x => x.name === 'Mute');
-                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+                        let foundHub = this.hub;
 
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(volumeMuteFunction).catch((err) => {
@@ -128,7 +122,7 @@ class HarmonyActivity extends Homey.Device {
                         console.log(`Channel up triggered on ${this._deviceData.label}`)
                         let channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
                         let channelUpFunction = channelGroup.function.find(x => x.name === 'ChannelUp');
-                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+                        let foundHub = this.hub;
 
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelUpFunction).catch((err) => {
@@ -148,7 +142,7 @@ class HarmonyActivity extends Homey.Device {
                         console.log(`Channel down triggered on ${this._deviceData.label}`)
                         let channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
                         let channelDownFunction = channelGroup.function.find(x => x.name === 'ChannelDown');
-                        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+                        let foundHub = this.hub;
 
                         hubManager.connectToHub(foundHub.ip).then((hub) => {
                             hub.commandAction(channelDownFunction).catch((err) => {
@@ -177,6 +171,8 @@ class HarmonyActivity extends Homey.Device {
                 this.setCapabilityValue('onoff', false);
             }
         });
+
+        this.setAvailable();
     }
 
     onDeleted() {
