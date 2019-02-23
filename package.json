@@ -5,8 +5,8 @@
   "main": "com.jreenen.homeyharmonyhub",
   "author": "Jeroen van Reenen",
   "dependencies": {
+    "@sentry/node": "^4.6.3",
     "debug": "^4.1.0",
-    "harmonyhubjs-discover": "^1.1.1",
     "ws": "^6.1.2"
   },
   "directories": {

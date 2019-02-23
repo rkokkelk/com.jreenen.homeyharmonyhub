@@ -1,11 +1,12 @@
 'use strict';
 
 const Homey = require('homey');
-const HarmonyHubDiscover = require('harmonyhubjs-discover');
 const HubManager = require('./lib/hubmanager.js');
+const Discovery = require('./lib/discovery.js');
 const CapabilityHelper = require('./lib/capabilityhelper.js');
 const https = require('https');
 const parse = require('url').parse;
+const Sentry = require('@sentry/node');
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
@@ -73,39 +74,37 @@ class App extends Homey.App {
 
 	onInit() {
 		console.log(`${Homey.manifest.id} running...`);
-
+		Sentry.init({
+			dsn: Homey.env.SENTRY_DSN,
+			release: Homey.manifest.version,
+			environment: Homey.env.ENVIRONMENT_NAME
+		});
+		
 		this._hubs = [];
 		this._activities = [];
-		this._discover = new HarmonyHubDiscover(61991);
+		this._discover = new Discovery();
 
 		this.wireEvents();
-		this.findHubs();
+		// this.findHubs();
 		this.registerActions();
 	}
 
 	wireEvents() {
-		this._discover.on('online', (hub) => {
+		this._discover.on('hubconnected', hub => {
 			var found = this._hubs.some((existingHub) => {
 				return existingHub.uuid === hub.uuid;
 			});
 
-			if (found === false && hub.ip !== undefined) {
+			if (found === false && hub.ip !== undefined && hub.friendlyName != undefined) {
 				hub.Hub = hubManager.connectToHub(hub.ip);
 				this.addHub(hub);
 			}
 
-			this.emit('hubonline', hub, true);
-			console.log(`Hub ${hub.friendlyName} is online`);
-		});
+			if (hub.friendlyName != undefined) {
+				this.emit('hubonline', hub, true);
+			}
 
-		this._discover.on('offline', (hub) => {
-			this.emit('hubonline', hub, false);
-			console.log(`Hub ${hub.friendlyName} went offline`);
 		});
-
-		this._discover.on('error', (err) => {
-			console.log(err);
-		})
 
 		hubManager.on('activityChanged', (activityName, hubId) => {
 			console.log(activityName);
@@ -196,7 +195,7 @@ class App extends Homey.App {
 		if (hasFriendlyName) {
 			hub.icon = `/app/${Homey.manifest.id}/assets/icon.svg`;
 			this._hubs.push(hub);
-			console.log(`discovered ${hub.ip} ${hub.friendlyName}`);
+			console.log(`discovered ${hub.ip} ${hub.friendlyName} ${hub.uuid}`);
 
 			eventEmitter.emit('hubAdded', hub);
 		}
@@ -537,7 +536,7 @@ class App extends Homey.App {
 		return Promise.resolve(devicesJson);
 	}
 
-	sendDebugReport(){
+	sendDebugReport() {
 		this.getPairedDevices().then((body) => {
 			let url = parse(Homey.env.DEBUG_REPORT_URL);
 			url.method = 'POST';
@@ -548,14 +547,14 @@ class App extends Homey.App {
 
 			let request = https.request(url, (response) => {
 			});
-	
+
 			request.on('error', (err) => {
 				console.log(err);
 			});
 
 			request.write(body);
 			request.end;
-	
+
 			return Promise.resolve();
 		});
 	}
