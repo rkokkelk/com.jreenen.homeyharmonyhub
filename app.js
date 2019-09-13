@@ -1,5 +1,5 @@
 'use strict';
-
+const inspector = require('inspector');
 const Homey = require('homey');
 const HubManager = require('./lib/hubmanager.js');
 const Discovery = require('./lib/discovery.js');
@@ -79,13 +79,16 @@ class App extends Homey.App {
 			release: Homey.manifest.version,
 			environment: Homey.env.ENVIRONMENT_NAME
 		});
+
+		if(Homey.env.ENVIRONMENT_NAME === "LOCAL"){
+			inspector.open(9229, '0.0.0.0', true)
+		}
 		
 		this._hubs = [];
 		this._activities = [];
 		this._discover = new Discovery();
 
 		this.wireEvents();
-		// this.findHubs();
 		this.registerActions();
 	}
 
@@ -111,8 +114,9 @@ class App extends Homey.App {
 			console.log(hubId);
 			let foundHub = this.getHub(hubId);
 
-			if (foundHub == undefined)
+			if (foundHub == undefined){
 				return;
+			}
 
 			let tokens = {
 				'hub': foundHub.friendlyName,
@@ -169,8 +173,9 @@ class App extends Homey.App {
 		hubManager.on('activityStopped', (activityName, hubId) => {
 			let foundHub = this.getHub(hubId);
 
-			if (foundHub == undefined)
+			if (foundHub == undefined){
 				return;
+			}
 
 			let tokens = {
 				'hub': foundHub.friendlyName,

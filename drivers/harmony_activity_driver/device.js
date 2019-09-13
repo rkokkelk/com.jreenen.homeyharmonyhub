@@ -11,23 +11,34 @@ class HarmonyActivity extends Homey.Device {
         this.setUnavailable(`Hub ${Homey.__("offline")}`);
 
         Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
-            this.hub = hub;
-            this.setAvailable();
+            if (hub.uuid === this._deviceData.hubId) {
+                this.hub = hub;
+                this.setAvailable();
+            }
         });
 
-        Homey.app.on(`${this._deviceData.id}_offline`, () => {
-            this.setUnavailable(`Hub ${Homey.__("offline")}`);
+        Homey.app.on(`${this._deviceData.id}_offline`, (hub) => {
+            this._deviceData = this.getData();
+            if (hub.uuid === this._deviceData.hubId) {
+                this.setUnavailable(`Hub ${Homey.__("offline")}`);
+            }
         });
 
         hubManager.on('activityChanged', (activityName, hubId) => {
+            if (this.hub === undefined) {
+                return;
+            }
+
             if (hubId !== this.hub.uuid) {
                 return;
             }
 
             if (activityName === this._deviceData.label) {
+                console.log(`Turning on ${this._deviceData.label} at ${this.hub.friendlyName}`)
                 this.setCapabilityValue('onoff', true);
             }
             else {
+                console.log(`Turning off ${this._deviceData.label} at ${this.hub.friendlyName}`)
                 this.setCapabilityValue('onoff', false);
             }
         });
@@ -35,6 +46,10 @@ class HarmonyActivity extends Homey.Device {
         this.registerCapabilityListener('onoff', (turnon, opts, callback) => {
             console.log(`ON/OFF triggered on ${this._deviceData.label}`);
             let foundHub = this.hub;
+
+            if (foundHub === undefined) {
+                return;
+            }
 
             hubManager.connectToHub(foundHub.ip).then((hub) => {
                 if (turnon) {
