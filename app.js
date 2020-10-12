@@ -80,10 +80,10 @@ class App extends Homey.App {
 			environment: Homey.env.ENVIRONMENT_NAME
 		});
 
-		if(Homey.env.ENVIRONMENT_NAME === "LOCAL"){
+		if (Homey.env.ENVIRONMENT_NAME === "LOCAL") {
 			inspector.open(9229, '0.0.0.0', true)
 		}
-		
+
 		this._hubs = [];
 		this._activities = [];
 		this._discover = new Discovery();
@@ -114,7 +114,7 @@ class App extends Homey.App {
 			console.log(hubId);
 			let foundHub = this.getHub(hubId);
 
-			if (foundHub == undefined){
+			if (foundHub == undefined) {
 				return;
 			}
 
@@ -173,7 +173,7 @@ class App extends Homey.App {
 		hubManager.on('activityStopped', (activityName, hubId) => {
 			let foundHub = this.getHub(hubId);
 
-			if (foundHub == undefined){
+			if (foundHub == undefined) {
 				return;
 			}
 
@@ -480,14 +480,17 @@ class App extends Homey.App {
 
 				if (controlGroupArgValue !== '') {
 					let controlGroup = hub_device_data.controlGroup.find(x => x.name == controlGroupArgValue.name);
-					controlGroup.function.forEach((command) => {
-						let autocompleteItem =
-						{
-							name: command.label,
-							command: command,
-						};
-						result.push(autocompleteItem);
-					});
+
+					if (controlGroup !== undefined) {
+						controlGroup.function.forEach((command) => {
+							let autocompleteItem =
+							{
+								name: command.label,
+								command: command,
+							};
+							result.push(autocompleteItem);
+						});
+					}
 				}
 				return Promise.resolve(result);
 			})

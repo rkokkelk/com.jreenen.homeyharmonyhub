@@ -161,6 +161,7 @@ class HarmonyDevice extends Homey.Device {
     onAdded() {
         this.log('device added');
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
+        this.hub = foundHub;
         if (this.getCapabilities().find(c => c === "onoff")) {
             hubManager.connectToHub(foundHub.ip).then((hub) => {
                 let deviceInCurrentActivity = hub.currentActivity.fixit[this._deviceData.id];
