@@ -11,7 +11,7 @@ class HarmonyDevice extends Homey.Device {
         this.setUnavailable(`Hub ${Homey.__("offline")}`);
 
         Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
-            this.hub = hub;
+            this.hub = Homey.app.getHub(this._deviceData.hubId);
             this.setAvailable();
         });
 
