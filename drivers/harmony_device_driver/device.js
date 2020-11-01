@@ -229,19 +229,29 @@ class HarmonyDevice extends Homey.Device {
                 powerCommand = powerOffFunction !== undefined ? powerOffFunction : powerToggleFunction;
             }
 
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
-                hub.commandAction(powerCommand).catch((err) => {
-                    console.log(err);
-                    return Promise.reject(err);
-                });
-            });
-
             // Only trigger onOff state actions if state actually changes
             let currentOnOffState = this.getCapabilityValue('onoff');
             if (currentOnOffState !== setOnOffState) {
                 let deviceState = {};
                 deviceState.Power = setOnOffState ? 'On' : 'Off';
                 this.triggerOnOffAction(deviceState);
+
+                hubManager.connectToHub(foundHub.ip).then((hub) => {
+                    hub.commandAction(powerCommand).catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                });
+
+            // Even if currentState eq setState, all specific on/off command may be executed
+            // toggleCommands should not be executed because this might turn device in unwanted state
+            } else if (powerCommand !== powerToggleFunction){
+                hubManager.connectToHub(foundHub.ip).then((hub) => {
+                    hub.commandAction(powerCommand).catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                });
             }
 
             return Promise.resolve();
