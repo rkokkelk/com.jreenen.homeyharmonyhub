@@ -11,7 +11,7 @@ class HarmonyDevice extends Homey.Device {
         this.setUnavailable(`Hub ${Homey.__("offline")}`);
 
         Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
-            this.hub = hub;
+            this.hub = Homey.app.getHub(this._deviceData.hubId);
             this.setAvailable();
         });
 
@@ -21,9 +21,9 @@ class HarmonyDevice extends Homey.Device {
 
         this.getCapabilities().forEach(capability => {
             if (capability === "onoff") {
-                this.registerCapabilityListener('onoff', () => {
+                this.registerCapabilityListener('onoff', (value) => {
                     return new Promise((resolve, reject) => {
-                        this.onCapabilityOnoff().then(() => {
+                        this.onCapabilityOnoff(value).then(() => {
                             resolve();
                         }).catch((err) => {
                             console.log(err);
@@ -208,7 +208,7 @@ class HarmonyDevice extends Homey.Device {
         }
     }
 
-    onCapabilityOnoff() {
+    onCapabilityOnoff(setOnOffState) {
         let powerGroup = this._deviceData.controlGroup.find(x => x.name === 'Power');
         let foundHub = this.hub;
 
@@ -218,33 +218,42 @@ class HarmonyDevice extends Homey.Device {
         }
 
         if (powerGroup !== undefined) {
-            let currenOnOffState = this.getCapabilityValue('onoff');
             let powerToggleFunction = powerGroup.function.find(x => x.name === 'PowerToggle');
             let powerOnFunction = powerGroup.function.find(x => x.name === 'PowerOn');
             let powerOffFunction = powerGroup.function.find(x => x.name === 'PowerOff');
             let powerCommand = '';
 
-            if (currenOnOffState) {
-                powerCommand = powerOffFunction !== undefined ? powerOffFunction : powerToggleFunction;
-            }
-            else {
+            if (setOnOffState) {
                 powerCommand = powerOnFunction !== undefined ? powerOnFunction : powerToggleFunction;
             }
-
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
-                hub.commandAction(powerCommand).catch((err) => {
-                    console.log(err);
-                    return Promise.reject(err);
-                });
-            });
-
-            let deviceState = {};
-            deviceState.Power = 'Off'
-            if (!currenOnOffState) {
-                deviceState.Power = 'On';
+            else {
+                powerCommand = powerOffFunction !== undefined ? powerOffFunction : powerToggleFunction;
             }
 
-            this.triggerOnOffAction(deviceState);
+            // Only trigger onOff state actions if state actually changes
+            let currentOnOffState = this.getCapabilityValue('onoff');
+            if (currentOnOffState !== setOnOffState) {
+                let deviceState = {};
+                deviceState.Power = setOnOffState ? 'On' : 'Off';
+                this.triggerOnOffAction(deviceState);
+
+                hubManager.connectToHub(foundHub.ip).then((hub) => {
+                    hub.commandAction(powerCommand).catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                });
+
+            // Even if currentState eq setState, all specific on/off command may be executed
+            // toggleCommands should not be executed because this might turn device in unwanted state
+            } else if (powerCommand !== powerToggleFunction){
+                hubManager.connectToHub(foundHub.ip).then((hub) => {
+                    hub.commandAction(powerCommand).catch((err) => {
+                        console.log(err);
+                        return Promise.reject(err);
+                    });
+                });
+            }
 
             return Promise.resolve();
         }
