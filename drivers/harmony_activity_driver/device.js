@@ -7,7 +7,6 @@ const hubManager = new HubManager();
 class HarmonyActivity extends Homey.Device {
     onInit() {
         this._deviceData = this.getData();
-
         this.setUnavailable(`Hub ${Homey.__("offline")}`);
 
         Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
@@ -178,6 +177,7 @@ class HarmonyActivity extends Homey.Device {
     onAdded() {
         this.log('activity added');
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
+        this.hub = foundHub;
         hubManager.connectToHub(foundHub.ip).then((hub) => {
             if (hub.currentActivity.label === this._deviceData.label) {
                 this.setCapabilityValue('onoff', true);

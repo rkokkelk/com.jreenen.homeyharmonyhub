@@ -139,7 +139,6 @@ class HarmonyDevice extends Homey.Device {
             this.device = device;
 
             device.on('stateChanged', (state) => {
-                console.log('DEVICE STATE CHANGED');
                 if (this.getCapabilities().find(c => c === "onoff")) {
                     this.setCapabilityValue('onoff', state.Power === 'On');
                     this.triggerOnOffAction(state);
@@ -161,26 +160,26 @@ class HarmonyDevice extends Homey.Device {
 
     onAdded() {
         this.log('device added');
+        console.log(`Device data ${this._deviceData}`);
+        console.log(`Hub id ${this._deviceData.hubId}`);
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
         this.hub = foundHub;
-        if (this.getCapabilities().find(c => c === "onoff")) {
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
-                let deviceInCurrentActivity = hub.currentActivity.fixit[this._deviceData.id];
-
-                if (deviceInCurrentActivity.Power === "On") {
-                    this.setCapabilityValue('onoff', true);
-                }
-                else {
-                    this.setCapabilityValue('onoff', false);
-                }
-            });
-        }
-
+        this.onInit();
+        
+        hubManager.connectToHub(foundHub.ip).then((hub) => {
+            hub.syncHub();
+        });
+        
         this.setAvailable();
     }
 
     onDeleted() {
         this.log('device deleted');
+        new Homey.FlowCardTriggerDevice('turned_on').unregister();
+        new Homey.FlowCardTriggerDevice('turned_off').unregister();
+
+        this.removeAllListeners();
+        super.onDeleted();
     }
 
     triggerOnOffAction(deviceState) {

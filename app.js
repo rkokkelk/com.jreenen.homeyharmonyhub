@@ -226,38 +226,40 @@ class App extends Homey.App {
 		return new Promise((resolve, reject) => {
 			hubManager.connectToHub(ip).then((hub) => {
 				hub.activities.forEach((activity) => {
-					capabilityhelper.getCapabilities(activity.controlGroup).then((capabilities) => {
-						capabilities.push('onoff');
-						if (activity.type === 'VirtualTelevisionN') {
-							var foundDevice = {
-								name: activity.label,
-								class: 'tv',
-								capabilities: capabilities,
-								data: {
-									id: activity.id,
-									hubId: hubId,
-									controlGroup: activity.controlGroup,
-									label: activity.label
-								}
-							};
+					if (activity.controlGroup !== undefined) {
+						capabilityhelper.getCapabilities(activity.controlGroup).then((capabilities) => {
+							capabilities.push('onoff');
+							if (activity.type === 'VirtualTelevisionN') {
+								var foundDevice = {
+									name: activity.label,
+									class: 'tv',
+									capabilities: capabilities,
+									data: {
+										id: activity.id,
+										hubId: hubId,
+										controlGroup: activity.controlGroup,
+										label: activity.label
+									}
+								};
 
-							activities.push(foundDevice);
-						}
-						else {
-							var foundDevice = {
-								name: activity.label,
-								capabilities: capabilities,
-								data: {
-									id: activity.id,
-									hubId: hubId,
-									controlGroup: activity.controlGroup,
-									label: activity.label
-								}
-							};
+								activities.push(foundDevice);
+							}
+							else {
+								var foundDevice = {
+									name: activity.label,
+									capabilities: capabilities,
+									data: {
+										id: activity.id,
+										hubId: hubId,
+										controlGroup: activity.controlGroup,
+										label: activity.label
+									}
+								};
 
-							activities.push(foundDevice);
-						}
-					});
+								activities.push(foundDevice);
+							}
+						});
+					}
 				});
 				resolve(activities);
 			});
