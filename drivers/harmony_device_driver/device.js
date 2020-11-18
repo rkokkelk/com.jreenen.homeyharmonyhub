@@ -139,6 +139,7 @@ class HarmonyDevice extends Homey.Device {
             this.device = device;
 
             device.on('stateChanged', (state) => {
+                console.log('DEVICE STATE CHANGED');
                 if (this.getCapabilities().find(c => c === "onoff")) {
                     this.setCapabilityValue('onoff', state.Power === 'On');
                     this.triggerOnOffAction(state);
