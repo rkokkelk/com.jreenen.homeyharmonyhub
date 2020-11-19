@@ -187,7 +187,8 @@ class HarmonyDevice extends Homey.Device {
         let turnedOnDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_on').register();
         let turnedOffDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_off').register();
         let device = this;
-        let hub = this.hub;
+        let foundHub = Homey.app.getHub(this._deviceData.hubId);
+        let hub = foundHub;
         let tokens = {
             'hub': hub.friendlyName
         };
