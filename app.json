@@ -1,547 +1,557 @@
 {
-    "id": "com.jreenen.homeyharmonyhub",
-    "sdk": 2,
-    "brandColor": "#00B8FC",
-    "name": {
-        "en": "Harmony Hub",
-        "nl": "Harmony Hub"
-    },
-    "description": {
-        "en": "Homey and the Harmony Hub are better together!",
-        "nl": "Homey en de Harmony Hub zijn samen sterker!"
-    },
-    "category": [
-        "appliances",
-        "video"
+  "id": "com.jreenen.homeyharmonyhub",
+  "sdk": 2,
+  "brandColor": "#00B8FC",
+  "name": {
+    "en": "Harmony Hub",
+    "nl": "Harmony Hub"
+  },
+  "description": {
+    "en": "Homey and the Harmony Hub are better together!",
+    "nl": "Homey en de Harmony Hub zijn samen sterker!"
+  },
+  "category": [
+    "appliances",
+    "video"
+  ],
+  "tags": {
+    "en": [
+      "logitech",
+      "remote",
+      "harmony",
+      "hub"
     ],
-    "tags": {
-        "en": [ "logitech", "remote", "harmony", "hub" ],
-        "nl": [ "logitech", "remote", "harmony", "hub", "afstandsbediening"  ]
-    },
-    "version": "2.0.4",
-    "compatibility": ">=1.5.0",
-    "images": {
-        "large": "/assets/images/homey_harmony_hub_large.jpg",
-        "small": "/assets/images/homey_harmony_hub_small.jpg"
-    },
-    "drivers": [
+    "nl": [
+      "logitech",
+      "remote",
+      "harmony",
+      "hub",
+      "afstandsbediening"
+    ]
+  },
+  "version": "2.0.5",
+  "compatibility": ">=1.5.0",
+  "images": {
+    "large": "/assets/images/homey_harmony_hub_large.jpg",
+    "small": "/assets/images/homey_harmony_hub_small.jpg"
+  },
+  "drivers": [
+    {
+      "id": "harmony_device_driver",
+      "name": {
+        "en": "Harmony device"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "images": {
+        "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
+        "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
+      },
+      "pair": [
         {
-            "id": "harmony_device_driver",
-            "name": {
-                "en": "Harmony device"
-            },
-            "class": "other",
-            "capabilities": [
-                "onoff"
-            ],
-            "images": {
-                "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
-                "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
-            },
-            "pair": [
-                {
-                    "id": "select_hub",
-                    "navigation": {
-                        "next": "list_devices"
-                    }
-                },
-                {
-                    "id": "list_devices",
-                    "template": "list_devices",
-                    "navigation": {
-                        "next": "add_devices"
-                    }
-                },
-                {
-                    "id": "add_devices",
-                    "template": "add_devices"
-                }
-            ],
-            "mobile": {
-                "components": [
-                    {
-                        "id": "icon",
-                        "capabilities": [
-                            "onoff"
-                        ]
-                    },
-                    {
-                        "id": "button",
-                        "capabilities": [
-                            "onoff"
-                        ],
-                        "options": {
-                            "showTitle": []
-                        }
-                    }
-                ]
-            }
+          "id": "select_hub",
+          "navigation": {
+            "next": "list_devices"
+          }
         },
         {
-            "id": "harmony_activity_driver",
-            "name": {
-                "en": "Harmony activity"
-            },
-            "class": "other",
-            "capabilities": [
-            ],
-            "images": {
-                "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
-                "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
-            },
-            "pair": [
-                {
-                    "id": "select_hub",
-                    "navigation": {
-                        "next": "list_devices"
-                    }
-                },
-                {
-                    "id": "list_devices",
-                    "template": "list_devices",
-                    "navigation": {
-                        "next": "add_devices"
-                    }
-                },
-                {
-                    "id": "add_devices",
-                    "template": "add_devices"
-                }
-            ],
-            "mobile": {
-                "components": [
-                    {
-                        "id": "icon",
-                        "capabilities": [
-                            "onoff"
-                        ]
-                    },
-                    {
-                        "id": "button",
-                        "capabilities": [
-                            "onoff"
-                        ],
-                        "options": {
-                            "showTitle": []
-                        }
-                    }
-                ]
-            }
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
         }
-    ],
-    "flow": {
-        "triggers": [
-            {
-                "id": "activity_starting",
-                "title": {
-                    "en": "Activity starting",
-                    "nl": "Activiteit wordt gestart"
-                },
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    },
-                    {
-                        "name": "activity",
-                        "type": "string",
-                        "title": {
-                            "en": "activity",
-                            "nl": "activiteit"
-                        },
-                        "example": {
-                            "en": "Watch television",
-                            "nl": "TV kijken"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "activity_started",
-                "title": {
-                    "en": "Activity started",
-                    "nl": "Activiteit gestart"
-                },
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    },
-                    {
-                        "name": "activity",
-                        "type": "string",
-                        "title": {
-                            "en": "activity",
-                            "nl": "activiteit"
-                        },
-                        "example": {
-                            "en": "Watch television",
-                            "nl": "TV kijken"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "activity_stopped",
-                "title": {
-                    "en": "Activity stopped",
-                    "nl": "Activiteit gestopt"
-                },
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    },
-                    {
-                        "name": "activity",
-                        "type": "string",
-                        "title": {
-                            "en": "activity",
-                            "nl": "activiteit"
-                        },
-                        "example": {
-                            "en": "Watch television",
-                            "nl": "TV kijken"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "turned_on",
-                "deprecated": true,
-                "title": {
-                    "en": "Device turned on",
-                    "nl": "Apparaat is aangezet"
-                },
-                "args": [
-                    {
-                        "name": "hub_device",
-                        "type": "device",
-                        "filter": "driver_id=harmony_device_driver"
-                    }
-                ],
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "turned_off",
-                "deprecated": true,
-                "title": {
-                    "en": "Device turned off",
-                    "nl": "Apparaat is uitgezet"
-                },
-                "args": [
-                    {
-                        "name": "hub_device",
-                        "type": "device",
-                        "filter": "driver_id=harmony_device_driver"
-                    }
-                ],
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "hub_inactive",
-                "title": {
-                    "en": "Hub inactive",
-                    "nl": "Hub inactief"
-                },
-                "args": [
-                    {
-                        "name": "inactivefor",
-                        "type": "dropdown",
-                        "values" : [
-                            {
-                                "id": "5",
-                                "label": {
-                                    "en": "5 minutes",
-                                    "nl": "5 minuten"
-                                }
-                            },
-                            {
-                                "id": "10",
-                                "label": {
-                                    "en": "10 minutes",
-                                    "nl": "10 minuten"
-                                }
-                            },
-                            {
-                                "id": "15",
-                                "label": {
-                                    "en": "15 minutes",
-                                    "nl": "15 minuten"
-                                }
-                            },
-                            {
-                                "id": "30",
-                                "label": {
-                                    "en": "30 minutes",
-                                    "nl": "30 minuten"
-                                }
-                            },
-                            {
-                                "id": "60",
-                                "label": {
-                                    "en": "1 hour",
-                                    "nl": "1 uur"
-                                }
-                            },
-                            {
-                                "id": "120",
-                                "label": {
-                                    "en": "2 hours",
-                                    "nl": "2 uur"
-                                }
-                            },
-                            {
-                                "id": "240",
-                                "label": {
-                                    "en": "4 hours",
-                                    "nl": "4 uur"
-                                }
-                            },
-                            {
-                                "id": "480",
-                                "label": {
-                                    "en": "8 hours",
-                                    "nl": "8 uur"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "tokens": [
-                    {
-                        "name": "hub",
-                        "type": "string",
-                        "title": {
-                            "en": "hub",
-                            "nl": "hub"
-                        },
-                        "example": {
-                            "en": "Hub living room",
-                            "nl": "Hub woonkamer"
-                        }
-                    }
-                ]
+      ],
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [
+              "onoff"
+            ]
+          },
+          {
+            "id": "button",
+            "capabilities": [
+              "onoff"
+            ],
+            "options": {
+              "showTitle": []
             }
-        ],
-        "conditions": [
-            {
-                "id": "is_on",
-                "deprecated": true,
-                "title": {
-                    "en": "Device !{{is|isn't}} on",
-                    "nl": "Appraat !{{is|is niet}} aan"
-                },
-                "args": [
-                    {
-                        "name": "hub_device",
-                        "type": "device",
-                        "filter": "driver_id=harmony_device_driver"
-                    }
-                ]
-            },
-            {
-                "id": "is_activity",
-                "title": {
-                    "en": "Activity !{{is|isn't}} matched",
-                    "nl": "Activiteit !{{is|is niet}} gelijk aan"
-                },
-                "args": [
-                    {
-                        "name": "activity_input",
-                        "type": "text",
-                        "placeholder": {
-                            "en": "Activity to compare",
-                            "nl": "Activiteit voor vergelijking"
-                        }
-                    },
-                    {
-                        "name": "hub",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Select your harmony hub",
-                            "nl": "Selecteer je harmony hub"
-                        }
-                    },
-                    {
-                        "name": "activity",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Activity",
-                            "nl": "Activiteit"
-                        }
-                    }
-                ]
-            }
-        ],
-        "actions": [
-            {
-                "id": "start_activity",
-                "title": {
-                    "en": "Start activity",
-                    "nl": "Start een activiteit"
-                },
-                "args": [
-                    {
-                        "name": "hub",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Select your harmony hub",
-                            "nl": "Selecteer je harmony hub"
-                        }
-                    },
-                    {
-                        "name": "activity",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Activity",
-                            "nl": "Activiteit"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "stop_activity",
-                "title": {
-                    "en": "Stop activity",
-                    "nl": "Stop een activiteit"
-                },
-                "args": [
-                    {
-                        "name": "hub",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Select your harmony hub",
-                            "nl": "Selecteer je harmony hub"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "send_command",
-                "title": {
-                    "en": "Send command",
-                    "nl": "Stuur een opdracht"
-                },
-                "args": [
-                    {
-                        "name": "hub_device",
-                        "type": "device",
-                        "filter": "driver_id=harmony_device_driver"
-                    },
-                    {
-                        "name": "control_group",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Control group",
-                            "nl": "Control group"
-                        }
-                    },
-                    {
-                        "name": "control_command",
-                        "type": "autocomplete",
-                        "placeholder": {
-                            "en": "Command",
-                            "nl": "Opdracht"
-                        }
-                    },
-                    {
-                        "name": "control_command_repeat",
-                        "type": "number",
-                        "min": 0,
-                        "placeholder": {
-                            "en": "Repeat",
-                            "nl": "Herhalen"
-                        }
-                    }
-                ]
-            }
+          }
         ]
+      }
     },
-    "bugs": {
-        "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
-    },
-    "homeyCommunityTopicId": 1747,
-    "author": {
+    {
+      "id": "harmony_activity_driver",
+      "name": {
+        "en": "Harmony activity"
+      },
+      "class": "other",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
+        "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
+      },
+      "pair": [
+        {
+          "id": "select_hub",
+          "navigation": {
+            "next": "list_devices"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [
+              "onoff"
+            ]
+          },
+          {
+            "id": "button",
+            "capabilities": [
+              "onoff"
+            ],
+            "options": {
+              "showTitle": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "activity_starting",
+        "title": {
+          "en": "Activity starting",
+          "nl": "Activiteit wordt gestart"
+        },
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          },
+          {
+            "name": "activity",
+            "type": "string",
+            "title": {
+              "en": "activity",
+              "nl": "activiteit"
+            },
+            "example": {
+              "en": "Watch television",
+              "nl": "TV kijken"
+            }
+          }
+        ]
+      },
+      {
+        "id": "activity_started",
+        "title": {
+          "en": "Activity started",
+          "nl": "Activiteit gestart"
+        },
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          },
+          {
+            "name": "activity",
+            "type": "string",
+            "title": {
+              "en": "activity",
+              "nl": "activiteit"
+            },
+            "example": {
+              "en": "Watch television",
+              "nl": "TV kijken"
+            }
+          }
+        ]
+      },
+      {
+        "id": "activity_stopped",
+        "title": {
+          "en": "Activity stopped",
+          "nl": "Activiteit gestopt"
+        },
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          },
+          {
+            "name": "activity",
+            "type": "string",
+            "title": {
+              "en": "activity",
+              "nl": "activiteit"
+            },
+            "example": {
+              "en": "Watch television",
+              "nl": "TV kijken"
+            }
+          }
+        ]
+      },
+      {
+        "id": "turned_on",
+        "deprecated": true,
+        "title": {
+          "en": "Device turned on",
+          "nl": "Apparaat is aangezet"
+        },
+        "args": [
+          {
+            "name": "hub_device",
+            "type": "device",
+            "filter": "driver_id=harmony_device_driver"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          }
+        ]
+      },
+      {
+        "id": "turned_off",
+        "deprecated": true,
+        "title": {
+          "en": "Device turned off",
+          "nl": "Apparaat is uitgezet"
+        },
+        "args": [
+          {
+            "name": "hub_device",
+            "type": "device",
+            "filter": "driver_id=harmony_device_driver"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          }
+        ]
+      },
+      {
+        "id": "hub_inactive",
+        "title": {
+          "en": "Hub inactive",
+          "nl": "Hub inactief"
+        },
+        "args": [
+          {
+            "name": "inactivefor",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "5",
+                "label": {
+                  "en": "5 minutes",
+                  "nl": "5 minuten"
+                }
+              },
+              {
+                "id": "10",
+                "label": {
+                  "en": "10 minutes",
+                  "nl": "10 minuten"
+                }
+              },
+              {
+                "id": "15",
+                "label": {
+                  "en": "15 minutes",
+                  "nl": "15 minuten"
+                }
+              },
+              {
+                "id": "30",
+                "label": {
+                  "en": "30 minutes",
+                  "nl": "30 minuten"
+                }
+              },
+              {
+                "id": "60",
+                "label": {
+                  "en": "1 hour",
+                  "nl": "1 uur"
+                }
+              },
+              {
+                "id": "120",
+                "label": {
+                  "en": "2 hours",
+                  "nl": "2 uur"
+                }
+              },
+              {
+                "id": "240",
+                "label": {
+                  "en": "4 hours",
+                  "nl": "4 uur"
+                }
+              },
+              {
+                "id": "480",
+                "label": {
+                  "en": "8 hours",
+                  "nl": "8 uur"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_on",
+        "deprecated": true,
+        "title": {
+          "en": "Device !{{is|isn't}} on",
+          "nl": "Appraat !{{is|is niet}} aan"
+        },
+        "args": [
+          {
+            "name": "hub_device",
+            "type": "device",
+            "filter": "driver_id=harmony_device_driver"
+          }
+        ]
+      },
+      {
+        "id": "is_activity",
+        "title": {
+          "en": "Activity !{{is|isn't}} matched",
+          "nl": "Activiteit !{{is|is niet}} gelijk aan"
+        },
+        "args": [
+          {
+            "name": "activity_input",
+            "type": "text",
+            "placeholder": {
+              "en": "Activity to compare",
+              "nl": "Activiteit voor vergelijking"
+            }
+          },
+          {
+            "name": "hub",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Select your harmony hub",
+              "nl": "Selecteer je harmony hub"
+            }
+          },
+          {
+            "name": "activity",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Activity",
+              "nl": "Activiteit"
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "start_activity",
+        "title": {
+          "en": "Start activity",
+          "nl": "Start een activiteit"
+        },
+        "args": [
+          {
+            "name": "hub",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Select your harmony hub",
+              "nl": "Selecteer je harmony hub"
+            }
+          },
+          {
+            "name": "activity",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Activity",
+              "nl": "Activiteit"
+            }
+          }
+        ]
+      },
+      {
+        "id": "stop_activity",
+        "title": {
+          "en": "Stop activity",
+          "nl": "Stop een activiteit"
+        },
+        "args": [
+          {
+            "name": "hub",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Select your harmony hub",
+              "nl": "Selecteer je harmony hub"
+            }
+          }
+        ]
+      },
+      {
+        "id": "send_command",
+        "title": {
+          "en": "Send command",
+          "nl": "Stuur een opdracht"
+        },
+        "args": [
+          {
+            "name": "hub_device",
+            "type": "device",
+            "filter": "driver_id=harmony_device_driver"
+          },
+          {
+            "name": "control_group",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Control group",
+              "nl": "Control group"
+            }
+          },
+          {
+            "name": "control_command",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Command",
+              "nl": "Opdracht"
+            }
+          },
+          {
+            "name": "control_command_repeat",
+            "type": "number",
+            "min": 0,
+            "placeholder": {
+              "en": "Repeat",
+              "nl": "Herhalen"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+  },
+  "homeyCommunityTopicId": 1747,
+  "author": {
+    "name": "Jeroen van Reenen",
+    "email": "jreenen@hotmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
         "name": "Jeroen van Reenen",
         "email": "jreenen@hotmail.com"
-    },
-    "contributors": {
-        "developers": [
-            {
-                "name": "Jeroen van Reenen",
-                "email": "jreenen@hotmail.com"
-            },
-            {
-                "name": "Dennie de Groot",
-                "email": "mail@denniedegroot.nl",
-                "website": "https://denniedegroot.nl"
-            },
-            {
-                "name": "Raymond Brink",
-                "email": "homey@rbrink.nl"
-            },
-            {
-                "name": "Roy K",
-                "website": "https://github.com/rkokkelk"
-            }
-        ]
-    },
-    "contributing": {
-        "donate": {
-            "paypal": {
-                "username": "jreenen"
-            }
-        }
+      },
+      {
+        "name": "Dennie de Groot",
+        "email": "mail@denniedegroot.nl",
+        "website": "https://denniedegroot.nl"
+      },
+      {
+        "name": "Raymond Brink",
+        "email": "homey@rbrink.nl"
+      },
+      {
+        "name": "Roy K",
+        "website": "https://github.com/rkokkelk"
+      }
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "jreenen"
+      }
     }
+  }
 }
