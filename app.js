@@ -6,7 +6,6 @@ const Discovery = require('./lib/discovery.js');
 const CapabilityHelper = require('./lib/capabilityhelper.js');
 const https = require('https');
 const parse = require('url').parse;
-const Sentry = require('@sentry/node');
 
 let events = require('events');
 let eventEmitter = new events.EventEmitter();
@@ -67,18 +66,12 @@ const iconsMap = {
 	'Nest': 'Thermostat.svg',
 	'VCR': 'VCR.svg',
 	'TVCamera': 'Video Camera.svg',
-
 }
 
 class App extends Homey.App {
 
 	onInit() {
 		console.log(`${Homey.manifest.id} running...`);
-		Sentry.init({
-			dsn: Homey.env.SENTRY_DSN,
-			release: Homey.manifest.version,
-			environment: Homey.env.ENVIRONMENT_NAME
-		});
 
 		if (Homey.env.ENVIRONMENT_NAME === "LOCAL") {
 			inspector.open(9229, '0.0.0.0', true)
