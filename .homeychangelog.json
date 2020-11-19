@@ -1,5 +1,8 @@
 {
   "2.0.4": {
     "en": "Stability issues, many thanks to rkokkelk for his support on this!"
+  },
+  "2.0.5": {
+    "en": "Addressed review issues raised by Athom. Hot-fix for issue with device on/off trigger."
   }
 }
