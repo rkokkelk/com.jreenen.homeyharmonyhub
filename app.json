@@ -7,8 +7,8 @@
         "nl": "Harmony Hub"
     },
     "description": {
-        "en": "Adds support for logitech's Harmony Hub",
-        "nl": "Voegt functies toe van de logitech's Harmony Hub"
+        "en": "Homey and the Harmony Hub are better together!",
+        "nl": "Homey en de Harmony Hub zijn samen sterker!"
     },
     "category": [
         "appliances",
