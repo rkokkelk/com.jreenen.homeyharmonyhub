@@ -5,7 +5,6 @@
   "main": "com.jreenen.homeyharmonyhub",
   "author": "Jeroen van Reenen",
   "dependencies": {
-    "@sentry/node": "^5.26.0",
     "debug": "^4.2.0",
     "ws": "^6.2.1"
   },
