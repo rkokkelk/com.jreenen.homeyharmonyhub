@@ -2,7 +2,7 @@
 	"save": "Save changes",
 	"offline" : "went offline",
 	"settings": {
-        "title": "Homey Harmony Hub settings",
+        "title": "Harmony Hub settings",
 		"debugsection": "Debug",
 		"debugintro": "Use this if the application developer ask you to send a diagnostic report.",
 	    "senddebugreport": "Send diagnostic report"	
