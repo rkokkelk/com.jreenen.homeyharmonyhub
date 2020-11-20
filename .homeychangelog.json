@@ -4,5 +4,8 @@
   },
   "2.0.5": {
     "en": "Addressed review issues raised by Athom. Hot-fix for issue with device on/off trigger."
+  },
+  "2.0.6": {
+    "en": "Hotfix for crashes on hub friendlyname"
   }
 }
