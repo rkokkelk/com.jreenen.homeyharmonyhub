@@ -190,7 +190,7 @@ class HarmonyDevice extends Homey.Device {
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
         let hub = foundHub;
 
-        if (hub.friendlyName !== undefined) {
+        if (hub !== undefined) {
             let tokens = {
                 'hub': hub.friendlyName
             };
