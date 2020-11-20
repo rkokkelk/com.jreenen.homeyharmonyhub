@@ -154,7 +154,7 @@ class HarmonyDevice extends Homey.Device {
                 console.log(`Condition ${isPowerdOn}`);
                 return Promise.resolve(isPowerdOn);
             });
-            
+
         console.log(`Device (${this._deviceData.id}) - ${this._deviceData.label} initializing..`);
     }
 
@@ -165,11 +165,11 @@ class HarmonyDevice extends Homey.Device {
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
         this.hub = foundHub;
         this.onInit();
-        
+
         hubManager.connectToHub(foundHub.ip).then((hub) => {
             hub.syncHub();
         });
-        
+
         this.setAvailable();
     }
 
@@ -189,22 +189,25 @@ class HarmonyDevice extends Homey.Device {
         let device = this;
         let foundHub = Homey.app.getHub(this._deviceData.hubId);
         let hub = foundHub;
-        let tokens = {
-            'hub': hub.friendlyName
-        };
-        let state = {};
-        let deviceTurnedOn = deviceState.Power === 'On';
 
-        if (currenOnOffState !== deviceTurnedOn) {
+        if (hub.friendlyName !== undefined) {
+            let tokens = {
+                'hub': hub.friendlyName
+            };
+            let state = {};
+            let deviceTurnedOn = deviceState.Power === 'On';
 
-            if (currenOnOffState === false) {
-                turnedOnDeviceTrigger.trigger(device, tokens, state);
+            if (currenOnOffState !== deviceTurnedOn) {
+
+                if (currenOnOffState === false) {
+                    turnedOnDeviceTrigger.trigger(device, tokens, state);
+                }
+                else {
+                    turnedOffDeviceTrigger.trigger(device, tokens, state);
+                }
+
+                this.setCapabilityValue('onoff', deviceTurnedOn);
             }
-            else {
-                turnedOffDeviceTrigger.trigger(device, tokens, state);
-            }
-
-            this.setCapabilityValue('onoff', deviceTurnedOn);
         }
     }
 
@@ -244,9 +247,9 @@ class HarmonyDevice extends Homey.Device {
                     });
                 });
 
-            // Even if currentState eq setState, all specific on/off command may be executed
-            // toggleCommands should not be executed because this might turn device in unwanted state
-            } else if (powerCommand !== powerToggleFunction){
+                // Even if currentState eq setState, all specific on/off command may be executed
+                // toggleCommands should not be executed because this might turn device in unwanted state
+            } else if (powerCommand !== powerToggleFunction) {
                 hubManager.connectToHub(foundHub.ip).then((hub) => {
                     hub.commandAction(powerCommand).catch((err) => {
                         console.log(err);
