@@ -6,7 +6,7 @@
   "author": "Jeroen van Reenen",
   "dependencies": {
     "debug": "^4.2.0",
-    "ws": "^6.2.1"
+    "ws": "^7.4.5"
   },
   "directories": {
     "lib": "lib"
