@@ -29,7 +29,7 @@
       "afstandsbediening"
     ]
   },
-  "version": "2.0.7",
+  "version": "2.0.8",
   "compatibility": ">=1.5.0",
   "images": {
     "large": "/assets/images/homey_harmony_hub_large.jpg",
