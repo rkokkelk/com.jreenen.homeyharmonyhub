@@ -301,8 +301,11 @@
       {
         "id": "hub_inactive",
         "title": {
-          "en": "Hub inactive",
-          "nl": "Hub inactief"
+          "en": "Hub inactive"
+        },
+        "titleFormatted": {
+          "en": "Hub inactive for [[inactivefor]]",
+          "nl": "Hub inactief voor [[inactivefor]]"
         },
         "args": [
           {
@@ -406,6 +409,10 @@
           "en": "Activity !{{is|isn't}} matched",
           "nl": "Activiteit !{{is|is niet}} gelijk aan"
         },
+        "titleFormatted": {
+          "en": "[[hub]][[activity]] !{{is|isn't}} equal to [[activity_input]]",
+          "nl": "[[hub]][[activity]] !{{is|is niet}} gelijk aan [[activity_input]]"
+        },
         "args": [
           {
             "name": "activity_input",
@@ -441,6 +448,10 @@
           "en": "Start activity",
           "nl": "Start een activiteit"
         },
+        "titleFormatted": {
+          "en": "Start [[hub]][[activity]]",
+          "nl": "Start [[hub]][[activity]]"
+        },
         "args": [
           {
             "name": "hub",
@@ -466,6 +477,10 @@
           "en": "Stop activity",
           "nl": "Stop een activiteit"
         },
+        "titleFormatted": {
+          "en": "Stop [[hub]][activity]]",
+          "nl": "Stop [[hub]][activity]]"
+        },
         "args": [
           {
             "name": "hub",
@@ -482,6 +497,10 @@
         "title": {
           "en": "Send command",
           "nl": "Stuur een opdracht"
+        },
+        "titleFormatted": {
+          "en": "Send command [[control_group]][[control_command]][[control_command_repeat]]",
+          "nl": "Stuur command [[control_group]][[control_command]][[control_command_repeat]]"
         },
         "args": [
           {
