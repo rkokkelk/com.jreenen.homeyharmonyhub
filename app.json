@@ -478,8 +478,8 @@
           "nl": "Stop een activiteit"
         },
         "titleFormatted": {
-          "en": "Stop [[hub]][activity]]",
-          "nl": "Stop [[hub]][activity]]"
+          "en": "Stop activity on [[hub]]",
+          "nl": "Stop activiteit op [[hub]]"
         },
         "args": [
           {
