@@ -10,5 +10,14 @@
   },
   "2.0.7": {
     "en": "Fix for hub friendlyname crash"
+  },
+  "2.0.8": {
+    "en": "Update websocket dependency to latest version"
+  },
+  "2.0.9": {
+    "en": "Update websocket dependency to latest version"
+  },
+  "2.0.9": {
+    "en": "Update websocket dependency to latest version, fix title errors"
   }
 }
