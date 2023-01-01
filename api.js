@@ -1,20 +1,11 @@
-const Homey = require('homey');
-module.exports = [
-    {
-        description: 'Get a list of all paired devices',
-        method: 'GET',
-        path: '/getPairedDevices/',
-        fn: function(callback, args) {
-            return Promise.resolve(Homey.app.getPairedDevices());
-        }
+module.exports = {
+    // description: 'Get a list of all paired devices'
+    async getPairedDevices({ homey, query }) {
+	  const result = await this.homey.app.getPairedDevices();
+        return (result);
     },
-    {
-        description: 'Sends a debug report',
-        method: 'POST',
-        path: '/sendDebugReport/',
-        fn: function(callback, args) {
-            return Promise.resolve(Homey.app.sendDebugReport());
-        }
+    // description: 'Sends a debug report'
+    async sendDebugReport({ homey, params, body }) {
+        return homey.app.sendDebugReport(params, body); ;
     }
-
-];
+};

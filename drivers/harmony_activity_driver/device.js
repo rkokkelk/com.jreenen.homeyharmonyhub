@@ -5,23 +5,23 @@ const HubManager = require('../../lib/hubmanager.js');
 const hubManager = new HubManager();
 
 class HarmonyActivity extends Homey.Device {
-
-    onInit() {
+    async onInit() {
         this._deviceData = this.getData();
-        this.setUnavailable(`Hub ${Homey.__('offline')}`);
 
-        Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
+        this.setUnavailable(`Hub ${this.homey.__("offline")}`);
+
+        this.homey.app.on(`${this._deviceData.id}_online`, (hub) => {
             if (hub.uuid === this._deviceData.hubId) {
                 this.hub = hub;
                 this.setAvailable();
             }
         });
 
-        Homey.app.on(`${this._deviceData.id}_offline`, (hub) => {
+        this.homey.app.on(`${this._deviceData.id}_offline`, (hub) => {
             this._deviceData = this.getData();
-            if (hub.uuid === this._deviceData.hubId)
-                this.setUnavailable(`Hub ${Homey.__('offline')}`);
-
+            if (hub.uuid === this._deviceData.hubId) {
+                this.setUnavailable(`Hub ${this.homey.__("offline")}`);	
+            }
         });
 
         hubManager.on('activityChanged', (activityName, hubId) => {
@@ -40,7 +40,7 @@ class HarmonyActivity extends Homey.Device {
             }
         });
 
-        this.registerCapabilityListener('onoff', (turnon, opts, callback) => {
+        this.registerCapabilityListener('onoff', async (turnon, opts) => {
             console.log(`ON/OFF triggered on ${this._deviceData.label}`);
             const foundHub = this.hub;
 
@@ -60,13 +60,12 @@ class HarmonyActivity extends Homey.Device {
                         return Promise.reject(err);
                     });
 
-                callback(null);
             });
         });
 
         this.getCapabilities().forEach(capability => {
-            if (capability === 'volume_up')
-                this.registerCapabilityListener('volume_up', (value, opts, callback) => {
+            if (capability === "volume_up") {
+                this.registerCapabilityListener('volume_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume up triggered on ${this._deviceData.label}`)
 
@@ -81,12 +80,11 @@ class HarmonyActivity extends Homey.Device {
                             });
                         });
 
-                        callback(null);
                     });
                 });
 
-            if (capability === 'volume_down')
-                this.registerCapabilityListener('volume_down', (value, opts, callback) => {
+            if (capability === "volume_down") {
+                this.registerCapabilityListener('volume_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume down triggered on ${this._deviceData.label}`)
                         const volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
@@ -100,12 +98,11 @@ class HarmonyActivity extends Homey.Device {
                             });
                         });
 
-                        callback(null);
                     });
                 });
 
-            if (capability === 'volume_mute')
-                this.registerCapabilityListener('volume_mute', (value, opts, callback) => {
+            if (capability === "volume_mute") {
+                this.registerCapabilityListener('volume_mute', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume mute triggered on ${this._deviceData.label}`)
                         const volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
@@ -119,12 +116,11 @@ class HarmonyActivity extends Homey.Device {
                             });
                         });
 
-                        callback(null);
                     });
                 });
 
-            if (capability === 'channel_up')
-                this.registerCapabilityListener('channel_up', (value, opts, callback) => {
+            if (capability === "channel_up") {
+                this.registerCapabilityListener('channel_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel up triggered on ${this._deviceData.label}`)
                         const channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
@@ -138,12 +134,11 @@ class HarmonyActivity extends Homey.Device {
                             });
                         });
 
-                        callback(null);
                     });
                 });
 
-            if (capability === 'channel_down')
-                this.registerCapabilityListener('channel_down', (value, opts, callback) => {
+            if (capability === "channel_down") {
+                this.registerCapabilityListener('channel_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel down triggered on ${this._deviceData.label}`)
                         const channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
@@ -157,7 +152,6 @@ class HarmonyActivity extends Homey.Device {
                             });
                         });
 
-                        callback(null);
                     });
                 });
 
@@ -168,7 +162,7 @@ class HarmonyActivity extends Homey.Device {
 
     onAdded() {
         this.log('activity added');
-        const foundHub = Homey.app.getHub(this._deviceData.hubId);
+        const foundHub = this.homey.app.getHub(this._deviceData.hubId);
         this.hub = foundHub;
         hubManager.connectToHub(foundHub.ip).then((hub) => {
             if (hub.currentActivity.label === this._deviceData.label)

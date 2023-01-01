@@ -70,8 +70,10 @@ const iconsMap = {
 
 class App extends Homey.App {
 
-    onInit() {
+    async onInit() {
         console.log(`${Homey.manifest.id} running...`);
+
+        Homey.app = this.homey.app;
 
         if (process.env.DEBUG === '1')
             inspector.open(8080, '0.0.0.0', true)
@@ -113,9 +115,7 @@ class App extends Homey.App {
                 activity: activityName
             }
 
-            const activityStartedTrigger = new Homey.FlowCardTrigger('activity_started')
-                .register();
-
+            const activityStartedTrigger = this.homey.flow.getTriggerCard('activity_started');
             activityStartedTrigger.trigger(tokens)
         });
 
@@ -154,9 +154,8 @@ class App extends Homey.App {
                 activity: activityName
             }
 
-            const activityStartingTrigger = new Homey.FlowCardTrigger('activity_starting')
-                .register();
-            activityStartingTrigger.trigger(tokens)
+            this._activityStartingTrigger = this.homey.flow.getTriggerCard('activity_starting');
+            this._activityStartingTrigger.trigger(tokens)
 
         });
 
@@ -171,10 +170,9 @@ class App extends Homey.App {
                 activity: activityName
             }
 
-            const activityStoppedTrigger = new Homey.FlowCardTrigger('activity_stopped')
-                .register();
+            this._activityStoppedTrigger = this.homey.flow.getTriggerCard('activity_stopped');
 
-            activityStoppedTrigger.trigger(tokens)
+            this._activityStoppedTrigger.trigger(tokens)
         });
     }
 
@@ -289,26 +287,23 @@ class App extends Homey.App {
     }
 
     registerActions() {
-        const sendCommandAction = new Homey.FlowCardAction('send_command')
-            .register();
+        const sendCommandAction = this.homey.flow.getActionCard('send_command');
 
         this.controlGroupAutoComplete(sendCommandAction);
         this.commandAutocomplete(sendCommandAction);
         this.registerSendCommandRunListener(sendCommandAction);
 
-        const startActivityAction = new Homey.FlowCardAction('start_activity')
-            .register();
+        const startActivityAction = this.homey.flow.getActionCard('start_activity');
         this.hubAutoComplete(startActivityAction);
         this.activityAutoComplete(startActivityAction);
         this.registerStartActivityCommandRunListener(startActivityAction);
 
-        const stopActivityAction = new Homey.FlowCardAction('stop_activity')
-            .register();
+        const stopActivityAction = this.homey.flow.getActionCard('stop_activity');
         this.hubAutoComplete(stopActivityAction);
         this.registerStopActivityCommandRunListener(stopActivityAction);
 
-        const isActivityCondition = new Homey.FlowCardCondition('is_activity')
-            .register()
+        const isActivityCondition = this.homey.flow
+            .getConditionCard('is_activity')
             .registerRunListener((args, state) => {
                 console.log(args.activity_input);
                 console.log(args.activity.name)
@@ -496,7 +491,8 @@ class App extends Homey.App {
     }
 
     getPairedDevices() {
-        const deviceDriver = Homey.ManagerDrivers.getDriver('harmony_device_driver');
+        console.log('getPairedDevices...');
+        const deviceDriver = this.homey.drivers.getDriver('harmony_device_driver');
         const devices = deviceDriver.getDevices();
 
         const cache = new Set();

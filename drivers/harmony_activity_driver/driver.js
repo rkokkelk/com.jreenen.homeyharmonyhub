@@ -4,19 +4,20 @@ const Homey = require('homey');
 
 class HarmonyActivityDriver extends Homey.Driver {
 
-    onInit() {
+    async onInit() {
         console.log('Harmony activity driver initializing...');
     }
 
-    onPair(socket) {
+    async onPair(session) {
         const state = {
             connected: true,
             hub: undefined
         };
 
-        socket.on('select_hub', function(data, callback) {
+        session.setHandler('select_hub', async (data) => {
             const result = [];
-            const hubs = Homey.app.getHubs();
+
+            const hubs = this.homey.app.getHubs();
             hubs.forEach(function(hub) {
                 result.push({
                     id: hub.uuid,
@@ -25,20 +26,20 @@ class HarmonyActivityDriver extends Homey.Driver {
                 })
             }, this);
 
-            callback(null, result);
+            return (result);
         });
 
-        socket.on('hub_changed', function(data, callback) {
-            state.hub = Homey.app.getHub(data.logitech_hubId);
+        session.setHandler('hub_changed', async (data) => {
+            state.hub = this.homey.app.getHub(data.logitech_hubId);
         });
 
-        socket.on('list_devices', function(data, callback) {
-            console.log('List devices started...')
-            Homey.app.getHubActivities(state.hub.ip, state.hub.uuid).then((devices) => {
-                callback(null, devices);
+        session.setHandler('list_devices', async (data) => {
+            console.log('ActivityDriver: List devices started...');
+            return this.homey.app.getHubActivities(state.hub.ip, state.hub.uuid).then((devices) => {
+                return (devices);
             });
-
         })
+
     }
 
 }

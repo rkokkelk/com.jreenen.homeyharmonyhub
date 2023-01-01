@@ -4,8 +4,8 @@
   "sdk": 2,
   "brandColor": "#00B8FC",
   "name": {
-    "en": "Harmony Hub",
-    "nl": "Harmony Hub"
+    "en": "Harmony Hub SDK3",
+    "nl": "Harmony Hub SDK3"
   },
   "description": {
     "en": "Homey and the Harmony Hub are better together!",
@@ -30,8 +30,8 @@
       "afstandsbediening"
     ]
   },
-  "version": "2.0.9",
-  "compatibility": ">=1.5.0",
+  "version": "3.0.0",
+  "compatibility": ">=5.0.0",
   "images": {
     "large": "/assets/images/homey_harmony_hub_large.jpg",
     "small": "/assets/images/homey_harmony_hub_small.jpg"

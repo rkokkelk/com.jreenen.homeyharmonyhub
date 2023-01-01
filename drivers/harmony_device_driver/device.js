@@ -6,18 +6,18 @@ const hubManager = new HubManager();
 
 class HarmonyDevice extends Homey.Device {
 
-    onInit() {
+    async onInit() {
         this._deviceData = this.getData();
 
-        this.setUnavailable(`Hub ${Homey.__('offline')}`);
+        this.setUnavailable(`Hub ${this.homey.__('offline')}`);
 
         Homey.app.on(`${this._deviceData.id}_online`, (hub) => {
             this.hub = Homey.app.getHub(this._deviceData.hubId);
             this.setAvailable();
         });
 
-        Homey.app.on(`${this._deviceData.id}_offline`, () => {
-            this.setUnavailable(`Hub ${Homey.__('offline')}`);
+        this.homey.app.on(`${this._deviceData.id}_offline`, () => {
+            this.setUnavailable(`Hub ${this.homey.__('offline')}`);
         });
 
         this.getCapabilities().forEach(capability => {
@@ -34,7 +34,7 @@ class HarmonyDevice extends Homey.Device {
                 });
 
             if (capability === 'volume_up')
-                this.registerCapabilityListener('volume_up', (value, opts, callback) => {
+                this.registerCapabilityListener('volume_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume up triggered on ${this._deviceData.label}`)
 
@@ -48,13 +48,11 @@ class HarmonyDevice extends Homey.Device {
                                 return Promise.reject(err);
                             });
                         });
-
-                        callback(null);
                     });
                 });
 
             if (capability === 'volume_down')
-                this.registerCapabilityListener('volume_down', (value, opts, callback) => {
+                this.registerCapabilityListener('volume_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume down triggered on ${this._deviceData.label}`)
                         const volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
@@ -67,13 +65,11 @@ class HarmonyDevice extends Homey.Device {
                                 return Promise.reject(err);
                             });
                         });
-
-                        callback(null);
                     });
                 });
 
             if (capability === 'volume_mute')
-                this.registerCapabilityListener('volume_mute', (value, opts, callback) => {
+                this.registerCapabilityListener('volume_mute', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume mute triggered on ${this._deviceData.label}`)
                         const volumeGroup = this._deviceData.controlGroup.find(x => x.name === 'Volume');
@@ -86,13 +82,11 @@ class HarmonyDevice extends Homey.Device {
                                 return Promise.reject(err);
                             });
                         });
-
-                        callback(null);
                     });
                 });
 
             if (capability === 'channel_up')
-                this.registerCapabilityListener('channel_up', (value, opts, callback) => {
+                this.registerCapabilityListener('channel_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel up triggered on ${this._deviceData.label}`)
                         const channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
@@ -105,13 +99,11 @@ class HarmonyDevice extends Homey.Device {
                                 return Promise.reject(err);
                             });
                         });
-
-                        callback(null);
                     });
                 });
 
             if (capability === 'channel_down')
-                this.registerCapabilityListener('channel_down', (value, opts, callback) => {
+                this.registerCapabilityListener('channel_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel down triggered on ${this._deviceData.label}`)
                         const channelGroup = this._deviceData.controlGroup.find(x => x.name === 'Channel');
@@ -124,8 +116,6 @@ class HarmonyDevice extends Homey.Device {
                                 return Promise.reject(err);
                             });
                         });
-
-                        callback(null);
                     });
                 });
 
@@ -142,11 +132,11 @@ class HarmonyDevice extends Homey.Device {
             });
         });
 
-        const isOnCondition = new Homey.FlowCardCondition('is_on');
+        const isOnCondition = this.homey.flow.getConditionCard('is_on');
         isOnCondition
             .register()
-            .registerRunListener((args, state) => {
-                const isPowerdOn = args.hub_device.device.power === 'On';
+            .registerRunListener(async (args, state) => {
+                const isPowerdOn = await args.hub_device.device.power === 'On';
                 console.log(`Condition ${isPowerdOn}`);
                 return Promise.resolve(isPowerdOn);
             });
@@ -158,7 +148,7 @@ class HarmonyDevice extends Homey.Device {
         this.log('device added');
         console.log(`Device data ${this._deviceData}`);
         console.log(`Hub id ${this._deviceData.hubId}`);
-        const foundHub = Homey.app.getHub(this._deviceData.hubId);
+        const foundHub = this.homey.app.getHub(this._deviceData.hubId);
         this.hub = foundHub;
         this.onInit();
 
@@ -180,10 +170,10 @@ class HarmonyDevice extends Homey.Device {
 
     triggerOnOffAction(deviceState) {
         const currenOnOffState = this.getCapabilityValue('onoff');
-        const turnedOnDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_on').register();
-        const turnedOffDeviceTrigger = new Homey.FlowCardTriggerDevice('turned_off').register();
+        const turnedOnDeviceTrigger = this.homey.flow.getDeviceTriggerCard('turned_on');
+        const turnedOffDeviceTrigger = this.homey.flow.getDeviceTriggerCard('turned_off');
         const device = this;
-        const foundHub = Homey.app.getHub(this._deviceData.hubId);
+        const foundHub = this.homey.app.getHub(this._deviceData.hubId);
         const hub = foundHub;
 
         if (hub !== undefined) {
