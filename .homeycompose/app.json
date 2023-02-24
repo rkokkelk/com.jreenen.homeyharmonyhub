@@ -1,0 +1,74 @@
+{
+  "id": "com.jreenen.homeyharmonyhub",
+  "sdk": 2,
+  "brandColor": "#00B8FC",
+  "name": {
+    "en": "Harmony Hub",
+    "nl": "Harmony Hub"
+  },
+  "description": {
+    "en": "Homey and the Harmony Hub are better together!",
+    "nl": "Homey en de Harmony Hub zijn samen sterker!"
+  },
+  "category": [
+    "appliances",
+    "video"
+  ],
+  "tags": {
+    "en": [
+      "logitech",
+      "remote",
+      "harmony",
+      "hub"
+    ],
+    "nl": [
+      "logitech",
+      "remote",
+      "harmony",
+      "hub",
+      "afstandsbediening"
+    ]
+  },
+  "version": "2.0.9",
+  "compatibility": ">=1.5.0",
+  "images": {
+    "large": "/assets/images/homey_harmony_hub_large.jpg",
+    "small": "/assets/images/homey_harmony_hub_small.jpg"
+  },
+  "bugs": {
+    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+  },
+  "homeyCommunityTopicId": 1747,
+  "author": {
+    "name": "Jeroen van Reenen",
+    "email": "jreenen@hotmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Jeroen van Reenen",
+        "email": "jreenen@hotmail.com"
+      },
+      {
+        "name": "Dennie de Groot",
+        "email": "mail@denniedegroot.nl",
+        "website": "https://denniedegroot.nl"
+      },
+      {
+        "name": "Raymond Brink",
+        "email": "homey@rbrink.nl"
+      },
+      {
+        "name": "Roy K",
+        "website": "https://github.com/rkokkelk"
+      }
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "jreenen"
+      }
+    }
+  }
+}

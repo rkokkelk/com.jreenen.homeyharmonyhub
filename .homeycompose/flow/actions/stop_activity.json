@@ -1,0 +1,21 @@
+{
+  "id": "stop_activity",
+  "title": {
+    "en": "Stop activity",
+    "nl": "Stop een activiteit"
+  },
+  "titleFormatted": {
+    "en": "Stop activity on [[hub]]",
+    "nl": "Stop activiteit op [[hub]]"
+  },
+  "args": [
+    {
+      "name": "hub",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Select your harmony hub",
+        "nl": "Selecteer je harmony hub"
+      }
+    }
+  ]
+}

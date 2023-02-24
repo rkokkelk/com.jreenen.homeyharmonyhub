@@ -1,0 +1,37 @@
+{
+  "id": "is_activity",
+  "title": {
+    "en": "Activity !{{is|isn't}} matched",
+    "nl": "Activiteit !{{is|is niet}} gelijk aan"
+  },
+  "titleFormatted": {
+    "en": "[[hub]][[activity]] !{{is|isn't}} equal to [[activity_input]]",
+    "nl": "[[hub]][[activity]] !{{is|is niet}} gelijk aan [[activity_input]]"
+  },
+  "args": [
+    {
+      "name": "activity_input",
+      "type": "text",
+      "placeholder": {
+        "en": "Activity to compare",
+        "nl": "Activiteit voor vergelijking"
+      }
+    },
+    {
+      "name": "hub",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Select your harmony hub",
+        "nl": "Selecteer je harmony hub"
+      }
+    },
+    {
+      "name": "activity",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Activity",
+        "nl": "Activiteit"
+      }
+    }
+  ]
+}

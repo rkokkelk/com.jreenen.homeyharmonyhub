@@ -1,0 +1,88 @@
+{
+  "id": "hub_inactive",
+  "title": {
+    "en": "Hub inactive"
+  },
+  "titleFormatted": {
+    "en": "Hub inactive for [[inactivefor]]",
+    "nl": "Hub inactief voor [[inactivefor]]"
+  },
+  "args": [
+    {
+      "name": "inactivefor",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "5",
+          "label": {
+            "en": "5 minutes",
+            "nl": "5 minuten"
+          }
+        },
+        {
+          "id": "10",
+          "label": {
+            "en": "10 minutes",
+            "nl": "10 minuten"
+          }
+        },
+        {
+          "id": "15",
+          "label": {
+            "en": "15 minutes",
+            "nl": "15 minuten"
+          }
+        },
+        {
+          "id": "30",
+          "label": {
+            "en": "30 minutes",
+            "nl": "30 minuten"
+          }
+        },
+        {
+          "id": "60",
+          "label": {
+            "en": "1 hour",
+            "nl": "1 uur"
+          }
+        },
+        {
+          "id": "120",
+          "label": {
+            "en": "2 hours",
+            "nl": "2 uur"
+          }
+        },
+        {
+          "id": "240",
+          "label": {
+            "en": "4 hours",
+            "nl": "4 uur"
+          }
+        },
+        {
+          "id": "480",
+          "label": {
+            "en": "8 hours",
+            "nl": "8 uur"
+          }
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "hub",
+      "type": "string",
+      "title": {
+        "en": "hub",
+        "nl": "hub"
+      },
+      "example": {
+        "en": "Hub living room",
+        "nl": "Hub woonkamer"
+      }
+    }
+  ]
+}

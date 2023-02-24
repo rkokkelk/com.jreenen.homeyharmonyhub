@@ -1,0 +1,51 @@
+{
+  "name": {
+    "en": "Harmony device"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff"
+  ],
+  "images": {
+    "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
+    "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
+  },
+  "pair": [
+    {
+      "id": "select_hub",
+      "navigation": {
+        "next": "list_devices"
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "mobile": {
+    "components": [
+      {
+        "id": "icon",
+        "capabilities": [
+          "onoff"
+        ]
+      },
+      {
+        "id": "button",
+        "capabilities": [
+          "onoff"
+        ],
+        "options": {
+          "showTitle": []
+        }
+      }
+    ]
+  }
+}

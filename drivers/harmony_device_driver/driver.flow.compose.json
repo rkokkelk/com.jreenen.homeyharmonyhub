@@ -1,0 +1,101 @@
+{
+  "triggers": [
+    {
+      "id": "turned_on",
+      "deprecated": true,
+      "title": {
+        "en": "Device turned on",
+        "nl": "Apparaat is aangezet"
+      },
+      "args": [],
+      "tokens": [
+        {
+          "name": "hub",
+          "type": "string",
+          "title": {
+            "en": "hub",
+            "nl": "hub"
+          },
+          "example": {
+            "en": "Hub living room",
+            "nl": "Hub woonkamer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "turned_off",
+      "deprecated": true,
+      "title": {
+        "en": "Device turned off",
+        "nl": "Apparaat is uitgezet"
+      },
+      "args": [],
+      "tokens": [
+        {
+          "name": "hub",
+          "type": "string",
+          "title": {
+            "en": "hub",
+            "nl": "hub"
+          },
+          "example": {
+            "en": "Hub living room",
+            "nl": "Hub woonkamer"
+          }
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "is_on",
+      "deprecated": true,
+      "title": {
+        "en": "Device !{{is|isn't}} on",
+        "nl": "Appraat !{{is|is niet}} aan"
+      },
+      "args": []
+    }
+  ],
+  "actions": [
+    {
+      "id": "send_command",
+      "title": {
+        "en": "Send command",
+        "nl": "Stuur een opdracht"
+      },
+      "titleFormatted": {
+        "en": "Send command [[control_group]][[control_command]][[control_command_repeat]]",
+        "nl": "Stuur command [[control_group]][[control_command]][[control_command_repeat]]"
+      },
+      "args": [
+        {
+          "name": "control_group",
+          "type": "autocomplete",
+          "placeholder": {
+            "en": "Control group",
+            "nl": "Control group"
+          }
+        },
+        {
+          "name": "control_command",
+          "type": "autocomplete",
+          "placeholder": {
+            "en": "Command",
+            "nl": "Opdracht"
+          }
+        },
+        {
+          "name": "control_command_repeat",
+          "type": "number",
+          "min": 0,
+          "placeholder": {
+            "en": "Repeat",
+            "nl": "Herhalen"
+          }
+        }
+      ]
+    }
+  ]
+}

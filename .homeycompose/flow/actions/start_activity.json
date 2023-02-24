@@ -1,0 +1,29 @@
+{
+  "id": "start_activity",
+  "title": {
+    "en": "Start activity",
+    "nl": "Start een activiteit"
+  },
+  "titleFormatted": {
+    "en": "Start [[hub]][[activity]]",
+    "nl": "Start [[hub]][[activity]]"
+  },
+  "args": [
+    {
+      "name": "hub",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Select your harmony hub",
+        "nl": "Selecteer je harmony hub"
+      }
+    },
+    {
+      "name": "activity",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Activity",
+        "nl": "Activiteit"
+      }
+    }
+  ]
+}

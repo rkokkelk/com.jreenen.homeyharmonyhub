@@ -3,3 +3,7 @@ env.json
 jsconfig.json
 examplejson/
 .DS_Store
+
+
+# Added by Homey CLI
+/.homeybuild/

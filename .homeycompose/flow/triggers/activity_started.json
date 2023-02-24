@@ -1,0 +1,33 @@
+{
+  "id": "activity_started",
+  "title": {
+    "en": "Activity started",
+    "nl": "Activiteit gestart"
+  },
+  "tokens": [
+    {
+      "name": "hub",
+      "type": "string",
+      "title": {
+        "en": "hub",
+        "nl": "hub"
+      },
+      "example": {
+        "en": "Hub living room",
+        "nl": "Hub woonkamer"
+      }
+    },
+    {
+      "name": "activity",
+      "type": "string",
+      "title": {
+        "en": "activity",
+        "nl": "activiteit"
+      },
+      "example": {
+        "en": "Watch television",
+        "nl": "TV kijken"
+      }
+    }
+  ]
+}

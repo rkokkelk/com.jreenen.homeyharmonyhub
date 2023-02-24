@@ -1,4 +1,5 @@
 {
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.jreenen.homeyharmonyhub",
   "sdk": 2,
   "brandColor": "#00B8FC",
@@ -35,117 +36,49 @@
     "large": "/assets/images/homey_harmony_hub_large.jpg",
     "small": "/assets/images/homey_harmony_hub_small.jpg"
   },
-  "drivers": [
-    {
-      "id": "harmony_device_driver",
-      "name": {
-        "en": "Harmony device"
+  "bugs": {
+    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+  },
+  "homeyCommunityTopicId": 1747,
+  "author": {
+    "name": "Jeroen van Reenen",
+    "email": "jreenen@hotmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Jeroen van Reenen",
+        "email": "jreenen@hotmail.com"
       },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "images": {
-        "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
-        "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
+      {
+        "name": "Dennie de Groot",
+        "email": "mail@denniedegroot.nl",
+        "website": "https://denniedegroot.nl"
       },
-      "pair": [
-        {
-          "id": "select_hub",
-          "navigation": {
-            "next": "list_devices"
-          }
-        },
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "mobile": {
-        "components": [
-          {
-            "id": "icon",
-            "capabilities": [
-              "onoff"
-            ]
-          },
-          {
-            "id": "button",
-            "capabilities": [
-              "onoff"
-            ],
-            "options": {
-              "showTitle": []
-            }
-          }
-        ]
+      {
+        "name": "Raymond Brink",
+        "email": "homey@rbrink.nl"
+      },
+      {
+        "name": "Roy K",
+        "website": "https://github.com/rkokkelk"
       }
-    },
-    {
-      "id": "harmony_activity_driver",
-      "name": {
-        "en": "Harmony activity"
-      },
-      "class": "other",
-      "capabilities": [],
-      "images": {
-        "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
-        "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
-      },
-      "pair": [
-        {
-          "id": "select_hub",
-          "navigation": {
-            "next": "list_devices"
-          }
-        },
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "mobile": {
-        "components": [
-          {
-            "id": "icon",
-            "capabilities": [
-              "onoff"
-            ]
-          },
-          {
-            "id": "button",
-            "capabilities": [
-              "onoff"
-            ],
-            "options": {
-              "showTitle": []
-            }
-          }
-        ]
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "jreenen"
       }
     }
-  ],
+  },
   "flow": {
     "triggers": [
       {
-        "id": "activity_starting",
+        "id": "activity_started",
         "title": {
-          "en": "Activity starting",
-          "nl": "Activiteit wordt gestart"
+          "en": "Activity started",
+          "nl": "Activiteit gestart"
         },
         "tokens": [
           {
@@ -175,10 +108,10 @@
         ]
       },
       {
-        "id": "activity_started",
+        "id": "activity_starting",
         "title": {
-          "en": "Activity started",
-          "nl": "Activiteit gestart"
+          "en": "Activity starting",
+          "nl": "Activiteit wordt gestart"
         },
         "tokens": [
           {
@@ -236,64 +169,6 @@
             "example": {
               "en": "Watch television",
               "nl": "TV kijken"
-            }
-          }
-        ]
-      },
-      {
-        "id": "turned_on",
-        "deprecated": true,
-        "title": {
-          "en": "Device turned on",
-          "nl": "Apparaat is aangezet"
-        },
-        "args": [
-          {
-            "name": "hub_device",
-            "type": "device",
-            "filter": "driver_id=harmony_device_driver"
-          }
-        ],
-        "tokens": [
-          {
-            "name": "hub",
-            "type": "string",
-            "title": {
-              "en": "hub",
-              "nl": "hub"
-            },
-            "example": {
-              "en": "Hub living room",
-              "nl": "Hub woonkamer"
-            }
-          }
-        ]
-      },
-      {
-        "id": "turned_off",
-        "deprecated": true,
-        "title": {
-          "en": "Device turned off",
-          "nl": "Apparaat is uitgezet"
-        },
-        "args": [
-          {
-            "name": "hub_device",
-            "type": "device",
-            "filter": "driver_id=harmony_device_driver"
-          }
-        ],
-        "tokens": [
-          {
-            "name": "hub",
-            "type": "string",
-            "title": {
-              "en": "hub",
-              "nl": "hub"
-            },
-            "example": {
-              "en": "Hub living room",
-              "nl": "Hub woonkamer"
             }
           }
         ]
@@ -385,24 +260,67 @@
             }
           }
         ]
-      }
-    ],
-    "conditions": [
+      },
       {
-        "id": "is_on",
+        "id": "turned_on",
         "deprecated": true,
         "title": {
-          "en": "Device !{{is|isn't}} on",
-          "nl": "Appraat !{{is|is niet}} aan"
+          "en": "Device turned on",
+          "nl": "Apparaat is aangezet"
         },
         "args": [
           {
-            "name": "hub_device",
             "type": "device",
+            "name": "device",
             "filter": "driver_id=harmony_device_driver"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
           }
         ]
       },
+      {
+        "id": "turned_off",
+        "deprecated": true,
+        "title": {
+          "en": "Device turned off",
+          "nl": "Apparaat is uitgezet"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=harmony_device_driver"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "hub",
+            "type": "string",
+            "title": {
+              "en": "hub",
+              "nl": "hub"
+            },
+            "example": {
+              "en": "Hub living room",
+              "nl": "Hub woonkamer"
+            }
+          }
+        ]
+      }
+    ],
+    "conditions": [
       {
         "id": "is_activity",
         "title": {
@@ -437,6 +355,21 @@
               "en": "Activity",
               "nl": "Activiteit"
             }
+          }
+        ]
+      },
+      {
+        "id": "is_on",
+        "deprecated": true,
+        "title": {
+          "en": "Device !{{is|isn't}} on",
+          "nl": "Appraat !{{is|is niet}} aan"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=harmony_device_driver"
           }
         ]
       }
@@ -504,8 +437,8 @@
         },
         "args": [
           {
-            "name": "hub_device",
             "type": "device",
+            "name": "device",
             "filter": "driver_id=harmony_device_driver"
           },
           {
@@ -537,40 +470,108 @@
       }
     ]
   },
-  "bugs": {
-    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
-  },
-  "homeyCommunityTopicId": 1747,
-  "author": {
-    "name": "Jeroen van Reenen",
-    "email": "jreenen@hotmail.com"
-  },
-  "contributors": {
-    "developers": [
-      {
-        "name": "Jeroen van Reenen",
-        "email": "jreenen@hotmail.com"
+  "drivers": [
+    {
+      "name": {
+        "en": "Harmony activity"
       },
-      {
-        "name": "Dennie de Groot",
-        "email": "mail@denniedegroot.nl",
-        "website": "https://denniedegroot.nl"
+      "class": "other",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_large.jpg",
+        "small": "/drivers/harmony_activity_driver/assets/images/homey_harmony_hub_small.jpg"
       },
-      {
-        "name": "Raymond Brink",
-        "email": "homey@rbrink.nl"
+      "pair": [
+        {
+          "id": "select_hub",
+          "navigation": {
+            "next": "list_devices"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [
+              "onoff"
+            ]
+          },
+          {
+            "id": "button",
+            "capabilities": [
+              "onoff"
+            ],
+            "options": {
+              "showTitle": []
+            }
+          }
+        ]
       },
-      {
-        "name": "Roy K",
-        "website": "https://github.com/rkokkelk"
-      }
-    ]
-  },
-  "contributing": {
-    "donate": {
-      "paypal": {
-        "username": "jreenen"
-      }
+      "id": "harmony_activity_driver"
+    },
+    {
+      "name": {
+        "en": "Harmony device"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "images": {
+        "large": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_large.jpg",
+        "small": "/drivers/harmony_device_driver/assets/images/homey_harmony_hub_small.jpg"
+      },
+      "pair": [
+        {
+          "id": "select_hub",
+          "navigation": {
+            "next": "list_devices"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [
+              "onoff"
+            ]
+          },
+          {
+            "id": "button",
+            "capabilities": [
+              "onoff"
+            ],
+            "options": {
+              "showTitle": []
+            }
+          }
+        ]
+      },
+      "id": "harmony_device_driver"
     }
-  }
+  ]
 }
