@@ -1,0 +1,26 @@
+{
+    "env": {
+        "browser": false,
+        "commonjs": true,
+        "es6": true
+    },
+    "extends": [
+        "standard",
+        "plugin:homey-app/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "rules": {
+        "semi": 0,
+        "space-before-function-paren": ["error", {"anonymous": "never", "named": "never", "asyncArrow": "always"}],
+        "padded-blocks": ["error", { "classes": "always" }],
+        "curly": ["error", "multi"],
+        "indent": ["error", 4],
+        "prefer-promise-reject-errors": ["error", {"allowEmptyReject": true}]
+    }
+}
