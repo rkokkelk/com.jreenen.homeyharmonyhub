@@ -15,9 +15,9 @@
     "en": "Update websocket dependency to latest version"
   },
   "2.0.9": {
-    "en": "Update websocket dependency to latest version"
-  },
-  "2.0.9": {
     "en": "Update websocket dependency to latest version, fix title errors"
+  },
+  "3.0.0": {
+    "en": "Change to support SDKv3"
   }
 }
