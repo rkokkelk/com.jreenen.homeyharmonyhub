@@ -1,6 +1,6 @@
 {
   "id": "com.jreenen.homeyharmonyhub",
-  "sdk": 2,
+  "sdk": 3,
   "brandColor": "#00B8FC",
   "name": {
     "en": "Harmony Hub",
@@ -30,13 +30,23 @@
     ]
   },
   "version": "2.0.9",
-  "compatibility": ">=1.5.0",
+  "compatibility": ">=5.0.0",
   "images": {
     "large": "/assets/images/homey_harmony_hub_large.jpg",
     "small": "/assets/images/homey_harmony_hub_small.jpg"
   },
   "bugs": {
-    "url": "https://github.com/jreenen/com.jreenen.homeyharmonyhub/issues"
+    "url": "https://github.com/rkokkelk/com.jreenen.homeyharmonyhub/issues"
+  },
+  "api": {
+    "getPairedDevices": {
+      "method": "GET",
+      "path": "/getpaireddevices"
+    },
+    "sendDebugReport": {
+      "method": "POST",
+      "path": "/senddebugreport"
+    }
   },
   "homeyCommunityTopicId": 1747,
   "author": {
@@ -70,5 +80,9 @@
         "username": "jreenen"
       }
     }
-  }
+  },
+  "platforms": [
+    "local"
+  ],
+  "source": "https://github.com/rkokkelk/com.jreenen.homeyharmonyhub"
 }

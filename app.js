@@ -130,14 +130,7 @@ class App extends Homey.App {
                 hub: foundHub.friendlyName
             }
 
-            const inactiveTrigger = new Homey.FlowCardTrigger('hub_inactive')
-                .registerRunListener((args, state) => {
-                    if (state.inactivefor >= args.inactivefor)
-                        hubInstance.lastActivity = Date.now();
-
-                    return Promise.resolve(state.inactivefor >= args.inactivefor);
-                })
-                .register();
+            const inactiveTrigger = this.homey.flow.getTriggerCard('hub_inactive')
             inactiveTrigger.trigger(tokens, state);
         })
 
@@ -313,6 +306,15 @@ class App extends Homey.App {
             });
         this.hubAutoComplete(isActivityCondition);
         this.activityAutoComplete(isActivityCondition);
+
+        this.homey.flow.getTriggerCard('hub_inactive')
+            .registerRunListener((args, state) => {
+                // TODO: verify the result of not using this functionality
+                // if (state.inactivefor >= args.inactivefor)
+                //    hubInstance.lastActivity = Date.now();
+
+                return Promise.resolve(state.inactivefor >= args.inactivefor);
+            })
 
     }
 

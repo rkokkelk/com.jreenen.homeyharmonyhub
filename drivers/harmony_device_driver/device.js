@@ -134,7 +134,6 @@ class HarmonyDevice extends Homey.Device {
 
         const isOnCondition = this.homey.flow.getConditionCard('is_on');
         isOnCondition
-            .register()
             .registerRunListener(async (args, state) => {
                 const isPowerdOn = await args.hub_device.device.power === 'On';
                 console.log(`Condition ${isPowerdOn}`);
@@ -161,8 +160,8 @@ class HarmonyDevice extends Homey.Device {
 
     onDeleted() {
         this.log('device deleted');
-        new Homey.FlowCardTriggerDevice('turned_on').unregister();
-        new Homey.FlowCardTriggerDevice('turned_off').unregister();
+        this.homey.flow.getDeviceTriggerCard('turned_on').unregister();
+        this.homey.flow.getDeviceTriggerCard('turned_off').unregister();
 
         this.removeAllListeners();
         super.onDeleted();
