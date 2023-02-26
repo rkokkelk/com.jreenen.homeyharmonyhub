@@ -522,7 +522,7 @@ class App extends Homey.App {
 
     sendDebugReport() {
         this.getPairedDevices().then((body) => {
-            const url = URL(Homey.env.DEBUG_REPORT_URL);
+            const url = new URL(Homey.env.DEBUG_REPORT_URL);
             url.method = 'POST';
             url.headers = {
                 'Content-Type': 'application/json',
