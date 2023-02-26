@@ -5,10 +5,11 @@ const HubManager = require('../../lib/hubmanager.js');
 const hubManager = new HubManager();
 
 class HarmonyActivity extends Homey.Device {
+
     async onInit() {
         this._deviceData = this.getData();
 
-        this.setUnavailable(`Hub ${this.homey.__("offline")}`);
+        this.setUnavailable(`Hub ${this.homey.__('offline')}`);
 
         this.homey.app.on(`${this._deviceData.id}_online`, (hub) => {
             if (hub.uuid === this._deviceData.hubId) {
@@ -19,9 +20,9 @@ class HarmonyActivity extends Homey.Device {
 
         this.homey.app.on(`${this._deviceData.id}_offline`, (hub) => {
             this._deviceData = this.getData();
-            if (hub.uuid === this._deviceData.hubId) {
-                this.setUnavailable(`Hub ${this.homey.__("offline")}`);	
-            }
+            if (hub.uuid === this._deviceData.hubId)
+                this.setUnavailable(`Hub ${this.homey.__('offline')}`);
+
         });
 
         hubManager.on('activityChanged', (activityName, hubId) => {
@@ -64,7 +65,7 @@ class HarmonyActivity extends Homey.Device {
         });
 
         this.getCapabilities().forEach(capability => {
-            if (capability === "volume_up") {
+            if (capability === 'volume_up')
                 this.registerCapabilityListener('volume_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume up triggered on ${this._deviceData.label}`)
@@ -83,7 +84,7 @@ class HarmonyActivity extends Homey.Device {
                     });
                 });
 
-            if (capability === "volume_down") {
+            if (capability === 'volume_down')
                 this.registerCapabilityListener('volume_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume down triggered on ${this._deviceData.label}`)
@@ -101,7 +102,7 @@ class HarmonyActivity extends Homey.Device {
                     });
                 });
 
-            if (capability === "volume_mute") {
+            if (capability === 'volume_mute')
                 this.registerCapabilityListener('volume_mute', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Volume mute triggered on ${this._deviceData.label}`)
@@ -119,7 +120,7 @@ class HarmonyActivity extends Homey.Device {
                     });
                 });
 
-            if (capability === "channel_up") {
+            if (capability === 'channel_up')
                 this.registerCapabilityListener('channel_up', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel up triggered on ${this._deviceData.label}`)
@@ -137,7 +138,7 @@ class HarmonyActivity extends Homey.Device {
                     });
                 });
 
-            if (capability === "channel_down") {
+            if (capability === 'channel_down')
                 this.registerCapabilityListener('channel_down', async (value, opts) => {
                     return new Promise((resolve, reject) => {
                         console.log(`Channel down triggered on ${this._deviceData.label}`)
