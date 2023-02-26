@@ -41,15 +41,15 @@ class HarmonyActivity extends Homey.Device {
         });
 
         this.registerCapabilityListener('onoff', async (turnon, opts) => {
-            console.log(`ON/OFF triggered on ${this._deviceData.label}`);
-            const foundHub = this.hub;
+            const deviceDataId = this._deviceData.id;
+            console.log(`ON/OFF triggered on ${this._deviceData.label}(${deviceDataId})`);
 
-            if (foundHub === undefined)
+            if (this.hub === undefined)
                 return;
 
-            hubManager.connectToHub(foundHub.ip).then((hub) => {
+            hubManager.connectToHub(this.hub.ip).then((hub) => {
                 if (turnon)
-                    hub.startActivity(this._deviceData.id).catch((err) => {
+                    hub.startActivity(deviceDataId).catch((err) => {
                         console.log(err);
                         return Promise.reject(err);
                     });
