@@ -19,5 +19,8 @@
   },
   "3.0.0": {
     "en": "Change to support SDKv3"
+  },
+  "3.0.1": {
+    "en": "SDKv3 added support Release Candidate 1"
   }
 }
