@@ -421,7 +421,7 @@ class App extends Homey.App {
         sendCommandAction
             .registerRunListener((args, state) => {
                 console.log('Send Command!!');
-                const hubDevice = args.hub_device;
+                const hubDevice = args.device;
                 const hubDeviceData = hubDevice.getData();
                 const hubId = hubDeviceData.hubId;
                 const foundHub = this.getHub(hubId);
@@ -451,7 +451,7 @@ class App extends Homey.App {
         sendCommandAction
             .getArgument('control_command')
             .registerAutocompleteListener((query, args) => {
-                const hubDevice = args.hub_device;
+                const hubDevice = args.device;
                 const hubDeviceData = hubDevice.getData();
                 const controlGroupArgValue = args.control_group;
                 const result = [];
@@ -477,7 +477,7 @@ class App extends Homey.App {
         sendCommandAction
             .getArgument('control_group')
             .registerAutocompleteListener((query, args) => {
-                const hubDevice = args.hub_device;
+                const hubDevice = args.device;
                 const hubDeviceData = hubDevice.getData();
                 const result = [];
 
