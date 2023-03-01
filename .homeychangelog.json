@@ -22,5 +22,8 @@
   },
   "3.0.1": {
     "en": "SDKv3 added support Release Candidate 1"
+  },
+  "3.0.2": {
+    "en": "Fixes send_command card"
   }
 }
